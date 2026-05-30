@@ -1399,81 +1399,215 @@ async function deleteClass(id) {
 // ============================================================
 // LEADERBOARD
 // ============================================================
+// ============================================================
+// LEADERBOARD
+// ============================================================
 async function loadLeaderboard() {
-  const snap = await db.ref('users').orderByChild('points').get();
-  const users = snap.val()||{};
-  const arr = Object.entries(users).filter(([,u])=>u.role!='admin'||(u.points>0))
-    .map(([id,u])=>({id,...u}))
-    .sort((a,b)=>(b.points||0)-(a.points||0));
-  const maxPts = arr[0]?.points||1;
-  const list = document.getElementById('lb-list');
-  if(!arr.length){
-    list.innerHTML=`<div class="empty"><div class="empty-title">No data yet</div></div>`;
-    return;
-  }
-  // Check current user rank for celebration
-  const myRank = arr.findIndex(u => u.id === currentUser.uid);
-  if (myRank !== -1 && myRank < 3) {
-    const prevRankKey = 'lb_rank_' + currentUser.uid;
-    const prevRank = parseInt(sessionStorage.getItem(prevRankKey) || '999');
-    if (myRank < prevRank) {
-      sessionStorage.setItem(prevRankKey, myRank);
-      setTimeout(() => checkLeaderboardPosition(myRank + 1), 600);
+  try {
+    const snap = await db.ref('results').get(); // result -> results
+    const users = snap.val() || {};
+
+    const arr = Object.entries(users)
+      .map(([id, u]) => ({
+        id,
+        name: u.userName || 'Unknown',
+        points: u.score || 0,
+        percentage: u.percentage || 0,
+        testsCompleted: 1,
+        uid: u.uid || ''
+      }))
+      .sort((a, b) => b.points - a.points);
+
+    const list = document.getElementById('lb-list');
+
+    if (!arr.length) {
+      list.innerHTML = `
+        <div class="empty">
+          <div class="empty-title">No leaderboard data yet</div>
+        </div>
+      `;
+      return;
     }
-    sessionStorage.setItem(prevRankKey, myRank);
-  }
-  list.innerHTML = arr.map((u,i)=>{
-    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
-    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
-    const pct = Math.round((u.points||0)/maxPts*100);
-    const isMe = u.id===currentUser.uid;
-    return `
-    <div class="lb-row" style="${isMe?'border-color:var(--cyan);background:rgba(0,229,255,0.05)':''}">
-      <div class="lb-rank ${rankClass}">${medal||('#'+(i+1))}</div>
-      <div class="lb-avatar" style="${isMe?'background:linear-gradient(135deg,var(--cyan),var(--green))':''}">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div class="lb-info">
-        <div class="lb-name">${u.name||'Unknown'} ${isMe?'<span class="badge badge-cyan" style="margin-left:6px">You</span>':''}</div>
-        <div class="lb-score-bar"><div class="lb-score-fill" style="width:${pct}%"></div></div>
-        <div style="font-size:10px;color:var(--text3);margin-top:2px">${u.testsCompleted||0} tests completed</div>
+
+    const maxPts = arr[0].points || 1;
+
+    const myRank = arr.findIndex(u => u.uid === currentUser?.uid);
+
+    if (myRank !== -1 && myRank < 3) {
+      const prevRankKey = 'lb_rank_' + currentUser.uid;
+      const prevRank = parseInt(
+        sessionStorage.getItem(prevRankKey) || '999'
+      );
+
+      if (myRank < prevRank) {
+        sessionStorage.setItem(prevRankKey, myRank);
+
+        if (typeof checkLeaderboardPosition === 'function') {
+          setTimeout(() => {
+            checkLeaderboardPosition(myRank + 1);
+          }, 600);
+        }
+      }
+    }
+
+    list.innerHTML = arr.map((u, i) => {
+      const rankClass =
+        i === 0 ? 'r1' :
+        i === 1 ? 'r2' :
+        i === 2 ? 'r3' : '';
+
+      const medal =
+        i === 0 ? '🥇' :
+        i === 1 ? '🥈' :
+        i === 2 ? '🥉' : '';
+
+      const pct = Math.round((u.points / maxPts) * 100);
+
+      const isMe = u.uid === currentUser?.uid;
+
+      return `
+      <div class="lb-row"
+           style="${isMe ? 'border-color:var(--cyan);background:rgba(0,229,255,.05)' : ''}">
+           
+        <div class="lb-rank ${rankClass}">
+          ${medal || ('#' + (i + 1))}
+        </div>
+
+        <div class="lb-avatar"
+             style="${isMe ? 'background:linear-gradient(135deg,var(--cyan),var(--green))' : ''}">
+          ${(u.name || '?').charAt(0).toUpperCase()}
+        </div>
+
+        <div class="lb-info">
+          <div class="lb-name">
+            ${u.name}
+            ${isMe
+              ? '<span class="badge badge-cyan" style="margin-left:6px">You</span>'
+              : ''}
+          </div>
+
+          <div class="lb-score-bar">
+            <div class="lb-score-fill" style="width:${pct}%"></div>
+          </div>
+
+          <div style="font-size:10px;color:var(--text3);margin-top:2px">
+            Score: ${u.points}
+          </div>
+        </div>
+
+        <div class="lb-points">
+          ${u.points}
+        </div>
       </div>
-      <div class="lb-points">${u.points||0}</div>
-    </div>`;
-  }).join('');
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error('Leaderboard Error:', err);
+
+    document.getElementById('lb-list').innerHTML = `
+      <div class="empty">
+        <div class="empty-title">Failed to load leaderboard</div>
+      </div>
+    `;
+  }
 }
 
 // ============================================================
 // MY RESULTS
 // ============================================================
 async function loadResults() {
-  const snap = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
-  const results = snap.val()||{};
-  const arr = Object.entries(results).sort((a,b)=>b[1].submittedAt-a[1].submittedAt);
-  const list = document.getElementById('results-list');
-  if(!arr.length){
-    list.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No results yet</div><div class="empty-sub">Take a test to see your results</div></div>`;
-    return;
-  }
-  list.innerHTML = arr.map(([,r])=>{
-    const d = new Date(r.submittedAt).toLocaleDateString();
-    const pct = r.percentage||0;
-    const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
-    return `
-    <div class="card mb-16" style="margin-bottom:12px">
-      <div class="flex flex-between flex-center">
-        <div>
-          <div style="font-size:14px;font-weight:600">${r.testTitle||'Test'}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:4px">${d}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:${color}">${pct}%</div>
-          <div style="font-size:11px;color:var(--text2)">${r.score}/${r.maxScore} pts</div>
+  try {
+    const snap = await db.ref('results')
+      .orderByChild('uid')
+      .equalTo(currentUser.uid)
+      .get();
+
+    const results = snap.val() || {};
+
+    const arr = Object.entries(results)
+      .sort((a, b) =>
+        (b[1].submittedAt || 0) -
+        (a[1].submittedAt || 0)
+      );
+
+    const list = document.getElementById('results-list');
+
+    if (!arr.length) {
+      list.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">📊</div>
+        <div class="empty-title">No results yet</div>
+        <div class="empty-sub">
+          Take a test to see your results
         </div>
       </div>
-      <div class="progress-bar mt-8"><div class="progress-fill" style="width:${pct}%;background:${pct>=70?'linear-gradient(90deg,var(--green),var(--cyan))':pct>=50?'linear-gradient(90deg,var(--amber),var(--cyan))':'linear-gradient(90deg,var(--red),var(--amber))'}"></div></div>
-    </div>`;
-  }).join('');
-}
+      `;
+      return;
+    }
 
+    list.innerHTML = arr.map(([, r]) => {
+
+      const d = r.submittedAt
+        ? new Date(r.submittedAt).toLocaleDateString()
+        : 'Unknown Date';
+
+      const pct = Number(r.percentage || 0);
+
+      const color =
+        pct >= 70 ? 'var(--green)' :
+        pct >= 50 ? 'var(--amber)' :
+        'var(--red)';
+
+      return `
+      <div class="card mb-16" style="margin-bottom:12px">
+
+        <div class="flex flex-between flex-center">
+          <div>
+            <div style="font-size:14px;font-weight:600">
+              ${r.testTitle || 'Test'}
+            </div>
+
+            <div style="font-size:11px;color:var(--text3);margin-top:4px">
+              ${d}
+            </div>
+          </div>
+
+          <div style="text-align:right">
+            <div style="
+              font-family:'Orbitron',monospace;
+              font-size:22px;
+              font-weight:700;
+              color:${color}">
+              ${pct}%
+            </div>
+
+            <div style="font-size:11px;color:var(--text2)">
+              ${r.score || 0}/${r.maxScore || 0} pts
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-bar mt-8">
+          <div class="progress-fill"
+               style="width:${pct}%">
+          </div>
+        </div>
+
+      </div>
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error('Results Error:', err);
+
+    document.getElementById('results-list').innerHTML = `
+      <div class="empty">
+        <div class="empty-title">Failed to load results</div>
+      </div>
+    `;
+  }
+}
 // ============================================================
 // MANAGE USERS (Admin)
 // ============================================================
