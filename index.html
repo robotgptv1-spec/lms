@@ -180,20 +180,6 @@
   .option-letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0}
   .option-choice.selected .option-letter{background:var(--purple2);color:#fff}
 
-  /* CODE EDITOR */
-  .code-editor{width:100%;min-height:180px;background:#05050f;border:1px solid var(--border);border-radius:var(--r);padding:12px;color:#c8f5ff;font-family:'JetBrains Mono','Fira Code','Courier New',monospace;font-size:13px;line-height:1.5;resize:vertical;tab-size:2;white-space:pre;overflow:auto}
-  .code-editor:focus{outline:none;border-color:var(--cyan);box-shadow:var(--glow)}
-  .code-output{background:#05050f;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);white-space:pre-wrap;margin-top:8px;max-height:160px;overflow:auto}
-  .code-output .ok{color:var(--green)}
-  .code-output .fail{color:var(--red)}
-  .code-tests{display:flex;flex-direction:column;gap:8px}
-  .code-test-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
-  .code-test-row input{font-family:'JetBrains Mono',monospace;font-size:12px}
-  .badge-code{background:rgba(124,77,255,0.15);color:var(--purple);border:1px solid var(--purple2);padding:2px 8px;border-radius:6px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
-  .badge-mcq{background:rgba(0,229,255,0.12);color:var(--cyan);border:1px solid var(--cyan2);padding:2px 8px;border-radius:6px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
-
-
-
   /* LIVE CLASS CARD */
   .class-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:20px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
   .class-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -286,6 +272,86 @@
   .q-item-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .q-opt{padding:3px 10px;border-radius:20px;font-size:11px;background:var(--border);color:var(--text2)}
   .q-opt.correct{background:rgba(0,230,118,0.2);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
+
+  /* ===== CHAT / DISCUSSION ===== */
+  .chat-wrap{display:flex;flex-direction:column;height:420px;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+  .chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .chat-bubble{max-width:78%;padding:10px 14px;border-radius:var(--r2);font-size:13px;line-height:1.5;position:relative;word-break:break-word}
+  .chat-bubble.mine{align-self:flex-end;background:linear-gradient(135deg,rgba(124,77,255,.25),rgba(0,184,212,.2));border:1px solid rgba(124,77,255,.3);border-bottom-right-radius:4px}
+  .chat-bubble.theirs{align-self:flex-start;background:var(--card2);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .chat-meta{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;gap:6px;align-items:center}
+  .chat-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border);background:var(--bg2)}
+  .chat-input-row input{flex:1}
+
+  /* ===== NOTES ===== */
+  .note-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative}
+  .note-card-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+  .note-body{font-size:12px;color:var(--text2);line-height:1.5;white-space:pre-wrap}
+  .note-date{font-size:10px;color:var(--text3);margin-top:6px}
+
+  /* ===== PROGRESS / ANALYTICS ===== */
+  .analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .mini-chart{display:flex;align-items:flex-end;gap:4px;height:60px}
+  .mini-bar{flex:1;background:linear-gradient(to top,var(--cyan),var(--purple));border-radius:3px 3px 0 0;transition:.4s;min-width:8px}
+
+  /* ===== DARK/LIGHT TOGGLE ===== */
+  .theme-toggle{width:38px;height:38px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.2s}
+  .theme-toggle:hover{border-color:var(--cyan)}
+
+  /* ===== ASSIGNMENTS ===== */
+  .assign-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:12px}
+  .assign-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .assign-title{font-size:14px;font-weight:600}
+  .assign-due{font-size:11px;color:var(--amber);display:flex;align-items:center;gap:4px}
+  .assign-due.overdue{color:var(--red)}
+
+  /* ===== ATTENDANCE ===== */
+  .attend-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(42,42,85,.4);font-size:13px}
+  .attend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .attend-dot.present{background:var(--green)}
+  .attend-dot.absent{background:var(--red)}
+  .attend-dot.late{background:var(--amber)}
+
+  /* ===== DARK MODE TOGGLE ===== */
+  body.light-mode{--bg:#f0f2f8;--bg2:#e4e7f0;--bg3:#dde1ee;--card:#fff;--card2:#f5f7ff;--border:#c8ccdf;--border2:#b0b5cf;--text:#1a1a3a;--text2:#5a5a88;--text3:#9090bb}
+  body.light-mode body::before{background-image:linear-gradient(rgba(124,77,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,77,255,0.04) 1px,transparent 1px)}
+
+  /* ===== SEARCH BAR ===== */
+  .search-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;flex:1;max-width:280px;transition:.2s}
+  .search-bar:focus-within{border-color:var(--cyan)}
+  .search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'Exo 2',sans-serif;font-size:13px;width:100%}
+  .search-bar span{color:var(--text3);font-size:14px}
+
+  /* ===== CERTIFICATE ===== */
+  .cert-wrap{background:linear-gradient(135deg,var(--bg2),var(--card));border:2px solid var(--amber);border-radius:var(--r2);padding:32px;text-align:center;position:relative;overflow:hidden}
+  .cert-wrap::before{content:'';position:absolute;inset:6px;border:1px solid rgba(255,196,0,.2);border-radius:10px;pointer-events:none}
+  .cert-title{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--amber),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+  .cert-sub{font-size:12px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
+  .cert-name{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+  .cert-course{font-size:13px;color:var(--text2);margin-bottom:20px}
+  .cert-seal{font-size:48px;margin-bottom:8px}
+  .cert-date{font-size:11px;color:var(--text3)}
+
+  /* ===== EMOJI REACTIONS ===== */
+  .reactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .reaction-btn{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:4px}
+  .reaction-btn:hover,.reaction-btn.active{border-color:var(--cyan);background:rgba(0,229,255,.08)}
+  .reaction-count{font-size:11px;color:var(--text2)}
+
+  /* ===== RESOURCE LIBRARY ===== */
+  .resource-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;background:var(--card2);transition:.15s}
+  .resource-item:hover{border-color:var(--border2)}
+  .resource-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .resource-icon.pdf{background:rgba(255,23,68,.15)}
+  .resource-icon.video{background:rgba(124,77,255,.15)}
+  .resource-icon.link{background:rgba(0,229,255,.15)}
+  .resource-icon.doc{background:rgba(0,230,118,.15)}
+
+  /* ===== POLLS ===== */
+  .poll-opt{display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer}
+  .poll-bar-wrap{flex:1;background:var(--border);border-radius:3px;height:6px;overflow:hidden}
+  .poll-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:.5s}
+  .poll-pct{font-size:11px;color:var(--text2);min-width:34px;text-align:right}
 
   /* ===== NOTIFICATION BELL ===== */
   .notif-bell-wrap{position:relative;cursor:pointer}
@@ -501,6 +567,71 @@
       </div>
     </div>
 
+
+    <!-- DISCUSSION / CHAT -->
+    <div class="panel" id="panel-chat">
+      <div class="section-header">
+        <div class="section-title">💬 Class Discussion</div>
+        <select id="chat-room-select" style="width:auto;padding:6px 12px" onchange="loadChatRoom()">
+          <option value="general">🌐 General</option>
+          <option value="doubt">❓ Doubt Corner</option>
+          <option value="announcements">📢 Announcements</option>
+        </select>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-msgs" id="chat-msgs"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">No messages yet</div></div></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChatMsg()">
+          <button class="btn btn-primary btn-sm" onclick="sendChatMsg()">Send ➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="section-header">
+        <div class="section-title">📓 My Notes</div>
+        <button class="btn btn-primary btn-sm" onclick="openAddNote()">+ New Note</button>
+      </div>
+      <div id="notes-list"></div>
+    </div>
+
+    <!-- ASSIGNMENTS -->
+    <div class="panel" id="panel-assignments">
+      <div class="section-header">
+        <div class="section-title">📋 Assignments</div>
+        <div id="assign-admin-btns"></div>
+      </div>
+      <div id="assignments-list"></div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="panel" id="panel-analytics">
+      <div class="section-title" style="margin-bottom:16px">📊 My Analytics</div>
+      <div id="analytics-content"></div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="panel" id="panel-resources">
+      <div class="section-header">
+        <div class="section-title">📚 Resource Library</div>
+        <div id="res-admin-btns"></div>
+      </div>
+      <div id="resources-list"></div>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="panel" id="panel-attendance">
+      <div class="section-title" style="margin-bottom:16px">✅ Attendance</div>
+      <div id="attendance-content"></div>
+    </div>
+
+    <!-- CERTIFICATES -->
+    <div class="panel" id="panel-certificates">
+      <div class="section-title" style="margin-bottom:16px">🏅 My Certificates</div>
+      <div id="certs-list"></div>
+    </div>
+
   </div><!-- /main -->
 </div><!-- /app-page -->
 
@@ -559,45 +690,17 @@
         <label>Question Text</label>
         <textarea id="q-text" placeholder="Enter question..."></textarea>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Question Type</label>
-          <select id="q-type" onchange="toggleQType()">
-            <option value="mcq">Multiple Choice (MCQ)</option>
-            <option value="code">Coding (JavaScript)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Points</label>
-          <input type="number" id="q-points" value="10" min="1">
-        </div>
-      </div>
-
-      <!-- MCQ FIELDS -->
-      <div id="q-mcq-fields" class="form-group">
+      <div class="form-group">
         <label>Options (mark correct one)</label>
-        <div class="options-builder" id="options-builder"></div>
+        <div class="options-builder" id="options-builder">
+          <!-- injected -->
+        </div>
         <button class="btn btn-secondary btn-sm mt-8" onclick="addOptionField()" style="width:fit-content">+ Add Option</button>
       </div>
-
-      <!-- CODE FIELDS -->
-      <div id="q-code-fields" style="display:none;flex-direction:column;gap:14px">
-        <div class="form-group">
-          <label>Function Name (students must define this)</label>
-          <input type="text" id="q-fn-name" placeholder="e.g. addNumbers">
-        </div>
-        <div class="form-group">
-          <label>Starter Code</label>
-          <textarea id="q-starter" class="code-editor" style="min-height:120px" placeholder="function addNumbers(a, b) {&#10;  // your code here&#10;}"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Test Cases (input args as JSON array → expected output as JSON)</label>
-          <div class="code-tests" id="q-tests-builder"></div>
-          <button class="btn btn-secondary btn-sm mt-8" onclick="addTestCaseField()" style="width:fit-content">+ Add Test Case</button>
-          <div style="font-size:11px;color:var(--text3);margin-top:6px">Example — Input: <code>[2,3]</code> &nbsp; Expected: <code>5</code></div>
-        </div>
+      <div class="form-group">
+        <label>Points</label>
+        <input type="number" id="q-points" value="10" min="1">
       </div>
-
       <div id="q-modal-msg" class="msg"></div>
       <div class="flex gap-8" style="justify-content:flex-end">
         <button class="btn btn-secondary" onclick="closeModal('modal-question')">Cancel</button>
@@ -606,7 +709,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Create Live Class -->
 <div class="modal-overlay" id="modal-create-class">
@@ -662,6 +764,97 @@
       <div class="flex gap-8" style="justify-content:flex-end">
         <button class="btn btn-secondary" onclick="closeModal('modal-create-class')">Cancel</button>
         <button class="btn btn-primary" onclick="saveClass()" id="save-class-btn">Create Class</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add Note Modal -->
+<div class="modal-overlay" id="modal-add-note">
+  <div class="modal">
+    <div class="modal-title">📓 Add Note</div>
+    <button class="modal-close" onclick="closeModal('modal-add-note')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group"><label>Title</label><input type="text" id="note-title" placeholder="Note title"></div>
+      <div class="form-group"><label>Content</label><textarea id="note-body" style="min-height:140px" placeholder="Write your notes here..."></textarea></div>
+      <div class="form-group"><label>Tag</label>
+        <select id="note-tag">
+          <option value="general">📌 General</option>
+          <option value="test">📝 Test Prep</option>
+          <option value="class">🎥 Class Notes</option>
+          <option value="important">⭐ Important</option>
+        </select>
+      </div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-note')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveNote()">Save Note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Assignment Modal (Admin) -->
+<div class="modal-overlay" id="modal-add-assign">
+  <div class="modal">
+    <div class="modal-title">📋 Create Assignment</div>
+    <button class="modal-close" onclick="closeModal('modal-add-assign')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group"><label>Title</label><input type="text" id="as-title" placeholder="Assignment title"></div>
+      <div class="form-group"><label>Description</label><textarea id="as-desc" placeholder="Describe the assignment..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Subject</label><input type="text" id="as-subject" placeholder="e.g. Python"></div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="as-due"></div>
+      </div>
+      <div class="form-group"><label>Max Marks</label><input type="number" id="as-marks" value="100" min="1"></div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-assign')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveAssignment()">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Submit Assignment Modal (Student) -->
+<div class="modal-overlay" id="modal-submit-assign">
+  <div class="modal">
+    <div class="modal-title">📤 Submit Assignment</div>
+    <button class="modal-close" onclick="closeModal('modal-submit-assign')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div id="submit-assign-info" style="font-size:13px;color:var(--text2)"></div>
+      <div class="form-group"><label>Your Answer / Notes</label><textarea id="submit-answer" style="min-height:120px" placeholder="Write your answer or paste a link..."></textarea></div>
+      <div class="form-group"><label>Submission Link (optional)</label><input type="text" id="submit-link" placeholder="https://github.com/..."></div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-submit-assign')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAssignment()">Submit ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Resource Modal (Admin) -->
+<div class="modal-overlay" id="modal-add-resource">
+  <div class="modal">
+    <div class="modal-title">📚 Add Resource</div>
+    <button class="modal-close" onclick="closeModal('modal-add-resource')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group"><label>Title</label><input type="text" id="res-title" placeholder="Resource title"></div>
+      <div class="form-group"><label>Description</label><textarea id="res-desc" placeholder="Brief description..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Type</label>
+          <select id="res-type">
+            <option value="link">🔗 Link</option>
+            <option value="video">🎬 Video</option>
+            <option value="pdf">📄 PDF</option>
+            <option value="doc">📝 Document</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Subject</label><input type="text" id="res-subject" placeholder="e.g. Python"></div>
+      </div>
+      <div class="form-group"><label>URL</label><input type="text" id="res-url" placeholder="https://..."></div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-resource')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveResource()">Add Resource</button>
       </div>
     </div>
   </div>
@@ -806,8 +999,15 @@ const studentNav = [
   {id:'dashboard', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`, label:'Dashboard'},
   {id:'tests', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`, label:'MCQ Tests'},
   {id:'classes', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`, label:'Live Classes'},
+  {id:'assignments', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`, label:'Assignments'},
+  {id:'resources', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`, label:'Resources'},
+  {id:'chat', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, label:'Discussion'},
   {id:'leaderboard', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`, label:'Leaderboard'},
-  {id:'results', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`, label:'My Results'},
+  {id:'analytics', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`, label:'Analytics'},
+  {id:'notes', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`, label:'My Notes'},
+  {id:'certificates', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`, label:'Certificates'},
+  {id:'results', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`, label:'My Results'},
+  {id:'attendance', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`, label:'Attendance'},
   {id:'profile', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`, label:'Profile'},
 ];
 const adminExtra = [
@@ -847,18 +1047,59 @@ function navigateTo(id) {
   if (panel) panel.classList.add('active');
   const titles = {
     dashboard:'Dashboard', tests:'MCQ Tests', classes:'Live Classes',
-    leaderboard:'Leaderboard', results:'My Results', profile:'Profile',
-    users:'Manage Users', questions:'Question Bank', 'take-test':'Take Test'
+    leaderboard:'🏆 Leaderboard', results:'My Results', profile:'Profile',
+    users:'Manage Users', questions:'Question Bank', 'take-test':'Take Test',
+    chat:'💬 Discussion', notes:'📓 My Notes', assignments:'📋 Assignments',
+    analytics:'📊 Analytics', resources:'📚 Resources', attendance:'✅ Attendance',
+    certificates:'🏅 Certificates'
   };
   document.getElementById('topbar-title').textContent = titles[id]||id;
-  document.getElementById('topbar-actions').innerHTML='';
-  // load data for panel
+  // always re-render bell + theme toggle in actions
+  const actions = document.getElementById('topbar-actions');
+  const bellWrap = document.getElementById('notif-bell-wrap');
+  actions.innerHTML = '';
+  // search bar for tests/resources/classes
+  if (['tests','resources','classes'].includes(id)) {
+    actions.innerHTML += `<div class="search-bar"><span>🔍</span><input type="text" placeholder="Search..." oninput="handleSearch(this.value,'${id}')"></div>`;
+  }
+  if (bellWrap) actions.appendChild(bellWrap);
+  // theme toggle
+  const tt = document.createElement('div');
+  tt.className='theme-toggle'; tt.title='Toggle Theme';
+  tt.textContent = document.body.classList.contains('light-mode')?'☀️':'🌙';
+  tt.onclick = toggleTheme;
+  actions.appendChild(tt);
+
   const loaders = {
     dashboard: loadDashboard, tests: loadTests, classes: loadClasses,
     leaderboard: loadLeaderboard, results: loadResults, profile: loadProfile,
-    users: loadUsers, questions: loadQuestions
+    users: loadUsers, questions: loadQuestions, chat: loadChat,
+    notes: loadNotes, assignments: loadAssignments, analytics: loadAnalytics,
+    resources: loadResources, attendance: loadAttendance, certificates: loadCertificates
   };
   if (loaders[id]) loaders[id]();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.querySelectorAll('.theme-toggle').forEach(t=>t.textContent=document.body.classList.contains('light-mode')?'☀️':'🌙');
+}
+
+function handleSearch(val, panel) {
+  const v = val.toLowerCase();
+  if (panel==='tests') {
+    document.querySelectorAll('#tests-list .card').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  } else if (panel==='resources') {
+    document.querySelectorAll('#resources-list .resource-item').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  } else if (panel==='classes') {
+    document.querySelectorAll('#classes-list .class-card').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  }
 }
 
 // ============================================================
@@ -936,10 +1177,7 @@ async function loadTests() {
   if (isAdmin) {
     adminBtns.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openCreateTest()">+ Create Test</button>`;
   }
-  const [snap, rSnap] = await Promise.all([
-    db.ref('tests').get(),
-    currentUser ? db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get() : Promise.resolve({val:()=>({})})
-  ]);
+  const snap = await db.ref('tests').get();
   const tests = snap.val()||{};
   const list = document.getElementById('tests-list');
   const arr = Object.entries(tests);
@@ -950,34 +1188,22 @@ async function loadTests() {
   // get question counts
   const qSnap = await db.ref('questions').get();
   const qs = qSnap.val()||{};
-  const myResults = rSnap.val()||{};
-  const takenTestIds = new Set(Object.values(myResults).map(r=>r&&r.testId).filter(Boolean));
   list.innerHTML = arr.map(([id,t])=>{
     const qCount = Object.values(qs).filter(q=>q.testId===id).length;
-    const empty = qCount === 0;
-    const taken = !isAdmin && takenTestIds.has(id);
-    const startBtn = empty
-      ? `<button class="btn btn-primary btn-sm" disabled title="This test has no questions yet" style="opacity:.5;cursor:not-allowed">▶ Start</button>`
-      : taken
-      ? `<button class="btn btn-primary btn-sm" disabled title="You have already taken this test" style="opacity:.5;cursor:not-allowed">✓ Completed</button>`
-      : `<button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>`;
     return `
-    <div class="card mb-16" style="margin-bottom:14px${empty?';border:1px solid var(--amber)':''}">
+    <div class="card mb-16" style="margin-bottom:14px">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
         <div style="flex:1">
           <div style="font-size:15px;font-weight:600;margin-bottom:6px">${t.title}</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
             ${t.subject?`<span class="badge badge-purple">${t.subject}</span>`:''}
-            <span class="badge ${empty?'badge-amber':'badge-cyan'}">${qCount} questions</span>
+            <span class="badge badge-cyan">${qCount} questions</span>
             <span class="badge badge-amber">${t.duration||30} min</span>
-            ${taken?`<span class="badge badge-green">✓ Completed</span>`:''}
           </div>
-          ${empty?`<div style="font-size:12px;color:var(--amber);font-weight:600;margin-bottom:6px">⚠ No questions yet — cannot start this test${isAdmin?'. Add questions from the Question Bank.':'. Ask an admin to add questions.'}</div>`:''}
-          ${taken?`<div style="font-size:12px;color:var(--green);font-weight:600;margin-bottom:6px">✓ You've already taken this test. Check "My Results" to see your score.</div>`:''}
           ${t.description?`<div style="font-size:12px;color:var(--text2)">${t.description}</div>`:''}
         </div>
         <div class="flex gap-8" style="flex-shrink:0;flex-wrap:wrap">
-          ${startBtn}
+          <button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>
           ${isAdmin?`<button class="btn btn-secondary btn-sm" onclick="openEditTest('${id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteTest('${id}')">🗑️</button>`:''}
         </div>
       </div>
@@ -1050,21 +1276,14 @@ async function openEditTest(id) {
 // TAKE TEST
 // ============================================================
 async function startTest(testId) {
-  // Block retake (admins exempt)
-  if (currentUser && !isAdmin) {
-    const prev = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
-    const already = Object.values(prev.val()||{}).some(r=>r&&r.testId===testId);
-    if (already) { toast('You have already taken this test','error'); navigateTo('results'); return; }
-  }
   const [testSnap, qSnap] = await Promise.all([
     db.ref('tests/'+testId).get(),
-    db.ref('questions').get()
+    db.ref('questions').orderByChild('testId').equalTo(testId).get()
   ]);
   if (!testSnap.exists()) return toast('Test not found','error');
   currentTestId = testId;
   currentTestData = testSnap.val();
-  const allQs = qSnap.val()||{};
-  const qs = Object.fromEntries(Object.entries(allQs).filter(([,q])=>q && q.testId===testId));
+  const qs = qSnap.val()||{};
   const qArr = Object.entries(qs);
   if (!qArr.length) return toast('No questions in this test yet!','error');
   testAnswers = {};
@@ -1080,38 +1299,18 @@ async function startTest(testId) {
     </div>
   `;
   qArr.forEach(([qid,q],i)=>{
-    if (q.type === 'code') {
-      const starter = (q.starter || `function ${q.fnName||'solve'}() {\n  // your code here\n}`)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      html += `
-      <div class="test-q">
-        <div class="test-q-num">Question ${i+1} · ${q.points||10} pts · <span class="badge-code">CODE</span></div>
-        <div class="test-q-text">${q.text}</div>
-        <div style="font-size:12px;color:var(--text2);margin-bottom:8px">
-          Define a function <code style="color:var(--cyan)">${q.fnName||''}</code> in JavaScript.
-          ${(q.tests||[]).length} test case(s) will run.
+    const opts = q.options||[];
+    html += `
+    <div class="test-q">
+      <div class="test-q-num">Question ${i+1} · ${q.points||10} pts</div>
+      <div class="test-q-text">${q.text}</div>
+      ${opts.map((opt,oi)=>`
+        <div class="option-choice" id="opt-${qid}-${oi}" onclick="selectOption('${qid}',${oi},${opts.length})">
+          <div class="option-letter">${String.fromCharCode(65+oi)}</div>
+          <span>${opt.text}</span>
         </div>
-        <textarea class="code-editor" id="code-${qid}" oninput="testAnswers['${qid}']=this.value" spellcheck="false">${starter}</textarea>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="btn btn-secondary btn-sm" onclick="runCodeTests('${qid}')">▶ Run Tests</button>
-        </div>
-        <div class="code-output" id="code-out-${qid}" style="display:none"></div>
-      </div>`;
-      testAnswers[qid] = q.starter || '';
-    } else {
-      const opts = q.options||[];
-      html += `
-      <div class="test-q">
-        <div class="test-q-num">Question ${i+1} · ${q.points||10} pts</div>
-        <div class="test-q-text">${q.text}</div>
-        ${opts.map((opt,oi)=>`
-          <div class="option-choice" id="opt-${qid}-${oi}" onclick="selectOption('${qid}',${oi},${opts.length})">
-            <div class="option-letter">${String.fromCharCode(65+oi)}</div>
-            <span>${opt.text}</span>
-          </div>
-        `).join('')}
-      </div>`;
-    }
+      `).join('')}
+    </div>`;
   });
   html += `
     <div style="text-align:center;margin-top:24px">
@@ -1146,51 +1345,6 @@ function selectOption(qid, oi, total) {
   }
 }
 
-// Safely run student JS code against test cases. Returns {passed, total, log}
-function gradeCodeAnswer(code, fnName, tests) {
-  const log = [];
-  let passed = 0;
-  let fn;
-  try {
-    // Run in a sandboxed function scope
-    fn = new Function(`"use strict";${code}; return typeof ${fnName}==='function' ? ${fnName} : null;`)();
-    if (typeof fn !== 'function') {
-      return {passed:0, total:tests.length, log:[`❌ Function "${fnName}" is not defined.`]};
-    }
-  } catch (e) {
-    return {passed:0, total:tests.length, log:[`❌ Syntax / runtime error: ${e.message}`]};
-  }
-  tests.forEach((t,i)=>{
-    let args, expected;
-    try { args = JSON.parse(t.input); expected = JSON.parse(t.expected); }
-    catch(e){ log.push(`Test ${i+1}: ⚠️ invalid test case JSON`); return; }
-    if (!Array.isArray(args)) args = [args];
-    try {
-      const out = fn.apply(null, args);
-      const ok = JSON.stringify(out) === JSON.stringify(expected);
-      if (ok) { passed++; log.push(`Test ${i+1}: ✅ pass — ${fnName}(${args.map(a=>JSON.stringify(a)).join(', ')}) = ${JSON.stringify(out)}`); }
-      else { log.push(`Test ${i+1}: ❌ fail — got ${JSON.stringify(out)}, expected ${JSON.stringify(expected)}`); }
-    } catch(e) {
-      log.push(`Test ${i+1}: ❌ runtime error — ${e.message}`);
-    }
-  });
-  return {passed, total:tests.length, log};
-}
-
-function runCodeTests(qid) {
-  // Find question definition from cached qs (reload from currentTestId)
-  db.ref('questions/'+qid).get().then(snap=>{
-    if(!snap.exists()) return;
-    const q = snap.val();
-    const code = document.getElementById('code-'+qid).value;
-    const res = gradeCodeAnswer(code, q.fnName, q.tests||[]);
-    const out = document.getElementById('code-out-'+qid);
-    out.style.display='block';
-    out.innerHTML = `<div class="${res.passed===res.total?'ok':'fail'}">${res.passed}/${res.total} tests passed</div>` +
-                    res.log.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('');
-  });
-}
-
 async function submitTest(testId, qids) {
   if(testTimer) clearInterval(testTimer);
   const qSnap = await db.ref('questions').orderByChild('testId').equalTo(testId).get();
@@ -1200,19 +1354,11 @@ async function submitTest(testId, qids) {
   Object.entries(qs).forEach(([qid,q])=>{
     const pts = q.points||10;
     maxScore += pts;
-    if (q.type === 'code') {
-      const code = (typeof testAnswers[qid] === 'string') ? testAnswers[qid] : '';
-      const res = gradeCodeAnswer(code, q.fnName, q.tests||[]);
-      const earned = res.total>0 ? Math.round(pts * res.passed / res.total) : 0;
-      score += earned;
-      details.push({qid, type:'code', code, codeResult:res, earned, pts, isCorrect: res.passed===res.total});
-    } else {
-      const chosen = testAnswers[qid];
-      const correctIdx = (q.options||[]).findIndex(o=>o.correct);
-      const isCorrect = chosen===correctIdx;
-      if(isCorrect) score+=pts;
-      details.push({qid, type:'mcq', chosen, correctIdx, isCorrect, pts, earned: isCorrect?pts:0});
-    }
+    const chosen = testAnswers[qid];
+    const correctIdx = (q.options||[]).findIndex(o=>o.correct);
+    const isCorrect = chosen===correctIdx;
+    if(isCorrect) score+=pts;
+    details.push({qid, chosen, correctIdx, isCorrect, pts});
   });
   const pct = maxScore>0?Math.round(score/maxScore*100):0;
   // Save result
@@ -1230,7 +1376,9 @@ async function submitTest(testId, qids) {
   currentUserData.points = newPoints;
   currentUserData.testsCompleted = newTests;
 
+  // Celebrate based on score
   celebrateScore(pct, currentUserData?.name || 'You');
+  // Show result
   const grade = pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=50?'D':'F';
   const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
   document.getElementById('take-test-content').innerHTML = `
@@ -1248,16 +1396,6 @@ async function submitTest(testId, qids) {
       <div class="card-title">Review Answers</div>
       ${details.map((d,i)=>{
         const q = qs[d.qid];
-        if (d.type === 'code') {
-          return `<div class="test-q" style="margin-bottom:12px">
-            <div class="test-q-num">Q${i+1} · <span class="badge-code">CODE</span> · ${d.codeResult.passed}/${d.codeResult.total} tests · ${d.earned}/${d.pts} pts</div>
-            <div class="test-q-text">${q.text}</div>
-            <pre class="code-editor" style="min-height:auto">${(d.code||'').replace(/</g,'&lt;')}</pre>
-            <div class="code-output" style="display:block">
-              ${d.codeResult.log.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('')}
-            </div>
-          </div>`;
-        }
         return `<div class="test-q" style="margin-bottom:12px">
           <div class="test-q-num">Q${i+1} · ${d.isCorrect?'✅ Correct':'❌ Wrong'} · ${d.isCorrect?d.pts:0}/${d.pts} pts</div>
           <div class="test-q-text">${q.text}</div>
@@ -1273,7 +1411,6 @@ async function submitTest(testId, qids) {
     </div>
   `;
 }
-
 
 // ============================================================
 // QUESTIONS BANK
@@ -1323,26 +1460,12 @@ function renderQuestions(qs, tests, filter) {
           <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${id}')">🗑️</button>
         </div>
       </div>
-      <div style="font-size:11px;color:var(--text3);margin:6px 0">
-        <span class="${q.type==='code'?'badge-code':'badge-mcq'}">${q.type==='code'?'CODE':'MCQ'}</span>
-        · ${tests[q.testId]?.title||'Unknown Test'} · ${q.points||10} pts
+      <div style="font-size:11px;color:var(--text3);margin:6px 0">${tests[q.testId]?.title||'Unknown Test'} · ${q.points||10} pts</div>
+      <div class="q-item-opts">
+        ${(q.options||[]).map(o=>`<span class="q-opt ${o.correct?'correct':''}">${o.text}</span>`).join('')}
       </div>
-      ${q.type==='code' ? `
-        <div style="font-size:12px;color:var(--text2)">Function: <code>${q.fnName||'?'}()</code> · ${(q.tests||[]).length} test case(s)</div>
-      ` : `
-        <div class="q-item-opts">
-          ${(q.options||[]).map(o=>`<span class="q-opt ${o.correct?'correct':''}">${o.text}</span>`).join('')}
-        </div>
-      `}
-
     </div>
   `).join('');
-}
-
-function toggleQType() {
-  const t = document.getElementById('q-type').value;
-  document.getElementById('q-mcq-fields').style.display  = (t==='mcq')  ? '' : 'none';
-  document.getElementById('q-code-fields').style.display = (t==='code') ? 'flex' : 'none';
 }
 
 function openAddQuestion() {
@@ -1350,12 +1473,7 @@ function openAddQuestion() {
   document.getElementById('q-modal-title').textContent = '➕ Add Question';
   document.getElementById('q-text').value='';
   document.getElementById('q-points').value='10';
-  document.getElementById('q-type').value='mcq';
-  document.getElementById('q-fn-name').value='';
-  document.getElementById('q-starter').value='';
   buildOptionFields([{text:'',correct:true},{text:'',correct:false}]);
-  buildTestCaseFields([{input:'',expected:''}]);
-  toggleQType();
   populateTestSelect();
   document.getElementById('q-modal-msg').className='msg';
   openModal('modal-question');
@@ -1369,12 +1487,7 @@ async function openEditQuestion(id) {
   document.getElementById('q-modal-title').textContent = '✏️ Edit Question';
   document.getElementById('q-text').value = q.text;
   document.getElementById('q-points').value = q.points||10;
-  document.getElementById('q-type').value = q.type||'mcq';
-  document.getElementById('q-fn-name').value = q.fnName||'';
-  document.getElementById('q-starter').value = q.starter||'';
-  buildOptionFields(q.options||[{text:'',correct:true},{text:'',correct:false}]);
-  buildTestCaseFields(q.tests||[{input:'',expected:''}]);
-  toggleQType();
+  buildOptionFields(q.options||[]);
   await populateTestSelect(q.testId);
   openModal('modal-question');
 }
@@ -1417,81 +1530,24 @@ function removeOption(i) {
   document.getElementById('opt-row-'+i)?.remove();
 }
 
-// ----- Code test-case builder -----
-let testCaseCount = 0;
-function escAttr(s){return String(s).replace(/"/g,'&quot;')}
-function buildTestCaseFields(tests) {
-  testCaseCount = tests.length;
-  document.getElementById('q-tests-builder').innerHTML = tests.map((t,i)=>`
-    <div class="code-test-row" id="tc-row-${i}">
-      <input type="text" placeholder='Input e.g. [2,3]' value="${escAttr(t.input||'')}" id="tc-input-${i}">
-      <input type="text" placeholder='Expected e.g. 5' value="${escAttr(t.expected||'')}" id="tc-expected-${i}">
-      <button class="btn btn-danger btn-sm" onclick="removeTestCase(${i})" style="padding:4px 8px">✕</button>
-    </div>
-  `).join('');
-}
-function addTestCaseField() {
-  const i = testCaseCount++;
-  const div = document.createElement('div');
-  div.className='code-test-row'; div.id=`tc-row-${i}`;
-  div.innerHTML=`
-    <input type="text" placeholder='Input e.g. [2,3]' id="tc-input-${i}">
-    <input type="text" placeholder='Expected e.g. 5' id="tc-expected-${i}">
-    <button class="btn btn-danger btn-sm" onclick="removeTestCase(${i})" style="padding:4px 8px">✕</button>
-  `;
-  document.getElementById('q-tests-builder').appendChild(div);
-}
-function removeTestCase(i) {
-  document.getElementById('tc-row-'+i)?.remove();
-}
-
 async function saveQuestion() {
   const text = document.getElementById('q-text').value.trim();
   const points = +document.getElementById('q-points').value||10;
   const testId = document.getElementById('q-test-select').value;
-  const type = document.getElementById('q-type').value;
   if(!text) return showMsg('q-modal-msg','Enter question text');
-  if(!testId) return showMsg('q-modal-msg','Select a test','error');
-
-  let data = {text, points, testId, type, createdAt:Date.now()};
-
-  if (type === 'mcq') {
-    const opts = [];
-    document.querySelectorAll('#options-builder .option-row').forEach((row)=>{
-      const inp = row.querySelector('input[type=text]');
-      const radio = row.querySelector('input[type=radio]');
-      if(inp && inp.value.trim()) {
-        opts.push({text:inp.value.trim(), correct:radio?radio.checked:false});
-      }
-    });
-    if(opts.length<2) return showMsg('q-modal-msg','Add at least 2 options','error');
-    if(!opts.some(o=>o.correct)) return showMsg('q-modal-msg','Mark at least one correct answer','error');
-    data.options = opts;
-  } else {
-    const fnName = document.getElementById('q-fn-name').value.trim();
-    const starter = document.getElementById('q-starter').value;
-    if(!fnName) return showMsg('q-modal-msg','Enter the function name students must define','error');
-    const tests = [];
-    document.querySelectorAll('#q-tests-builder .code-test-row').forEach((row)=>{
-      const inp = row.querySelector('input[id^=tc-input-]');
-      const exp = row.querySelector('input[id^=tc-expected-]');
-      if (inp && exp && (inp.value.trim() || exp.value.trim())) {
-        tests.push({input: inp.value.trim(), expected: exp.value.trim()});
-      }
-    });
-    if(!tests.length) return showMsg('q-modal-msg','Add at least one test case','error');
-    // Validate JSON in test cases
-    try {
-      tests.forEach(t=>{ JSON.parse(t.input); JSON.parse(t.expected); });
-    } catch(e) {
-      return showMsg('q-modal-msg','Test case input/expected must be valid JSON','error');
+  // Collect options
+  const opts = [];
+  document.querySelectorAll('#options-builder .option-row').forEach((row,i)=>{
+    const inp = row.querySelector('input[type=text]');
+    const radio = row.querySelector('input[type=radio]');
+    if(inp && inp.value.trim()) {
+      opts.push({text:inp.value.trim(), correct:radio?radio.checked:false});
     }
-    data.fnName = fnName;
-    data.starter = starter || `function ${fnName}() {\n  // your code here\n}`;
-    data.tests = tests;
-    data.language = 'javascript';
-  }
-
+  });
+  if(opts.length<2) return showMsg('q-modal-msg','Add at least 2 options','error');
+  const hasCorrect = opts.some(o=>o.correct);
+  if(!hasCorrect) return showMsg('q-modal-msg','Mark at least one correct answer','error');
+  const data = {text,points,options:opts,testId,createdAt:Date.now()};
   if(editingQuestionId) {
     await db.ref('questions/'+editingQuestionId).update(data);
     toast('Question updated!','success');
@@ -1502,7 +1558,6 @@ async function saveQuestion() {
   closeModal('modal-question');
   loadQuestions();
 }
-
 
 async function deleteQuestion(id) {
   if(!confirm('Delete this question?')) return;
@@ -1628,214 +1683,79 @@ async function deleteClass(id) {
 // ============================================================
 // LEADERBOARD
 // ============================================================
-// ============================================================
-// LEADERBOARD
-// ============================================================
 async function loadLeaderboard() {
-  try {
-    const snap = await db.ref('results').get(); // result -> results
-    const users = snap.val() || {};
-
-    const arr = Object.entries(users)
-      .map(([id, u]) => ({
-        id,
-        name: u.userName || 'Unknown',
-        points: u.score || 0,
-        percentage: u.percentage || 0,
-        testsCompleted: 1,
-        uid: u.uid || ''
-      }))
-      .sort((a, b) => b.points - a.points);
-
-    const list = document.getElementById('lb-list');
-
-    if (!arr.length) {
-      list.innerHTML = `
-        <div class="empty">
-          <div class="empty-title">No leaderboard data yet</div>
-        </div>
-      `;
-      return;
-    }
-
-    const maxPts = arr[0].points || 1;
-
-    const myRank = arr.findIndex(u => u.uid === currentUser?.uid);
-
-    if (myRank !== -1 && myRank < 3) {
-      const prevRankKey = 'lb_rank_' + currentUser.uid;
-      const prevRank = parseInt(
-        sessionStorage.getItem(prevRankKey) || '999'
-      );
-
-      if (myRank < prevRank) {
-        sessionStorage.setItem(prevRankKey, myRank);
-
-        if (typeof checkLeaderboardPosition === 'function') {
-          setTimeout(() => {
-            checkLeaderboardPosition(myRank + 1);
-          }, 600);
-        }
-      }
-    }
-
-    list.innerHTML = arr.map((u, i) => {
-      const rankClass =
-        i === 0 ? 'r1' :
-        i === 1 ? 'r2' :
-        i === 2 ? 'r3' : '';
-
-      const medal =
-        i === 0 ? '🥇' :
-        i === 1 ? '🥈' :
-        i === 2 ? '🥉' : '';
-
-      const pct = Math.round((u.points / maxPts) * 100);
-
-      const isMe = u.uid === currentUser?.uid;
-
-      return `
-      <div class="lb-row"
-           style="${isMe ? 'border-color:var(--cyan);background:rgba(0,229,255,.05)' : ''}">
-           
-        <div class="lb-rank ${rankClass}">
-          ${medal || ('#' + (i + 1))}
-        </div>
-
-        <div class="lb-avatar"
-             style="${isMe ? 'background:linear-gradient(135deg,var(--cyan),var(--green))' : ''}">
-          ${(u.name || '?').charAt(0).toUpperCase()}
-        </div>
-
-        <div class="lb-info">
-          <div class="lb-name">
-            ${u.name}
-            ${isMe
-              ? '<span class="badge badge-cyan" style="margin-left:6px">You</span>'
-              : ''}
-          </div>
-
-          <div class="lb-score-bar">
-            <div class="lb-score-fill" style="width:${pct}%"></div>
-          </div>
-
-          <div style="font-size:10px;color:var(--text3);margin-top:2px">
-            Score: ${u.points}
-          </div>
-        </div>
-
-        <div class="lb-points">
-          ${u.points}
-        </div>
-      </div>
-      `;
-    }).join('');
-
-  } catch (err) {
-    console.error('Leaderboard Error:', err);
-
-    document.getElementById('lb-list').innerHTML = `
-      <div class="empty">
-        <div class="empty-title">Failed to load leaderboard</div>
-      </div>
-    `;
+  const snap = await db.ref('users').orderByChild('points').get();
+  const users = snap.val()||{};
+  const arr = Object.entries(users).filter(([,u])=>u.role!='admin'||(u.points>0))
+    .map(([id,u])=>({id,...u}))
+    .sort((a,b)=>(b.points||0)-(a.points||0));
+  const maxPts = arr[0]?.points||1;
+  const list = document.getElementById('lb-list');
+  if(!arr.length){
+    list.innerHTML=`<div class="empty"><div class="empty-title">No data yet</div></div>`;
+    return;
   }
+  // Check current user rank for celebration
+  const myRank = arr.findIndex(u => u.id === currentUser.uid);
+  if (myRank !== -1 && myRank < 3) {
+    const prevRankKey = 'lb_rank_' + currentUser.uid;
+    const prevRank = parseInt(sessionStorage.getItem(prevRankKey) || '999');
+    if (myRank < prevRank) {
+      sessionStorage.setItem(prevRankKey, myRank);
+      setTimeout(() => checkLeaderboardPosition(myRank + 1), 600);
+    }
+    sessionStorage.setItem(prevRankKey, myRank);
+  }
+  list.innerHTML = arr.map((u,i)=>{
+    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    const pct = Math.round((u.points||0)/maxPts*100);
+    const isMe = u.id===currentUser.uid;
+    return `
+    <div class="lb-row" style="${isMe?'border-color:var(--cyan);background:rgba(0,229,255,0.05)':''}">
+      <div class="lb-rank ${rankClass}">${medal||('#'+(i+1))}</div>
+      <div class="lb-avatar" style="${isMe?'background:linear-gradient(135deg,var(--cyan),var(--green))':''}">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div class="lb-info">
+        <div class="lb-name">${u.name||'Unknown'} ${isMe?'<span class="badge badge-cyan" style="margin-left:6px">You</span>':''}</div>
+        <div class="lb-score-bar"><div class="lb-score-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${u.testsCompleted||0} tests completed</div>
+      </div>
+      <div class="lb-points">${u.points||0}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
 // MY RESULTS
 // ============================================================
 async function loadResults() {
-  try {
-    const snap = await db.ref('results')
-      .orderByChild('uid')
-      .equalTo(currentUser.uid)
-      .get();
-
-    const results = snap.val() || {};
-
-    const arr = Object.entries(results)
-      .sort((a, b) =>
-        (b[1].submittedAt || 0) -
-        (a[1].submittedAt || 0)
-      );
-
-    const list = document.getElementById('results-list');
-
-    if (!arr.length) {
-      list.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">📊</div>
-        <div class="empty-title">No results yet</div>
-        <div class="empty-sub">
-          Take a test to see your results
-        </div>
-      </div>
-      `;
-      return;
-    }
-
-    list.innerHTML = arr.map(([, r]) => {
-
-      const d = r.submittedAt
-        ? new Date(r.submittedAt).toLocaleDateString()
-        : 'Unknown Date';
-
-      const pct = Number(r.percentage || 0);
-
-      const color =
-        pct >= 70 ? 'var(--green)' :
-        pct >= 50 ? 'var(--amber)' :
-        'var(--red)';
-
-      return `
-      <div class="card mb-16" style="margin-bottom:12px">
-
-        <div class="flex flex-between flex-center">
-          <div>
-            <div style="font-size:14px;font-weight:600">
-              ${r.testTitle || 'Test'}
-            </div>
-
-            <div style="font-size:11px;color:var(--text3);margin-top:4px">
-              ${d}
-            </div>
-          </div>
-
-          <div style="text-align:right">
-            <div style="
-              font-family:'Orbitron',monospace;
-              font-size:22px;
-              font-weight:700;
-              color:${color}">
-              ${pct}%
-            </div>
-
-            <div style="font-size:11px;color:var(--text2)">
-              ${r.score || 0}/${r.maxScore || 0} pts
-            </div>
-          </div>
-        </div>
-
-        <div class="progress-bar mt-8">
-          <div class="progress-fill"
-               style="width:${pct}%">
-          </div>
-        </div>
-
-      </div>
-      `;
-    }).join('');
-
-  } catch (err) {
-    console.error('Results Error:', err);
-
-    document.getElementById('results-list').innerHTML = `
-      <div class="empty">
-        <div class="empty-title">Failed to load results</div>
-      </div>
-    `;
+  const snap = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
+  const results = snap.val()||{};
+  const arr = Object.entries(results).sort((a,b)=>b[1].submittedAt-a[1].submittedAt);
+  const list = document.getElementById('results-list');
+  if(!arr.length){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No results yet</div><div class="empty-sub">Take a test to see your results</div></div>`;
+    return;
   }
+  list.innerHTML = arr.map(([,r])=>{
+    const d = new Date(r.submittedAt).toLocaleDateString();
+    const pct = r.percentage||0;
+    const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+    return `
+    <div class="card mb-16" style="margin-bottom:12px">
+      <div class="flex flex-between flex-center">
+        <div>
+          <div style="font-size:14px;font-weight:600">${r.testTitle||'Test'}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">${d}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:${color}">${pct}%</div>
+          <div style="font-size:11px;color:var(--text2)">${r.score}/${r.maxScore} pts</div>
+        </div>
+      </div>
+      <div class="progress-bar mt-8"><div class="progress-fill" style="width:${pct}%;background:${pct>=70?'linear-gradient(90deg,var(--green),var(--cyan))':pct>=50?'linear-gradient(90deg,var(--amber),var(--cyan))':'linear-gradient(90deg,var(--red),var(--amber))'}"></div></div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
@@ -2238,6 +2158,437 @@ function celebrateScore(pct, userName) {
     showBrowserNotif('✅ Test Completed!', `You scored ${pct}%. Good work!`);
   }
 }
+
+// ============================================================
+// DISCUSSION / CHAT
+// ============================================================
+let chatListener = null;
+function loadChat() {
+  loadChatRoom();
+}
+function loadChatRoom() {
+  const room = document.getElementById('chat-room-select')?.value || 'general';
+  if (chatListener) db.ref('chat/'+room).off('value', chatListener);
+  const msgsEl = document.getElementById('chat-msgs');
+  msgsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3)"><span class="spinner"></span></div>';
+  chatListener = db.ref('chat/'+room).limitToLast(60).on('value', snap => {
+    const msgs = snap.val() || {};
+    const arr = Object.entries(msgs).sort((a,b)=>a[1].ts-b[1].ts);
+    if (!arr.length) { msgsEl.innerHTML='<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">No messages yet. Start the conversation!</div></div>'; return; }
+    msgsEl.innerHTML = arr.map(([,m]) => {
+      const mine = m.uid === currentUser?.uid;
+      return `<div>
+        <div class="chat-meta" style="${mine?'justify-content:flex-end':''}">
+          <span>${mine?'You':m.name}</span>
+          <span>${getTimeAgo(m.ts)}</span>
+        </div>
+        <div class="chat-bubble ${mine?'mine':'theirs'}">${escHtml(m.text)}</div>
+      </div>`;
+    }).join('');
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  });
+}
+
+async function sendChatMsg() {
+  const inp = document.getElementById('chat-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const room = document.getElementById('chat-room-select')?.value || 'general';
+  inp.value = '';
+  await db.ref('chat/'+room).push({
+    text, uid: currentUser.uid, name: currentUserData?.name||'Unknown', ts: Date.now()
+  });
+}
+
+function escHtml(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ============================================================
+// NOTES
+// ============================================================
+function openAddNote() {
+  document.getElementById('note-title').value='';
+  document.getElementById('note-body').value='';
+  document.getElementById('note-tag').value='general';
+  openModal('modal-add-note');
+}
+
+async function saveNote() {
+  const title = document.getElementById('note-title').value.trim();
+  const body = document.getElementById('note-body').value.trim();
+  const tag = document.getElementById('note-tag').value;
+  if (!title||!body) return toast('Fill title and content','error');
+  await db.ref('notes/'+currentUser.uid).push({title,body,tag,createdAt:Date.now()});
+  closeModal('modal-add-note');
+  toast('Note saved! 📓','success');
+  loadNotes();
+}
+
+async function loadNotes() {
+  const snap = await db.ref('notes/'+currentUser.uid).get();
+  const notes = snap.val()||{};
+  const arr = Object.entries(notes).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+  const tagColors = {general:'badge-cyan',test:'badge-amber',class:'badge-purple',important:'badge-green'};
+  const tagEmoji = {general:'📌',test:'📝',class:'🎥',important:'⭐'};
+  const list = document.getElementById('notes-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📓</div><div class="empty-title">No notes yet</div><div class="empty-sub">Create your first note!</div></div>'; return; }
+  list.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">` +
+    arr.map(([id,n])=>`
+      <div class="note-card">
+        <div class="note-card-title">
+          <span>${escHtml(n.title)}</span>
+          <button class="btn btn-danger btn-sm" style="padding:3px 8px;font-size:10px" onclick="deleteNote('${id}')">✕</button>
+        </div>
+        <span class="badge ${tagColors[n.tag]||'badge-cyan'}" style="margin-bottom:8px;display:inline-block">${tagEmoji[n.tag]||''} ${n.tag}</span>
+        <div class="note-body">${escHtml(n.body)}</div>
+        <div class="note-date">${new Date(n.createdAt).toLocaleDateString()}</div>
+      </div>`).join('') + '</div>';
+}
+
+async function deleteNote(id) {
+  await db.ref('notes/'+currentUser.uid+'/'+id).remove();
+  toast('Note deleted','success');
+  loadNotes();
+}
+
+// ============================================================
+// ASSIGNMENTS
+// ============================================================
+let currentAssignId = null;
+async function loadAssignments() {
+  if (isAdmin) document.getElementById('assign-admin-btns').innerHTML=`<button class="btn btn-primary btn-sm" onclick="openModal('modal-add-assign')">+ Create Assignment</button>`;
+  const [aSnap, subSnap] = await Promise.all([
+    db.ref('assignments').get(),
+    db.ref('submissions').orderByChild('uid').equalTo(currentUser.uid).get()
+  ]);
+  const assigns = aSnap.val()||{};
+  const mySubs = subSnap.val()||{};
+  const subMap = {}; // assignId -> submission
+  Object.values(mySubs).forEach(s=>{ subMap[s.assignId]=s; });
+  const arr = Object.entries(assigns).sort((a,b)=>a[1].dueDate>b[1].dueDate?1:-1);
+  const list = document.getElementById('assignments-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No assignments yet</div></div>'; return; }
+  list.innerHTML = arr.map(([id,a])=>{
+    const overdue = a.dueDate && new Date(a.dueDate) < new Date();
+    const sub = subMap[id];
+    return `
+    <div class="assign-card">
+      <div class="assign-header">
+        <div>
+          <div class="assign-title">${escHtml(a.title)}</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:4px">${a.subject||''} · ${a.maxMarks||100} marks</div>
+        </div>
+        <div style="text-align:right">
+          ${a.dueDate?`<div class="assign-due ${overdue&&!sub?'overdue':''}">⏰ Due: ${a.dueDate}</div>`:''}
+          ${sub?`<span class="badge badge-green">✓ Submitted</span>`:(overdue?`<span class="badge badge-red">Overdue</span>`:`<span class="badge badge-amber">Pending</span>`)}
+        </div>
+      </div>
+      ${a.description?`<div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">${escHtml(a.description)}</div>`:''}
+      <div class="flex gap-8" style="flex-wrap:wrap">
+        ${!sub&&!isAdmin?`<button class="btn btn-primary btn-sm" onclick="openSubmitAssign('${id}','${escHtml(a.title)}')">Submit ↑</button>`:''}
+        ${sub?`<div style="font-size:11px;color:var(--green)">✓ Submitted on ${new Date(sub.submittedAt).toLocaleDateString()}</div>`:''}
+        ${isAdmin?`<button class="btn btn-danger btn-sm" onclick="deleteAssignment('${id}')">🗑 Delete</button><button class="btn btn-secondary btn-sm" onclick="viewSubmissions('${id}')">👁 Submissions</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openSubmitAssign(id, title) {
+  currentAssignId = id;
+  document.getElementById('submit-assign-info').textContent = 'Assignment: '+title;
+  document.getElementById('submit-answer').value='';
+  document.getElementById('submit-link').value='';
+  openModal('modal-submit-assign');
+}
+
+async function submitAssignment() {
+  const answer = document.getElementById('submit-answer').value.trim();
+  const link = document.getElementById('submit-link').value.trim();
+  if (!answer) return toast('Write your answer first','error');
+  await db.ref('submissions').push({
+    uid:currentUser.uid, userName:currentUserData?.name||'Unknown',
+    assignId:currentAssignId, answer, link, submittedAt:Date.now()
+  });
+  // points
+  const pts = (currentUserData?.points||0)+5;
+  await db.ref('users/'+currentUser.uid+'/points').set(pts);
+  currentUserData.points=pts;
+  closeModal('modal-submit-assign');
+  toast('Assignment submitted! +5 pts 🎉','success');
+  loadAssignments();
+}
+
+async function saveAssignment() {
+  const title = document.getElementById('as-title').value.trim();
+  const desc = document.getElementById('as-desc').value.trim();
+  const subject = document.getElementById('as-subject').value.trim();
+  const dueDate = document.getElementById('as-due').value;
+  const maxMarks = +document.getElementById('as-marks').value||100;
+  if (!title) return toast('Enter title','error');
+  await db.ref('assignments').push({title,description:desc,subject,dueDate,maxMarks,createdAt:Date.now(),createdBy:currentUser.uid});
+  await db.ref('notifications').push({type:'test',title:'📋 New Assignment: '+title,body:subject+(dueDate?' · Due: '+dueDate:''),link:'assignments',createdAt:Date.now(),readBy:{}});
+  closeModal('modal-add-assign');
+  toast('Assignment created!','success');
+  loadAssignments();
+}
+
+async function deleteAssignment(id) {
+  if (!confirm('Delete assignment?')) return;
+  await db.ref('assignments/'+id).remove();
+  toast('Deleted','success');
+  loadAssignments();
+}
+
+async function viewSubmissions(assignId) {
+  const snap = await db.ref('submissions').orderByChild('assignId').equalTo(assignId).get();
+  const subs = snap.val()||{};
+  const arr = Object.values(subs);
+  if (!arr.length) return toast('No submissions yet','info');
+  let msg = `${arr.length} submissions:\n`;
+  arr.forEach(s=>{ msg+=`• ${s.userName} (${new Date(s.submittedAt).toLocaleDateString()})\n`; });
+  alert(msg);
+}
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+async function loadAnalytics() {
+  const [resSnap, uSnap] = await Promise.all([
+    db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get(),
+    db.ref('users/'+currentUser.uid).get()
+  ]);
+  const results = Object.values(resSnap.val()||{}).sort((a,b)=>a.submittedAt-b.submittedAt);
+  const u = uSnap.val()||{};
+  const avgScore = results.length ? Math.round(results.reduce((s,r)=>s+(r.percentage||0),0)/results.length) : 0;
+  const best = results.length ? Math.max(...results.map(r=>r.percentage||0)) : 0;
+  const worst = results.length ? Math.min(...results.map(r=>r.percentage||0)) : 0;
+  // Bar chart data (last 7 results)
+  const recent = results.slice(-7);
+  const bars = recent.map(r=>`<div class="mini-bar" style="height:${Math.max(8,r.percentage||0)*0.6}px" title="${r.testTitle}: ${r.percentage}%"></div>`).join('');
+
+  document.getElementById('analytics-content').innerHTML = `
+    <div class="analytics-grid">
+      <div class="stat-card s-cyan"><div class="stat-num c-cyan">${results.length}</div><div class="stat-label">Tests Taken</div></div>
+      <div class="stat-card s-purple"><div class="stat-num c-purple">${avgScore}%</div><div class="stat-label">Avg Score</div></div>
+      <div class="stat-card s-green"><div class="stat-num c-green">${best}%</div><div class="stat-label">Best Score</div></div>
+      <div class="stat-card s-amber"><div class="stat-num c-amber">${u.points||0}</div><div class="stat-label">Total Points</div></div>
+    </div>
+    ${recent.length?`
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Score Trend (Last ${recent.length} Tests)</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding-bottom:4px">
+        ${recent.map(r=>`
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="font-size:9px;color:var(--text3)">${r.percentage}%</div>
+            <div style="width:100%;background:${r.percentage>=70?'linear-gradient(to top,var(--green),var(--cyan))':r.percentage>=50?'linear-gradient(to top,var(--amber),var(--cyan))':'linear-gradient(to top,var(--red),var(--amber))'};border-radius:3px 3px 0 0;height:${Math.max(6,r.percentage*0.6)}px;transition:.4s"></div>
+          </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px;overflow-x:auto">
+        ${recent.map(r=>`<div style="flex:1;font-size:9px;color:var(--text3);text-align:center;min-width:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(r.testTitle||'').substring(0,8)}</div>`).join('')}
+      </div>
+    </div>` : ''}
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Performance Breakdown</div>
+      ${results.length?results.slice(-10).reverse().map(r=>{
+        const pct=r.percentage||0;
+        const color=pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <div style="font-size:12px;flex:1;color:var(--text)">${r.testTitle||'Test'}</div>
+          <div style="width:120px;background:var(--border);border-radius:3px;height:6px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${color};border-radius:3px"></div></div>
+          <div style="font-size:12px;font-weight:700;color:${color};min-width:34px;text-align:right">${pct}%</div>
+        </div>`;
+      }).join('') : '<div class="empty"><div class="empty-title">No data yet — take a test!</div></div>'}
+    </div>
+  `;
+}
+
+// ============================================================
+// RESOURCES
+// ============================================================
+async function loadResources() {
+  if (isAdmin) document.getElementById('res-admin-btns').innerHTML=`<button class="btn btn-primary btn-sm" onclick="openModal('modal-add-resource')">+ Add Resource</button>`;
+  const snap = await db.ref('resources').get();
+  const res = snap.val()||{};
+  const arr = Object.entries(res).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+  const list = document.getElementById('resources-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📚</div><div class="empty-title">No resources yet</div></div>'; return; }
+  const iconMap = {link:'🔗',video:'🎬',pdf:'📄',doc:'📝'};
+  list.innerHTML = arr.map(([id,r])=>`
+    <div class="resource-item">
+      <div class="resource-icon ${r.type}">${iconMap[r.type]||'📎'}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${escHtml(r.title)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${r.subject||''} ${r.description?'· '+r.description:''}</div>
+      </div>
+      <div class="flex gap-8">
+        ${r.url?`<a href="${r.url}" target="_blank" class="btn btn-primary btn-sm">Open ↗</a>`:''}
+        ${isAdmin?`<button class="btn btn-danger btn-sm" onclick="deleteResource('${id}')">🗑</button>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function saveResource() {
+  const title=document.getElementById('res-title').value.trim();
+  const desc=document.getElementById('res-desc').value.trim();
+  const type=document.getElementById('res-type').value;
+  const subject=document.getElementById('res-subject').value.trim();
+  const url=document.getElementById('res-url').value.trim();
+  if (!title) return toast('Enter title','error');
+  await db.ref('resources').push({title,description:desc,type,subject,url,createdAt:Date.now()});
+  await db.ref('notifications').push({type:'info',title:'📚 New Resource: '+title,body:subject+' · '+type,link:'resources',createdAt:Date.now(),readBy:{}});
+  closeModal('modal-add-resource');
+  toast('Resource added!','success');
+  loadResources();
+}
+
+async function deleteResource(id) {
+  await db.ref('resources/'+id).remove();
+  toast('Deleted','success');
+  loadResources();
+}
+
+// ============================================================
+// ATTENDANCE
+// ============================================================
+async function loadAttendance() {
+  const classSnap = await db.ref('classes').get();
+  const classes = classSnap.val()||{};
+  const uid = currentUser.uid;
+  const el = document.getElementById('attendance-content');
+
+  if (isAdmin) {
+    // Admin: mark attendance per class
+    const classArr = Object.entries(classes);
+    if (!classArr.length) { el.innerHTML='<div class="empty"><div class="empty-title">No classes yet</div></div>'; return; }
+    el.innerHTML = `
+      <div class="card">
+        <div class="card-title">Mark Attendance</div>
+        <div class="form-group" style="margin-bottom:16px">
+          <label>Select Class</label>
+          <select id="att-class-sel" onchange="loadAttendanceForClass()">${classArr.map(([id,c])=>`<option value="${id}">${c.title} (${c.date||'N/A'})</option>`).join('')}</select>
+        </div>
+        <div id="att-student-list"></div>
+      </div>`;
+    loadAttendanceForClass();
+  } else {
+    // Student: view own attendance
+    const attSnap = await db.ref('attendance').get();
+    const allAtt = attSnap.val()||{};
+    const myArr = [];
+    Object.entries(allAtt).forEach(([classId,students])=>{
+      const cls = classes[classId];
+      const status = students[uid];
+      if (cls && status) myArr.push({title:cls.title, date:cls.date||'', status});
+    });
+    const present = myArr.filter(a=>a.status==='present').length;
+    const total = myArr.length;
+    const pct = total>0?Math.round(present/total*100):0;
+    const color = pct>=75?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+    el.innerHTML = `
+      <div class="stats-row" style="margin-bottom:16px">
+        <div class="stat-card s-green"><div class="stat-num c-green">${present}</div><div class="stat-label">Present</div></div>
+        <div class="stat-card s-red"><div class="stat-num" style="color:var(--red)">${total-present}</div><div class="stat-label">Absent</div></div>
+        <div class="stat-card s-cyan"><div class="stat-num" style="color:${color}">${pct}%</div><div class="stat-label">Attendance</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Attendance Record</div>
+        ${myArr.length?myArr.map(a=>`
+          <div class="attend-row">
+            <div class="attend-dot ${a.status}"></div>
+            <div style="flex:1">${a.title}</div>
+            <div style="font-size:11px;color:var(--text3)">${a.date}</div>
+            <span class="badge ${a.status==='present'?'badge-green':a.status==='late'?'badge-amber':'badge-red'}">${a.status}</span>
+          </div>`).join('') : '<div class="empty"><div class="empty-title">No attendance records yet</div></div>'}
+      </div>`;
+  }
+}
+
+async function loadAttendanceForClass() {
+  const classId = document.getElementById('att-class-sel')?.value;
+  if (!classId) return;
+  const [usersSnap, attSnap] = await Promise.all([
+    db.ref('users').get(),
+    db.ref('attendance/'+classId).get()
+  ]);
+  const users = usersSnap.val()||{};
+  const att = attSnap.val()||{};
+  const studentList = document.getElementById('att-student-list');
+  const students = Object.entries(users).filter(([,u])=>u.role!=='admin');
+  if (!students.length) { studentList.innerHTML='<div class="empty"><div class="empty-title">No students</div></div>'; return; }
+  studentList.innerHTML = `
+    <table class="tbl">
+      <thead><tr><th>Student</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>${students.map(([uid,u])=>{
+        const status = att[uid]||'absent';
+        return `<tr>
+          <td>${u.name||u.email}</td>
+          <td><span class="badge ${status==='present'?'badge-green':status==='late'?'badge-amber':'badge-red'}">${status}</span></td>
+          <td><div class="flex gap-8">
+            <button class="btn btn-success btn-sm" onclick="markAtt('${classId}','${uid}','present')">✓ Present</button>
+            <button class="btn btn-secondary btn-sm" onclick="markAtt('${classId}','${uid}','late')">⏰ Late</button>
+            <button class="btn btn-danger btn-sm" onclick="markAtt('${classId}','${uid}','absent')">✗ Absent</button>
+          </div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+    <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('Attendance saved!','success')">💾 Save All</button>
+  `;
+}
+
+async function markAtt(classId, uid, status) {
+  await db.ref('attendance/'+classId+'/'+uid).set(status);
+  toast('Marked '+status,'success');
+  loadAttendanceForClass();
+}
+
+// ============================================================
+// CERTIFICATES
+// ============================================================
+async function loadCertificates() {
+  const snap = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
+  const results = snap.val()||{};
+  const passed = Object.values(results).filter(r=>r.percentage>=70);
+  const el = document.getElementById('certs-list');
+  if (!passed.length) {
+    el.innerHTML=`<div class="empty"><div class="empty-icon">🏅</div><div class="empty-title">No certificates yet</div><div class="empty-sub">Score 70%+ on any test to earn a certificate!</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">` +
+    passed.map(r=>`
+    <div class="cert-wrap">
+      <div class="cert-seal">🏅</div>
+      <div class="cert-title">CERTIFICATE</div>
+      <div class="cert-sub">of achievement</div>
+      <div class="cert-name">${escHtml(currentUserData?.name||'Student')}</div>
+      <div class="cert-course">has successfully completed<br><strong>${escHtml(r.testTitle||'Test')}</strong><br>with a score of <strong>${r.percentage}%</strong></div>
+      <div class="cert-date">⚡ ROBOTGPT LMS · ${new Date(r.submittedAt).toLocaleDateString()}</div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:14px" onclick="printCert('${escHtml(r.testTitle||'Test')}','${r.percentage}')">🖨 Print</button>
+    </div>`).join('') + '</div>';
+}
+
+function printCert(testTitle, pct) {
+  const name = currentUserData?.name||'Student';
+  const w = window.open('','_blank','width=700,height=500');
+  w.document.write(`<html><head><title>Certificate</title><style>
+    body{font-family:Georgia,serif;text-align:center;padding:60px;background:#f9f7f0}
+    h1{font-size:36px;color:#7c4dff;margin-bottom:4px}
+    .sub{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:40px}
+    .name{font-size:28px;font-weight:700;border-bottom:2px solid #ffc400;display:inline-block;padding-bottom:4px;margin-bottom:16px}
+    .course{font-size:15px;color:#555;line-height:2}
+    .seal{font-size:60px;margin:20px 0}
+    .footer{font-size:11px;color:#aaa;margin-top:40px}
+  </style></head><body>
+    <div class="seal">🏅</div>
+    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+    <div class="sub">⚡ ROBOTGPT Learning Management System</div>
+    <p style="font-size:15px;color:#555">This certifies that</p>
+    <div class="name">${name}</div>
+    <div class="course">has successfully completed<br><strong>${testTitle}</strong><br>with a score of <strong>${pct}%</strong></div>
+    <div class="footer">Issued on ${new Date().toLocaleDateString()} · ROBOTGPT LMS</div>
+    <scr'+'ipt>window.print();</scr'+'ipt>
+  </body></html>`);
+}
+
 
 
 </script>
