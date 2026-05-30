@@ -1684,7 +1684,7 @@ async function deleteClass(id) {
 // LEADERBOARD
 // ============================================================
 async function loadLeaderboard() {
-  const snap = await db.ref('users').orderByChild('points').get();
+  const snap = await db.ref('results').orderByChild('score').get();
   const users = snap.val()||{};
   const arr = Object.entries(users).filter(([,u])=>u.role!='admin'||(u.points>0))
     .map(([id,u])=>({id,...u}))
