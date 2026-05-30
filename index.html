@@ -180,6 +180,20 @@
   .option-letter{width:24px;height:24px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text2);flex-shrink:0}
   .option-choice.selected .option-letter{background:var(--purple2);color:#fff}
 
+  /* CODE EDITOR */
+  .code-editor{width:100%;min-height:180px;background:#05050f;border:1px solid var(--border);border-radius:var(--r);padding:12px;color:#c8f5ff;font-family:'JetBrains Mono','Fira Code','Courier New',monospace;font-size:13px;line-height:1.5;resize:vertical;tab-size:2;white-space:pre;overflow:auto}
+  .code-editor:focus{outline:none;border-color:var(--cyan);box-shadow:var(--glow)}
+  .code-output{background:#05050f;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);white-space:pre-wrap;margin-top:8px;max-height:160px;overflow:auto}
+  .code-output .ok{color:var(--green)}
+  .code-output .fail{color:var(--red)}
+  .code-tests{display:flex;flex-direction:column;gap:8px}
+  .code-test-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center}
+  .code-test-row input{font-family:'JetBrains Mono',monospace;font-size:12px}
+  .badge-code{background:rgba(124,77,255,0.15);color:var(--purple);border:1px solid var(--purple2);padding:2px 8px;border-radius:6px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+  .badge-mcq{background:rgba(0,229,255,0.12);color:var(--cyan);border:1px solid var(--cyan2);padding:2px 8px;border-radius:6px;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+
+
+
   /* LIVE CLASS CARD */
   .class-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:20px;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}
   .class-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
@@ -545,17 +559,45 @@
         <label>Question Text</label>
         <textarea id="q-text" placeholder="Enter question..."></textarea>
       </div>
-      <div class="form-group">
-        <label>Options (mark correct one)</label>
-        <div class="options-builder" id="options-builder">
-          <!-- injected -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Question Type</label>
+          <select id="q-type" onchange="toggleQType()">
+            <option value="mcq">Multiple Choice (MCQ)</option>
+            <option value="code">Coding (JavaScript)</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label>Points</label>
+          <input type="number" id="q-points" value="10" min="1">
+        </div>
+      </div>
+
+      <!-- MCQ FIELDS -->
+      <div id="q-mcq-fields" class="form-group">
+        <label>Options (mark correct one)</label>
+        <div class="options-builder" id="options-builder"></div>
         <button class="btn btn-secondary btn-sm mt-8" onclick="addOptionField()" style="width:fit-content">+ Add Option</button>
       </div>
-      <div class="form-group">
-        <label>Points</label>
-        <input type="number" id="q-points" value="10" min="1">
+
+      <!-- CODE FIELDS -->
+      <div id="q-code-fields" style="display:none;flex-direction:column;gap:14px">
+        <div class="form-group">
+          <label>Function Name (students must define this)</label>
+          <input type="text" id="q-fn-name" placeholder="e.g. addNumbers">
+        </div>
+        <div class="form-group">
+          <label>Starter Code</label>
+          <textarea id="q-starter" class="code-editor" style="min-height:120px" placeholder="function addNumbers(a, b) {&#10;  // your code here&#10;}"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Test Cases (input args as JSON array → expected output as JSON)</label>
+          <div class="code-tests" id="q-tests-builder"></div>
+          <button class="btn btn-secondary btn-sm mt-8" onclick="addTestCaseField()" style="width:fit-content">+ Add Test Case</button>
+          <div style="font-size:11px;color:var(--text3);margin-top:6px">Example — Input: <code>[2,3]</code> &nbsp; Expected: <code>5</code></div>
+        </div>
       </div>
+
       <div id="q-modal-msg" class="msg"></div>
       <div class="flex gap-8" style="justify-content:flex-end">
         <button class="btn btn-secondary" onclick="closeModal('modal-question')">Cancel</button>
@@ -564,6 +606,7 @@
     </div>
   </div>
 </div>
+
 
 <!-- Create Live Class -->
 <div class="modal-overlay" id="modal-create-class">
@@ -893,7 +936,10 @@ async function loadTests() {
   if (isAdmin) {
     adminBtns.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openCreateTest()">+ Create Test</button>`;
   }
-  const snap = await db.ref('tests').get();
+  const [snap, rSnap] = await Promise.all([
+    db.ref('tests').get(),
+    currentUser ? db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get() : Promise.resolve({val:()=>({})})
+  ]);
   const tests = snap.val()||{};
   const list = document.getElementById('tests-list');
   const arr = Object.entries(tests);
@@ -904,22 +950,34 @@ async function loadTests() {
   // get question counts
   const qSnap = await db.ref('questions').get();
   const qs = qSnap.val()||{};
+  const myResults = rSnap.val()||{};
+  const takenTestIds = new Set(Object.values(myResults).map(r=>r&&r.testId).filter(Boolean));
   list.innerHTML = arr.map(([id,t])=>{
     const qCount = Object.values(qs).filter(q=>q.testId===id).length;
+    const empty = qCount === 0;
+    const taken = !isAdmin && takenTestIds.has(id);
+    const startBtn = empty
+      ? `<button class="btn btn-primary btn-sm" disabled title="This test has no questions yet" style="opacity:.5;cursor:not-allowed">▶ Start</button>`
+      : taken
+      ? `<button class="btn btn-primary btn-sm" disabled title="You have already taken this test" style="opacity:.5;cursor:not-allowed">✓ Completed</button>`
+      : `<button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>`;
     return `
-    <div class="card mb-16" style="margin-bottom:14px">
+    <div class="card mb-16" style="margin-bottom:14px${empty?';border:1px solid var(--amber)':''}">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
         <div style="flex:1">
           <div style="font-size:15px;font-weight:600;margin-bottom:6px">${t.title}</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
             ${t.subject?`<span class="badge badge-purple">${t.subject}</span>`:''}
-            <span class="badge badge-cyan">${qCount} questions</span>
+            <span class="badge ${empty?'badge-amber':'badge-cyan'}">${qCount} questions</span>
             <span class="badge badge-amber">${t.duration||30} min</span>
+            ${taken?`<span class="badge badge-green">✓ Completed</span>`:''}
           </div>
+          ${empty?`<div style="font-size:12px;color:var(--amber);font-weight:600;margin-bottom:6px">⚠ No questions yet — cannot start this test${isAdmin?'. Add questions from the Question Bank.':'. Ask an admin to add questions.'}</div>`:''}
+          ${taken?`<div style="font-size:12px;color:var(--green);font-weight:600;margin-bottom:6px">✓ You've already taken this test. Check "My Results" to see your score.</div>`:''}
           ${t.description?`<div style="font-size:12px;color:var(--text2)">${t.description}</div>`:''}
         </div>
         <div class="flex gap-8" style="flex-shrink:0;flex-wrap:wrap">
-          <button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>
+          ${startBtn}
           ${isAdmin?`<button class="btn btn-secondary btn-sm" onclick="openEditTest('${id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteTest('${id}')">🗑️</button>`:''}
         </div>
       </div>
@@ -992,14 +1050,21 @@ async function openEditTest(id) {
 // TAKE TEST
 // ============================================================
 async function startTest(testId) {
+  // Block retake (admins exempt)
+  if (currentUser && !isAdmin) {
+    const prev = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
+    const already = Object.values(prev.val()||{}).some(r=>r&&r.testId===testId);
+    if (already) { toast('You have already taken this test','error'); navigateTo('results'); return; }
+  }
   const [testSnap, qSnap] = await Promise.all([
     db.ref('tests/'+testId).get(),
-    db.ref('questions').orderByChild('testId').equalTo(testId).get()
+    db.ref('questions').get()
   ]);
   if (!testSnap.exists()) return toast('Test not found','error');
   currentTestId = testId;
   currentTestData = testSnap.val();
-  const qs = qSnap.val()||{};
+  const allQs = qSnap.val()||{};
+  const qs = Object.fromEntries(Object.entries(allQs).filter(([,q])=>q && q.testId===testId));
   const qArr = Object.entries(qs);
   if (!qArr.length) return toast('No questions in this test yet!','error');
   testAnswers = {};
@@ -1015,18 +1080,38 @@ async function startTest(testId) {
     </div>
   `;
   qArr.forEach(([qid,q],i)=>{
-    const opts = q.options||[];
-    html += `
-    <div class="test-q">
-      <div class="test-q-num">Question ${i+1} · ${q.points||10} pts</div>
-      <div class="test-q-text">${q.text}</div>
-      ${opts.map((opt,oi)=>`
-        <div class="option-choice" id="opt-${qid}-${oi}" onclick="selectOption('${qid}',${oi},${opts.length})">
-          <div class="option-letter">${String.fromCharCode(65+oi)}</div>
-          <span>${opt.text}</span>
+    if (q.type === 'code') {
+      const starter = (q.starter || `function ${q.fnName||'solve'}() {\n  // your code here\n}`)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      html += `
+      <div class="test-q">
+        <div class="test-q-num">Question ${i+1} · ${q.points||10} pts · <span class="badge-code">CODE</span></div>
+        <div class="test-q-text">${q.text}</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px">
+          Define a function <code style="color:var(--cyan)">${q.fnName||''}</code> in JavaScript.
+          ${(q.tests||[]).length} test case(s) will run.
         </div>
-      `).join('')}
-    </div>`;
+        <textarea class="code-editor" id="code-${qid}" oninput="testAnswers['${qid}']=this.value" spellcheck="false">${starter}</textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn-secondary btn-sm" onclick="runCodeTests('${qid}')">▶ Run Tests</button>
+        </div>
+        <div class="code-output" id="code-out-${qid}" style="display:none"></div>
+      </div>`;
+      testAnswers[qid] = q.starter || '';
+    } else {
+      const opts = q.options||[];
+      html += `
+      <div class="test-q">
+        <div class="test-q-num">Question ${i+1} · ${q.points||10} pts</div>
+        <div class="test-q-text">${q.text}</div>
+        ${opts.map((opt,oi)=>`
+          <div class="option-choice" id="opt-${qid}-${oi}" onclick="selectOption('${qid}',${oi},${opts.length})">
+            <div class="option-letter">${String.fromCharCode(65+oi)}</div>
+            <span>${opt.text}</span>
+          </div>
+        `).join('')}
+      </div>`;
+    }
   });
   html += `
     <div style="text-align:center;margin-top:24px">
@@ -1061,6 +1146,51 @@ function selectOption(qid, oi, total) {
   }
 }
 
+// Safely run student JS code against test cases. Returns {passed, total, log}
+function gradeCodeAnswer(code, fnName, tests) {
+  const log = [];
+  let passed = 0;
+  let fn;
+  try {
+    // Run in a sandboxed function scope
+    fn = new Function(`"use strict";${code}; return typeof ${fnName}==='function' ? ${fnName} : null;`)();
+    if (typeof fn !== 'function') {
+      return {passed:0, total:tests.length, log:[`❌ Function "${fnName}" is not defined.`]};
+    }
+  } catch (e) {
+    return {passed:0, total:tests.length, log:[`❌ Syntax / runtime error: ${e.message}`]};
+  }
+  tests.forEach((t,i)=>{
+    let args, expected;
+    try { args = JSON.parse(t.input); expected = JSON.parse(t.expected); }
+    catch(e){ log.push(`Test ${i+1}: ⚠️ invalid test case JSON`); return; }
+    if (!Array.isArray(args)) args = [args];
+    try {
+      const out = fn.apply(null, args);
+      const ok = JSON.stringify(out) === JSON.stringify(expected);
+      if (ok) { passed++; log.push(`Test ${i+1}: ✅ pass — ${fnName}(${args.map(a=>JSON.stringify(a)).join(', ')}) = ${JSON.stringify(out)}`); }
+      else { log.push(`Test ${i+1}: ❌ fail — got ${JSON.stringify(out)}, expected ${JSON.stringify(expected)}`); }
+    } catch(e) {
+      log.push(`Test ${i+1}: ❌ runtime error — ${e.message}`);
+    }
+  });
+  return {passed, total:tests.length, log};
+}
+
+function runCodeTests(qid) {
+  // Find question definition from cached qs (reload from currentTestId)
+  db.ref('questions/'+qid).get().then(snap=>{
+    if(!snap.exists()) return;
+    const q = snap.val();
+    const code = document.getElementById('code-'+qid).value;
+    const res = gradeCodeAnswer(code, q.fnName, q.tests||[]);
+    const out = document.getElementById('code-out-'+qid);
+    out.style.display='block';
+    out.innerHTML = `<div class="${res.passed===res.total?'ok':'fail'}">${res.passed}/${res.total} tests passed</div>` +
+                    res.log.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('');
+  });
+}
+
 async function submitTest(testId, qids) {
   if(testTimer) clearInterval(testTimer);
   const qSnap = await db.ref('questions').orderByChild('testId').equalTo(testId).get();
@@ -1070,11 +1200,19 @@ async function submitTest(testId, qids) {
   Object.entries(qs).forEach(([qid,q])=>{
     const pts = q.points||10;
     maxScore += pts;
-    const chosen = testAnswers[qid];
-    const correctIdx = (q.options||[]).findIndex(o=>o.correct);
-    const isCorrect = chosen===correctIdx;
-    if(isCorrect) score+=pts;
-    details.push({qid, chosen, correctIdx, isCorrect, pts});
+    if (q.type === 'code') {
+      const code = (typeof testAnswers[qid] === 'string') ? testAnswers[qid] : '';
+      const res = gradeCodeAnswer(code, q.fnName, q.tests||[]);
+      const earned = res.total>0 ? Math.round(pts * res.passed / res.total) : 0;
+      score += earned;
+      details.push({qid, type:'code', code, codeResult:res, earned, pts, isCorrect: res.passed===res.total});
+    } else {
+      const chosen = testAnswers[qid];
+      const correctIdx = (q.options||[]).findIndex(o=>o.correct);
+      const isCorrect = chosen===correctIdx;
+      if(isCorrect) score+=pts;
+      details.push({qid, type:'mcq', chosen, correctIdx, isCorrect, pts, earned: isCorrect?pts:0});
+    }
   });
   const pct = maxScore>0?Math.round(score/maxScore*100):0;
   // Save result
@@ -1092,9 +1230,7 @@ async function submitTest(testId, qids) {
   currentUserData.points = newPoints;
   currentUserData.testsCompleted = newTests;
 
-  // Celebrate based on score
   celebrateScore(pct, currentUserData?.name || 'You');
-  // Show result
   const grade = pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=50?'D':'F';
   const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
   document.getElementById('take-test-content').innerHTML = `
@@ -1112,6 +1248,16 @@ async function submitTest(testId, qids) {
       <div class="card-title">Review Answers</div>
       ${details.map((d,i)=>{
         const q = qs[d.qid];
+        if (d.type === 'code') {
+          return `<div class="test-q" style="margin-bottom:12px">
+            <div class="test-q-num">Q${i+1} · <span class="badge-code">CODE</span> · ${d.codeResult.passed}/${d.codeResult.total} tests · ${d.earned}/${d.pts} pts</div>
+            <div class="test-q-text">${q.text}</div>
+            <pre class="code-editor" style="min-height:auto">${(d.code||'').replace(/</g,'&lt;')}</pre>
+            <div class="code-output" style="display:block">
+              ${d.codeResult.log.map(l=>`<div>${l.replace(/</g,'&lt;')}</div>`).join('')}
+            </div>
+          </div>`;
+        }
         return `<div class="test-q" style="margin-bottom:12px">
           <div class="test-q-num">Q${i+1} · ${d.isCorrect?'✅ Correct':'❌ Wrong'} · ${d.isCorrect?d.pts:0}/${d.pts} pts</div>
           <div class="test-q-text">${q.text}</div>
@@ -1127,6 +1273,7 @@ async function submitTest(testId, qids) {
     </div>
   `;
 }
+
 
 // ============================================================
 // QUESTIONS BANK
@@ -1176,12 +1323,26 @@ function renderQuestions(qs, tests, filter) {
           <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${id}')">🗑️</button>
         </div>
       </div>
-      <div style="font-size:11px;color:var(--text3);margin:6px 0">${tests[q.testId]?.title||'Unknown Test'} · ${q.points||10} pts</div>
-      <div class="q-item-opts">
-        ${(q.options||[]).map(o=>`<span class="q-opt ${o.correct?'correct':''}">${o.text}</span>`).join('')}
+      <div style="font-size:11px;color:var(--text3);margin:6px 0">
+        <span class="${q.type==='code'?'badge-code':'badge-mcq'}">${q.type==='code'?'CODE':'MCQ'}</span>
+        · ${tests[q.testId]?.title||'Unknown Test'} · ${q.points||10} pts
       </div>
+      ${q.type==='code' ? `
+        <div style="font-size:12px;color:var(--text2)">Function: <code>${q.fnName||'?'}()</code> · ${(q.tests||[]).length} test case(s)</div>
+      ` : `
+        <div class="q-item-opts">
+          ${(q.options||[]).map(o=>`<span class="q-opt ${o.correct?'correct':''}">${o.text}</span>`).join('')}
+        </div>
+      `}
+
     </div>
   `).join('');
+}
+
+function toggleQType() {
+  const t = document.getElementById('q-type').value;
+  document.getElementById('q-mcq-fields').style.display  = (t==='mcq')  ? '' : 'none';
+  document.getElementById('q-code-fields').style.display = (t==='code') ? 'flex' : 'none';
 }
 
 function openAddQuestion() {
@@ -1189,7 +1350,12 @@ function openAddQuestion() {
   document.getElementById('q-modal-title').textContent = '➕ Add Question';
   document.getElementById('q-text').value='';
   document.getElementById('q-points').value='10';
+  document.getElementById('q-type').value='mcq';
+  document.getElementById('q-fn-name').value='';
+  document.getElementById('q-starter').value='';
   buildOptionFields([{text:'',correct:true},{text:'',correct:false}]);
+  buildTestCaseFields([{input:'',expected:''}]);
+  toggleQType();
   populateTestSelect();
   document.getElementById('q-modal-msg').className='msg';
   openModal('modal-question');
@@ -1203,7 +1369,12 @@ async function openEditQuestion(id) {
   document.getElementById('q-modal-title').textContent = '✏️ Edit Question';
   document.getElementById('q-text').value = q.text;
   document.getElementById('q-points').value = q.points||10;
-  buildOptionFields(q.options||[]);
+  document.getElementById('q-type').value = q.type||'mcq';
+  document.getElementById('q-fn-name').value = q.fnName||'';
+  document.getElementById('q-starter').value = q.starter||'';
+  buildOptionFields(q.options||[{text:'',correct:true},{text:'',correct:false}]);
+  buildTestCaseFields(q.tests||[{input:'',expected:''}]);
+  toggleQType();
   await populateTestSelect(q.testId);
   openModal('modal-question');
 }
@@ -1246,24 +1417,81 @@ function removeOption(i) {
   document.getElementById('opt-row-'+i)?.remove();
 }
 
+// ----- Code test-case builder -----
+let testCaseCount = 0;
+function escAttr(s){return String(s).replace(/"/g,'&quot;')}
+function buildTestCaseFields(tests) {
+  testCaseCount = tests.length;
+  document.getElementById('q-tests-builder').innerHTML = tests.map((t,i)=>`
+    <div class="code-test-row" id="tc-row-${i}">
+      <input type="text" placeholder='Input e.g. [2,3]' value="${escAttr(t.input||'')}" id="tc-input-${i}">
+      <input type="text" placeholder='Expected e.g. 5' value="${escAttr(t.expected||'')}" id="tc-expected-${i}">
+      <button class="btn btn-danger btn-sm" onclick="removeTestCase(${i})" style="padding:4px 8px">✕</button>
+    </div>
+  `).join('');
+}
+function addTestCaseField() {
+  const i = testCaseCount++;
+  const div = document.createElement('div');
+  div.className='code-test-row'; div.id=`tc-row-${i}`;
+  div.innerHTML=`
+    <input type="text" placeholder='Input e.g. [2,3]' id="tc-input-${i}">
+    <input type="text" placeholder='Expected e.g. 5' id="tc-expected-${i}">
+    <button class="btn btn-danger btn-sm" onclick="removeTestCase(${i})" style="padding:4px 8px">✕</button>
+  `;
+  document.getElementById('q-tests-builder').appendChild(div);
+}
+function removeTestCase(i) {
+  document.getElementById('tc-row-'+i)?.remove();
+}
+
 async function saveQuestion() {
   const text = document.getElementById('q-text').value.trim();
   const points = +document.getElementById('q-points').value||10;
   const testId = document.getElementById('q-test-select').value;
+  const type = document.getElementById('q-type').value;
   if(!text) return showMsg('q-modal-msg','Enter question text');
-  // Collect options
-  const opts = [];
-  document.querySelectorAll('#options-builder .option-row').forEach((row,i)=>{
-    const inp = row.querySelector('input[type=text]');
-    const radio = row.querySelector('input[type=radio]');
-    if(inp && inp.value.trim()) {
-      opts.push({text:inp.value.trim(), correct:radio?radio.checked:false});
+  if(!testId) return showMsg('q-modal-msg','Select a test','error');
+
+  let data = {text, points, testId, type, createdAt:Date.now()};
+
+  if (type === 'mcq') {
+    const opts = [];
+    document.querySelectorAll('#options-builder .option-row').forEach((row)=>{
+      const inp = row.querySelector('input[type=text]');
+      const radio = row.querySelector('input[type=radio]');
+      if(inp && inp.value.trim()) {
+        opts.push({text:inp.value.trim(), correct:radio?radio.checked:false});
+      }
+    });
+    if(opts.length<2) return showMsg('q-modal-msg','Add at least 2 options','error');
+    if(!opts.some(o=>o.correct)) return showMsg('q-modal-msg','Mark at least one correct answer','error');
+    data.options = opts;
+  } else {
+    const fnName = document.getElementById('q-fn-name').value.trim();
+    const starter = document.getElementById('q-starter').value;
+    if(!fnName) return showMsg('q-modal-msg','Enter the function name students must define','error');
+    const tests = [];
+    document.querySelectorAll('#q-tests-builder .code-test-row').forEach((row)=>{
+      const inp = row.querySelector('input[id^=tc-input-]');
+      const exp = row.querySelector('input[id^=tc-expected-]');
+      if (inp && exp && (inp.value.trim() || exp.value.trim())) {
+        tests.push({input: inp.value.trim(), expected: exp.value.trim()});
+      }
+    });
+    if(!tests.length) return showMsg('q-modal-msg','Add at least one test case','error');
+    // Validate JSON in test cases
+    try {
+      tests.forEach(t=>{ JSON.parse(t.input); JSON.parse(t.expected); });
+    } catch(e) {
+      return showMsg('q-modal-msg','Test case input/expected must be valid JSON','error');
     }
-  });
-  if(opts.length<2) return showMsg('q-modal-msg','Add at least 2 options','error');
-  const hasCorrect = opts.some(o=>o.correct);
-  if(!hasCorrect) return showMsg('q-modal-msg','Mark at least one correct answer','error');
-  const data = {text,points,options:opts,testId,createdAt:Date.now()};
+    data.fnName = fnName;
+    data.starter = starter || `function ${fnName}() {\n  // your code here\n}`;
+    data.tests = tests;
+    data.language = 'javascript';
+  }
+
   if(editingQuestionId) {
     await db.ref('questions/'+editingQuestionId).update(data);
     toast('Question updated!','success');
@@ -1274,6 +1502,7 @@ async function saveQuestion() {
   closeModal('modal-question');
   loadQuestions();
 }
+
 
 async function deleteQuestion(id) {
   if(!confirm('Delete this question?')) return;
@@ -1399,215 +1628,81 @@ async function deleteClass(id) {
 // ============================================================
 // LEADERBOARD
 // ============================================================
-// ============================================================
-// LEADERBOARD
-// ============================================================
 async function loadLeaderboard() {
-  try {
-    const snap = await db.ref('results').get(); // result -> results
-    const users = snap.val() || {};
-
-    const arr = Object.entries(users)
-      .map(([id, u]) => ({
-        id,
-        name: u.userName || 'Unknown',
-        points: u.score || 0,
-        percentage: u.percentage || 0,
-        testsCompleted: 1,
-        uid: u.uid || ''
-      }))
-      .sort((a, b) => b.points - a.points);
-
-    const list = document.getElementById('lb-list');
-
-    if (!arr.length) {
-      list.innerHTML = `
-        <div class="empty">
-          <div class="empty-title">No leaderboard data yet</div>
-        </div>
-      `;
-      return;
-    }
-
-    const maxPts = arr[0].points || 1;
-
-    const myRank = arr.findIndex(u => u.uid === currentUser?.uid);
-
-    if (myRank !== -1 && myRank < 3) {
-      const prevRankKey = 'lb_rank_' + currentUser.uid;
-      const prevRank = parseInt(
-        sessionStorage.getItem(prevRankKey) || '999'
-      );
-
-      if (myRank < prevRank) {
-        sessionStorage.setItem(prevRankKey, myRank);
-
-        if (typeof checkLeaderboardPosition === 'function') {
-          setTimeout(() => {
-            checkLeaderboardPosition(myRank + 1);
-          }, 600);
-        }
-      }
-    }
-
-    list.innerHTML = arr.map((u, i) => {
-      const rankClass =
-        i === 0 ? 'r1' :
-        i === 1 ? 'r2' :
-        i === 2 ? 'r3' : '';
-
-      const medal =
-        i === 0 ? '🥇' :
-        i === 1 ? '🥈' :
-        i === 2 ? '🥉' : '';
-
-      const pct = Math.round((u.points / maxPts) * 100);
-
-      const isMe = u.uid === currentUser?.uid;
-
-      return `
-      <div class="lb-row"
-           style="${isMe ? 'border-color:var(--cyan);background:rgba(0,229,255,.05)' : ''}">
-           
-        <div class="lb-rank ${rankClass}">
-          ${medal || ('#' + (i + 1))}
-        </div>
-
-        <div class="lb-avatar"
-             style="${isMe ? 'background:linear-gradient(135deg,var(--cyan),var(--green))' : ''}">
-          ${(u.name || '?').charAt(0).toUpperCase()}
-        </div>
-
-        <div class="lb-info">
-          <div class="lb-name">
-            ${u.name}
-            ${isMe
-              ? '<span class="badge badge-cyan" style="margin-left:6px">You</span>'
-              : ''}
-          </div>
-
-          <div class="lb-score-bar">
-            <div class="lb-score-fill" style="width:${pct}%"></div>
-          </div>
-
-          <div style="font-size:10px;color:var(--text3);margin-top:2px">
-            Score: ${u.points}
-          </div>
-        </div>
-
-        <div class="lb-points">
-          ${u.points}
-        </div>
-      </div>
-      `;
-    }).join('');
-
-  } catch (err) {
-    console.error('Leaderboard Error:', err);
-
-    document.getElementById('lb-list').innerHTML = `
-      <div class="empty">
-        <div class="empty-title">Failed to load leaderboard</div>
-      </div>
-    `;
+  const snap = await db.ref('users').orderByChild('points').get();
+  const users = snap.val()||{};
+  const arr = Object.entries(users).filter(([,u])=>u.role!='admin'||(u.points>0))
+    .map(([id,u])=>({id,...u}))
+    .sort((a,b)=>(b.points||0)-(a.points||0));
+  const maxPts = arr[0]?.points||1;
+  const list = document.getElementById('lb-list');
+  if(!arr.length){
+    list.innerHTML=`<div class="empty"><div class="empty-title">No data yet</div></div>`;
+    return;
   }
+  // Check current user rank for celebration
+  const myRank = arr.findIndex(u => u.id === currentUser.uid);
+  if (myRank !== -1 && myRank < 3) {
+    const prevRankKey = 'lb_rank_' + currentUser.uid;
+    const prevRank = parseInt(sessionStorage.getItem(prevRankKey) || '999');
+    if (myRank < prevRank) {
+      sessionStorage.setItem(prevRankKey, myRank);
+      setTimeout(() => checkLeaderboardPosition(myRank + 1), 600);
+    }
+    sessionStorage.setItem(prevRankKey, myRank);
+  }
+  list.innerHTML = arr.map((u,i)=>{
+    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    const pct = Math.round((u.points||0)/maxPts*100);
+    const isMe = u.id===currentUser.uid;
+    return `
+    <div class="lb-row" style="${isMe?'border-color:var(--cyan);background:rgba(0,229,255,0.05)':''}">
+      <div class="lb-rank ${rankClass}">${medal||('#'+(i+1))}</div>
+      <div class="lb-avatar" style="${isMe?'background:linear-gradient(135deg,var(--cyan),var(--green))':''}">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div class="lb-info">
+        <div class="lb-name">${u.name||'Unknown'} ${isMe?'<span class="badge badge-cyan" style="margin-left:6px">You</span>':''}</div>
+        <div class="lb-score-bar"><div class="lb-score-fill" style="width:${pct}%"></div></div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${u.testsCompleted||0} tests completed</div>
+      </div>
+      <div class="lb-points">${u.points||0}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
 // MY RESULTS
 // ============================================================
 async function loadResults() {
-  try {
-    const snap = await db.ref('results')
-      .orderByChild('uid')
-      .equalTo(currentUser.uid)
-      .get();
-
-    const results = snap.val() || {};
-
-    const arr = Object.entries(results)
-      .sort((a, b) =>
-        (b[1].submittedAt || 0) -
-        (a[1].submittedAt || 0)
-      );
-
-    const list = document.getElementById('results-list');
-
-    if (!arr.length) {
-      list.innerHTML = `
-      <div class="empty">
-        <div class="empty-icon">📊</div>
-        <div class="empty-title">No results yet</div>
-        <div class="empty-sub">
-          Take a test to see your results
-        </div>
-      </div>
-      `;
-      return;
-    }
-
-    list.innerHTML = arr.map(([, r]) => {
-
-      const d = r.submittedAt
-        ? new Date(r.submittedAt).toLocaleDateString()
-        : 'Unknown Date';
-
-      const pct = Number(r.percentage || 0);
-
-      const color =
-        pct >= 70 ? 'var(--green)' :
-        pct >= 50 ? 'var(--amber)' :
-        'var(--red)';
-
-      return `
-      <div class="card mb-16" style="margin-bottom:12px">
-
-        <div class="flex flex-between flex-center">
-          <div>
-            <div style="font-size:14px;font-weight:600">
-              ${r.testTitle || 'Test'}
-            </div>
-
-            <div style="font-size:11px;color:var(--text3);margin-top:4px">
-              ${d}
-            </div>
-          </div>
-
-          <div style="text-align:right">
-            <div style="
-              font-family:'Orbitron',monospace;
-              font-size:22px;
-              font-weight:700;
-              color:${color}">
-              ${pct}%
-            </div>
-
-            <div style="font-size:11px;color:var(--text2)">
-              ${r.score || 0}/${r.maxScore || 0} pts
-            </div>
-          </div>
-        </div>
-
-        <div class="progress-bar mt-8">
-          <div class="progress-fill"
-               style="width:${pct}%">
-          </div>
-        </div>
-
-      </div>
-      `;
-    }).join('');
-
-  } catch (err) {
-    console.error('Results Error:', err);
-
-    document.getElementById('results-list').innerHTML = `
-      <div class="empty">
-        <div class="empty-title">Failed to load results</div>
-      </div>
-    `;
+  const snap = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
+  const results = snap.val()||{};
+  const arr = Object.entries(results).sort((a,b)=>b[1].submittedAt-a[1].submittedAt);
+  const list = document.getElementById('results-list');
+  if(!arr.length){
+    list.innerHTML=`<div class="empty"><div class="empty-icon">📊</div><div class="empty-title">No results yet</div><div class="empty-sub">Take a test to see your results</div></div>`;
+    return;
   }
+  list.innerHTML = arr.map(([,r])=>{
+    const d = new Date(r.submittedAt).toLocaleDateString();
+    const pct = r.percentage||0;
+    const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+    return `
+    <div class="card mb-16" style="margin-bottom:12px">
+      <div class="flex flex-between flex-center">
+        <div>
+          <div style="font-size:14px;font-weight:600">${r.testTitle||'Test'}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">${d}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:700;color:${color}">${pct}%</div>
+          <div style="font-size:11px;color:var(--text2)">${r.score}/${r.maxScore} pts</div>
+        </div>
+      </div>
+      <div class="progress-bar mt-8"><div class="progress-fill" style="width:${pct}%;background:${pct>=70?'linear-gradient(90deg,var(--green),var(--cyan))':pct>=50?'linear-gradient(90deg,var(--amber),var(--cyan))':'linear-gradient(90deg,var(--red),var(--amber))'}"></div></div>
+    </div>`;
+  }).join('');
 }
+
 // ============================================================
 // MANAGE USERS (Admin)
 // ============================================================
