@@ -272,6 +272,54 @@
   .q-item-opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
   .q-opt{padding:3px 10px;border-radius:20px;font-size:11px;background:var(--border);color:var(--text2)}
   .q-opt.correct{background:rgba(0,230,118,0.2);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
+
+  /* ===== NOTIFICATION BELL ===== */
+  .notif-bell-wrap{position:relative;cursor:pointer}
+  .notif-bell{width:38px;height:38px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;transition:.2s;font-size:17px}
+  .notif-bell:hover{border-color:var(--cyan);background:var(--card)}
+  .notif-bell.has-unread{border-color:rgba(255,196,0,0.5);animation:bellRing 2s ease infinite}
+  @keyframes bellRing{0%,100%{transform:rotate(0)}10%{transform:rotate(-12deg)}20%{transform:rotate(12deg)}30%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}50%{transform:rotate(0)}}
+  .notif-count{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:700;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg2)}
+
+  /* ===== NOTIFICATION DROPDOWN ===== */
+  .notif-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:360px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);box-shadow:0 16px 40px rgba(0,0,0,0.6);z-index:9000;display:none;overflow:hidden}
+  .notif-dropdown.open{display:block;animation:dropDown .18s ease}
+  @keyframes dropDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .notif-dropdown::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+  .notif-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border)}
+  .notif-header-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--amber);letter-spacing:1px}
+  .notif-mark-all{font-size:10px;color:var(--cyan);cursor:pointer;background:none;border:none;font-family:'Exo 2',sans-serif;letter-spacing:.5px}
+  .notif-mark-all:hover{text-decoration:underline}
+  .notif-list{max-height:380px;overflow-y:auto}
+  .notif-item{display:flex;gap:12px;padding:13px 16px;border-bottom:1px solid rgba(42,42,85,0.4);cursor:pointer;transition:.15s;position:relative}
+  .notif-item:last-child{border-bottom:none}
+  .notif-item:hover{background:rgba(0,229,255,0.04)}
+  .notif-item.unread{background:rgba(255,196,0,0.04)}
+  .notif-item.unread::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);border-radius:0 2px 2px 0}
+  .notif-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--bg2)}
+  .notif-icon.n-test{background:rgba(0,229,255,0.12)}
+  .notif-icon.n-class{background:rgba(124,77,255,0.12)}
+  .notif-icon.n-trophy{background:rgba(255,196,0,0.12)}
+  .notif-icon.n-score{background:rgba(0,230,118,0.12)}
+  .notif-icon.n-info{background:rgba(90,90,136,0.2)}
+  .notif-body{flex:1;min-width:0}
+  .notif-title{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px}
+  .notif-sub{font-size:11px;color:var(--text3);line-height:1.3}
+  .notif-time{font-size:10px;color:var(--text3);margin-top:4px;letter-spacing:.3px}
+  .notif-empty{text-align:center;padding:32px;color:var(--text3);font-size:12px}
+
+  /* ===== CONFETTI CANVAS ===== */
+  #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:8000}
+
+  /* ===== CELEBRATION OVERLAY ===== */
+  .celebrate-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:8500;pointer-events:none}
+  .celebrate-card{background:var(--card);border:2px solid var(--amber);border-radius:var(--r2);padding:32px 40px;text-align:center;pointer-events:all;animation:celebPop .4s cubic-bezier(.175,.885,.32,1.275)}
+  @keyframes celebPop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+  .celebrate-icon{font-size:52px;margin-bottom:12px;display:block;animation:bounce 1s ease infinite alternate}
+  @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-10px)}}
+  .celebrate-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--amber),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+  .celebrate-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+
 </style>
 </head>
 <body>
@@ -441,6 +489,11 @@
 
   </div><!-- /main -->
 </div><!-- /app-page -->
+
+
+<!-- NOTIFICATION DROPDOWN (appended to body) -->
+<canvas id="confetti-canvas"></canvas>
+<div id="celebrate-overlay" class="celebrate-overlay" style="display:none"></div>
 
 <!-- TOAST -->
 <div id="toast"></div>
@@ -700,6 +753,7 @@ function showApp() {
   document.getElementById('app-page').classList.add('active');
   buildSidebar();
   navigateTo('dashboard');
+  setTimeout(initNotificationBell, 200);
 }
 
 // ============================================================
@@ -890,6 +944,10 @@ async function saveTest() {
   await db.ref('tests').push({title,subject,duration:+duration,description:desc,createdAt:Date.now(),createdBy:currentUser.uid});
   closeModal('modal-create-test');
   toast('Test created!','success');
+  // push notification to all users
+  const notifData = {type:'test', title:'📝 New Test: ' + title, body: subject ? 'Subject: ' + subject + ' · ' + duration + ' min' : duration + ' min test', link:'tests', createdAt: Date.now(), readBy:{}};
+  await db.ref('notifications').push(notifData);
+  showInAppBanner('📝 New test published: <strong>' + title + '</strong>', 'cyan');
   loadTests();
 }
 
@@ -1034,6 +1092,8 @@ async function submitTest(testId, qids) {
   currentUserData.points = newPoints;
   currentUserData.testsCompleted = newTests;
 
+  // Celebrate based on score
+  celebrateScore(pct, currentUserData?.name || 'You');
   // Show result
   const grade = pct>=90?'A+':pct>=80?'A':pct>=70?'B':pct>=60?'C':pct>=50?'D':'F';
   const color = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
@@ -1300,6 +1360,12 @@ async function saveClass() {
   } else {
     await db.ref('classes').push(data);
     toast('Class created!','success');
+    // push notification
+    const status = document.getElementById('cc-status').value;
+    const statusLabel = status === 'live' ? '🔴 LIVE NOW' : status === 'upcoming' ? '📅 Upcoming' : 'Ended';
+    const notifType = status === 'live' ? 'class' : 'class';
+    await db.ref('notifications').push({type:'class', title:(status==='live'?'🔴 Live Class NOW: ':'🎥 New Class: ')+data.title, body: data.instructor + (data.date ? ' · ' + data.date + ' ' + (data.time||'') : ''), link:'classes', createdAt: Date.now(), readBy:{}});
+    showInAppBanner((status==='live'?'🔴 Class is LIVE: ':'🎥 New class scheduled: ') + '<strong>' + data.title + '</strong>', status==='live'?'red':'purple');
   }
   closeModal('modal-create-class');
   loadClasses();
@@ -1344,6 +1410,17 @@ async function loadLeaderboard() {
   if(!arr.length){
     list.innerHTML=`<div class="empty"><div class="empty-title">No data yet</div></div>`;
     return;
+  }
+  // Check current user rank for celebration
+  const myRank = arr.findIndex(u => u.id === currentUser.uid);
+  if (myRank !== -1 && myRank < 3) {
+    const prevRankKey = 'lb_rank_' + currentUser.uid;
+    const prevRank = parseInt(sessionStorage.getItem(prevRankKey) || '999');
+    if (myRank < prevRank) {
+      sessionStorage.setItem(prevRankKey, myRank);
+      setTimeout(() => checkLeaderboardPosition(myRank + 1), 600);
+    }
+    sessionStorage.setItem(prevRankKey, myRank);
   }
   list.innerHTML = arr.map((u,i)=>{
     const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
@@ -1492,6 +1569,313 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
     if(e.target===overlay) overlay.classList.remove('open');
   });
 });
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+let notifUnreadCount = 0;
+let notifDropdownOpen = false;
+let notifListener = null;
+let prevTestKeys = null;
+let prevClassKeys = null;
+
+function initNotificationBell() {
+  const actions = document.getElementById('topbar-actions');
+  const wrap = document.createElement('div');
+  wrap.className = 'notif-bell-wrap';
+  wrap.id = 'notif-bell-wrap';
+  wrap.innerHTML = `
+    <div class="notif-bell" id="notif-bell" onclick="toggleNotifDropdown()">🔔</div>
+    <div class="notif-count" id="notif-count" style="display:none">0</div>
+    <div class="notif-dropdown" id="notif-dropdown">
+      <div class="notif-header">
+        <span class="notif-header-title">⚡ Notifications</span>
+        <button class="notif-mark-all" onclick="markAllRead()">Mark all read</button>
+      </div>
+      <div class="notif-list" id="notif-list"><div class="notif-empty">No notifications yet</div></div>
+    </div>
+  `;
+  actions.prepend(wrap);
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) closeNotifDropdown();
+  });
+  requestBrowserNotifPermission();
+  loadNotifications();
+  startRealtimeNotifListeners();
+}
+
+function toggleNotifDropdown() {
+  notifDropdownOpen = !notifDropdownOpen;
+  document.getElementById('notif-dropdown').classList.toggle('open', notifDropdownOpen);
+  if (notifDropdownOpen) renderNotifList();
+}
+function closeNotifDropdown() {
+  notifDropdownOpen = false;
+  document.getElementById('notif-dropdown')?.classList.remove('open');
+}
+
+// ---- Read/Write notifications to Firebase ----
+async function pushNotification(data) {
+  // data: {type, title, body, icon, link}
+  await db.ref('notifications').push({
+    ...data, createdAt: Date.now(), readBy: {}
+  });
+}
+
+async function loadNotifications() {
+  db.ref('notifications').limitToLast(30).on('value', snap => {
+    const all = snap.val() || {};
+    const arr = Object.entries(all).sort((a,b) => b[1].createdAt - a[1].createdAt);
+    const uid = currentUser?.uid;
+    notifUnreadCount = arr.filter(([,n]) => !n.readBy?.[uid]).length;
+    updateBellBadge();
+    if (notifDropdownOpen) renderNotifListData(arr);
+  });
+}
+
+function renderNotifList() {
+  db.ref('notifications').limitToLast(30).once('value', snap => {
+    const all = snap.val() || {};
+    const arr = Object.entries(all).sort((a,b) => b[1].createdAt - a[1].createdAt);
+    renderNotifListData(arr);
+  });
+}
+
+function renderNotifListData(arr) {
+  const uid = currentUser?.uid;
+  const list = document.getElementById('notif-list');
+  if (!arr.length) { list.innerHTML = '<div class="notif-empty">🔕 No notifications yet</div>'; return; }
+  list.innerHTML = arr.map(([id, n]) => {
+    const unread = !n.readBy?.[uid];
+    const iconClass = {test:'n-test',class:'n-class',trophy:'n-trophy',score:'n-score'}[n.type] || 'n-info';
+    const icons = {test:'📝',class:'🎥',trophy:'🏆',score:'✅',info:'ℹ️'};
+    const timeAgo = getTimeAgo(n.createdAt);
+    return `
+      <div class="notif-item ${unread?'unread':''}" onclick="readNotif('${id}','${n.link||''}')">
+        <div class="notif-icon ${iconClass}">${icons[n.type]||'🔔'}</div>
+        <div class="notif-body">
+          <div class="notif-title">${n.title}</div>
+          <div class="notif-sub">${n.body||''}</div>
+          <div class="notif-time">${timeAgo}</div>
+        </div>
+        ${unread?'<div style="width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:4px"></div>':''}
+      </div>`;
+  }).join('');
+}
+
+async function readNotif(id, link) {
+  const uid = currentUser?.uid;
+  await db.ref(`notifications/${id}/readBy/${uid}`).set(true);
+  closeNotifDropdown();
+  if (link) navigateTo(link);
+}
+
+async function markAllRead() {
+  const uid = currentUser?.uid;
+  const snap = await db.ref('notifications').limitToLast(30).get();
+  const all = snap.val() || {};
+  const updates = {};
+  Object.keys(all).forEach(id => { updates[`notifications/${id}/readBy/${uid}`] = true; });
+  await db.ref().update(updates);
+  closeNotifDropdown();
+}
+
+function updateBellBadge() {
+  const bell = document.getElementById('notif-bell');
+  const badge = document.getElementById('notif-count');
+  if (!bell || !badge) return;
+  if (notifUnreadCount > 0) {
+    bell.classList.add('has-unread');
+    badge.style.display = 'flex';
+    badge.textContent = notifUnreadCount > 9 ? '9+' : notifUnreadCount;
+  } else {
+    bell.classList.remove('has-unread');
+    badge.style.display = 'none';
+  }
+}
+
+function getTimeAgo(ts) {
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff/60000), h = Math.floor(diff/3600000), d = Math.floor(diff/86400000);
+  if (d > 0) return `${d}d ago`;
+  if (h > 0) return `${h}h ago`;
+  if (m > 0) return `${m}m ago`;
+  return 'Just now';
+}
+
+// ---- Real-time listeners for new tests/classes ----
+function startRealtimeNotifListeners() {
+  // Tests listener — fires when new test is added
+  db.ref('tests').once('value', snap => {
+    prevTestKeys = new Set(Object.keys(snap.val() || {}));
+  });
+  db.ref('tests').on('child_added', snap => {
+    if (prevTestKeys === null) return;
+    if (!prevTestKeys.has(snap.key)) {
+      // New test added by admin
+      if (!isAdmin) {
+        const t = snap.val();
+        showBrowserNotif(`📝 New Test: ${t.title}`, `Subject: ${t.subject||'General'} · ${t.duration||30} min`);
+        showInAppBanner(`📝 New test available: <strong>${t.title}</strong>`, 'cyan');
+      }
+      prevTestKeys.add(snap.key);
+    }
+  });
+
+  // Classes listener — fires when new class is added
+  db.ref('classes').once('value', snap => {
+    prevClassKeys = new Set(Object.keys(snap.val() || {}));
+  });
+  db.ref('classes').on('child_added', snap => {
+    if (prevClassKeys === null) return;
+    if (!prevClassKeys.has(snap.key)) {
+      if (!isAdmin) {
+        const c = snap.val();
+        showBrowserNotif(`🎥 New Class: ${c.title}`, `${c.instructor||'Instructor'} · ${c.date||''} ${c.time||''}`);
+        showInAppBanner(`🎥 New live class: <strong>${c.title}</strong>`, 'purple');
+      }
+      prevClassKeys.add(snap.key);
+    }
+  });
+
+  // Classes status change → LIVE
+  db.ref('classes').on('child_changed', snap => {
+    const c = snap.val();
+    if (c.status === 'live' && !isAdmin) {
+      showBrowserNotif(`🔴 CLASS IS LIVE: ${c.title}`, `Join now with ${c.instructor||'your instructor'}!`);
+      showInAppBanner(`🔴 Class is LIVE now: <strong>${c.title}</strong> — <a onclick="navigateTo('classes')" style="color:var(--cyan);cursor:pointer;text-decoration:underline">Join →</a>`, 'red');
+    }
+  });
+}
+
+// ---- In-app banner (slides from top) ----
+function showInAppBanner(html, color='cyan') {
+  const colors = {
+    cyan: {bg:'rgba(0,229,255,0.1)', border:'rgba(0,229,255,0.4)', text:'var(--cyan)'},
+    purple: {bg:'rgba(124,77,255,0.1)', border:'rgba(124,77,255,0.4)', text:'var(--purple)'},
+    red: {bg:'rgba(255,23,68,0.12)', border:'rgba(255,23,68,0.5)', text:'var(--red)'},
+    amber: {bg:'rgba(255,196,0,0.1)', border:'rgba(255,196,0,0.4)', text:'var(--amber)'},
+    green: {bg:'rgba(0,230,118,0.1)', border:'rgba(0,230,118,0.4)', text:'var(--green)'},
+  };
+  const c = colors[color] || colors.cyan;
+  const banner = document.createElement('div');
+  banner.style.cssText = `position:fixed;top:0;left:230px;right:0;z-index:7500;background:${c.bg};border-bottom:1px solid ${c.border};color:${c.text};font-size:13px;font-weight:500;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;animation:bannerSlide .3s ease`;
+  banner.innerHTML = `<span>${html}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:inherit;cursor:pointer;font-size:16px;flex-shrink:0">✕</button>`;
+  // inject keyframe if not already
+  if (!document.getElementById('banner-kf')) {
+    const s = document.createElement('style');
+    s.id = 'banner-kf';
+    s.textContent = '@keyframes bannerSlide{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}';
+    document.head.appendChild(s);
+  }
+  document.body.appendChild(banner);
+  setTimeout(() => banner?.remove(), 8000);
+}
+
+// ---- Browser push notifications ----
+function requestBrowserNotifPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    setTimeout(() => {
+      Notification.requestPermission();
+    }, 3000);
+  }
+}
+
+function showBrowserNotif(title, body) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    try {
+      new Notification(title, {body, icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><text y="26" font-size="28">⚡</text></svg>'});
+    } catch(e) {}
+  }
+}
+
+// ---- Leaderboard celebration ----
+function checkLeaderboardPosition(rank) {
+  if (rank <= 3) launchCelebration(rank);
+}
+
+function launchCelebration(rank) {
+  const msgs = {
+    1: {icon:'🥇', title:'#1 ON LEADERBOARD!', sub:'You are the top student! Legendary! 🔥'},
+    2: {icon:'🥈', title:'#2 ON LEADERBOARD!', sub:'Silver rank! Keep pushing to the top! 💪'},
+    3: {icon:'🥉', title:'TOP 3!', sub:'Bronze rank! Amazing performance! ⚡'},
+  };
+  const m = msgs[rank] || {icon:'🏆', title:'TOP RANKED!', sub:'Great performance!'};
+  startConfetti();
+  const overlay = document.getElementById('celebrate-overlay');
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div class="celebrate-card">
+      <span class="celebrate-icon">${m.icon}</span>
+      <div class="celebrate-title">${m.title}</div>
+      <div class="celebrate-sub">${m.sub}</div>
+      <button class="btn btn-primary btn-sm" onclick="closeCelebration()">Awesome! 🚀</button>
+    </div>`;
+  // browser notif
+  showBrowserNotif(`${m.icon} ${m.title}`, m.sub);
+}
+
+function closeCelebration() {
+  document.getElementById('celebrate-overlay').style.display = 'none';
+  stopConfetti();
+}
+
+// ---- Confetti engine ----
+let confettiAnimId = null;
+const confettiColors = ['#00e5ff','#7c4dff','#00e676','#ffc400','#ff1744','#fff'];
+
+function startConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const pieces = Array.from({length:140}, () => ({
+    x: Math.random()*canvas.width, y: Math.random()*canvas.height - canvas.height,
+    w: Math.random()*10+4, h: Math.random()*6+3,
+    color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+    vx: (Math.random()-0.5)*3, vy: Math.random()*4+2,
+    angle: Math.random()*360, spin: (Math.random()-0.5)*6, alpha:1
+  }));
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle * Math.PI/180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx.restore();
+      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random()*canvas.width; }
+    });
+    confettiAnimId = requestAnimationFrame(draw);
+  }
+  if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+  draw();
+  setTimeout(stopConfetti, 5000);
+}
+
+function stopConfetti() {
+  if (confettiAnimId) { cancelAnimationFrame(confettiAnimId); confettiAnimId = null; }
+  const ctx = document.getElementById('confetti-canvas').getContext('2d');
+  ctx.clearRect(0,0,99999,99999);
+}
+
+// ---- Score celebration on test submit ----
+function celebrateScore(pct, userName) {
+  if (pct >= 90) {
+    startConfetti();
+    showInAppBanner(`🎉 Excellent! <strong>${userName}</strong> scored <strong>${pct}%</strong> — Outstanding performance!`, 'green');
+    showBrowserNotif('🎉 Excellent Score!', `You scored ${pct}%! Amazing work!`);
+    setTimeout(stopConfetti, 4000);
+  } else if (pct >= 70) {
+    showInAppBanner(`✅ Good job! You scored <strong>${pct}%</strong> — Keep it up!`, 'cyan');
+    showBrowserNotif('✅ Test Completed!', `You scored ${pct}%. Good work!`);
+  }
+}
+
+
 </script>
 </body>
 </html>
