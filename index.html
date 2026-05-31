@@ -2614,27 +2614,138 @@ async function deleteAssignment(id) {
 }
 
 async function viewSubmissions(assignId, title) {
-  document.getElementById('subs-modal-title').textContent = '👁 Submissions — '+(title||'');
+
+  const titleEl = document.getElementById('subs-modal-title');
   const content = document.getElementById('subs-modal-content');
-  content.innerHTML = '<div style="text-align:center;padding:24px"><span class="spinner"></span></div>';
+
+  if (!titleEl) {
+    console.error('Element not found: #subs-modal-title');
+    return;
+  }
+
+  if (!content) {
+    console.error('Element not found: #subs-modal-content');
+    return;
+  }
+
+  titleEl.textContent = '👁 Submissions — ' + (title || '');
+
+  content.innerHTML = `
+    <div style="text-align:center;padding:24px">
+      <span class="spinner"></span>
+    </div>
+  `;
+
   openModal('modal-view-subs');
-  const snap = await db.ref('submissions').orderByChild('assignId').equalTo(assignId).get();
-  const subs = snap.val()||{};
-  const arr  = Object.entries(subs).sort((a,b)=>b[1].submittedAt-a[1].submittedAt);
-  if (!arr.length) { content.innerHTML='<div class="empty" style="padding:32px"><div class="empty-icon">📭</div><div class="empty-title">No submissions yet</div></div>'; return; }
-  content.innerHTML = `<div style="padding:12px 0;font-size:12px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:8px">${arr.length} submission${arr.length>1?'s':''}</div>` +
-    arr.map(([,s])=>`
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan2),var(--purple2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff">${(s.userName||'?').charAt(0).toUpperCase()}</div>
-          <div><div style="font-size:13px;font-weight:600">${s.userName||'Unknown'}</div><div style="font-size:10px;color:var(--text3)">${s.userEmail||''}</div></div>
-        </div>
-        <span style="font-size:11px;color:var(--text3)">📅 ${new Date(s.submittedAt).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
+
+  const snap = await db.ref('submissions')
+    .orderByChild('assignId')
+    .equalTo(assignId)
+    .get();
+
+  const subs = snap.val() || {};
+
+  const arr = Object.entries(subs)
+    .sort((a, b) => b[1].submittedAt - a[1].submittedAt);
+
+  if (!arr.length) {
+    content.innerHTML = `
+      <div class="empty" style="padding:32px">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No submissions yet</div>
       </div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.6;white-space:pre-wrap;background:var(--card);border-radius:var(--r);padding:10px;margin-bottom:6px">${escHtml(s.answer||'')}</div>
-      ${s.link?`<a href="${s.link}" target="_blank" style="font-size:11px;color:var(--cyan)">🔗 ${s.link}</a>`:''}
-    </div>`).join('');
+    `;
+    return;
+  }
+
+  content.innerHTML =
+    `<div style="
+      padding:12px 0;
+      font-size:12px;
+      color:var(--text3);
+      border-bottom:1px solid var(--border);
+      margin-bottom:8px">
+      ${arr.length} submission${arr.length > 1 ? 's' : ''}
+    </div>` +
+
+    arr.map(([, s]) => `
+      <div style="
+        background:var(--bg2);
+        border:1px solid var(--border);
+        border-radius:var(--r);
+        padding:14px;
+        margin-bottom:10px">
+
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          margin-bottom:8px;
+          flex-wrap:wrap;
+          gap:6px">
+
+          <div style="display:flex;align-items:center;gap:8px">
+
+            <div style="
+              width:28px;
+              height:28px;
+              border-radius:50%;
+              background:linear-gradient(135deg,var(--cyan2),var(--purple2));
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-weight:700;
+              font-size:11px;
+              color:#fff">
+              ${(s.userName || '?').charAt(0).toUpperCase()}
+            </div>
+
+            <div>
+              <div style="font-size:13px;font-weight:600">
+                ${s.userName || 'Unknown'}
+              </div>
+
+              <div style="font-size:10px;color:var(--text3)">
+                ${s.userEmail || ''}
+              </div>
+            </div>
+
+          </div>
+
+          <span style="font-size:11px;color:var(--text3)">
+            📅 ${new Date(s.submittedAt).toLocaleString('en-IN', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })}
+          </span>
+
+        </div>
+
+        <div style="
+          font-size:12px;
+          color:var(--text2);
+          line-height:1.6;
+          white-space:pre-wrap;
+          background:var(--card);
+          border-radius:var(--r);
+          padding:10px;
+          margin-bottom:6px">
+          ${escHtml(s.answer || '')}
+        </div>
+
+        ${s.link ? `
+          <a href="${s.link}"
+             target="_blank"
+             style="font-size:11px;color:var(--cyan)">
+            🔗 ${s.link}
+          </a>
+        ` : ''}
+
+      </div>
+    `).join('');
 }
 
 // ============================================================
