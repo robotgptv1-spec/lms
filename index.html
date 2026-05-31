@@ -193,18 +193,38 @@
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
   /* LEADERBOARD */
-  .lb-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:var(--r);margin-bottom:6px;background:var(--card);border:1px solid var(--border);transition:.15s}
-  .lb-row:hover{border-color:var(--border2)}
-  .lb-rank{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;width:32px;text-align:center}
-  .lb-rank.r1{color:var(--amber)}
-  .lb-rank.r2{color:var(--text2)}
+  .lb-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;transition:.2s}
+  .lb-card:hover{border-color:var(--border2)}
+  .lb-card.me{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,229,255,0.12)}
+  .lb-row{display:flex;align-items:center;gap:14px;padding:14px 18px;cursor:pointer;user-select:none}
+  .lb-rank{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;width:36px;text-align:center;flex-shrink:0}
+  .lb-rank.r1{color:var(--amber);text-shadow:0 0 12px rgba(255,196,0,.5)}
+  .lb-rank.r2{color:#c0c0c0}
   .lb-rank.r3{color:#cd7f32}
-  .lb-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan2),var(--purple2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
-  .lb-info{flex:1}
-  .lb-name{font-size:13px;font-weight:600}
-  .lb-score-bar{height:4px;background:var(--border);border-radius:2px;margin-top:5px;overflow:hidden}
-  .lb-score-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px;transition:.5s}
-  .lb-points{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--cyan)}
+  .lb-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--cyan2),var(--purple2))}
+  .lb-avatar.me{background:linear-gradient(135deg,var(--cyan),var(--green))}
+  .lb-main{flex:1;min-width:0}
+  .lb-name{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .lb-stats-row{display:flex;gap:14px;margin-top:5px;flex-wrap:wrap}
+  .lb-stat{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:3px}
+  .lb-score-bar{height:3px;background:var(--border);border-radius:2px;margin-top:6px;overflow:hidden;width:100%}
+  .lb-score-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px;transition:.6s}
+  .lb-right{text-align:right;flex-shrink:0}
+  .lb-points{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--cyan)}
+  .lb-pts-label{font-size:9px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+  .lb-chevron{font-size:11px;color:var(--text3);margin-top:4px;transition:.2s}
+  /* Results expansion */
+  .lb-results{display:none;border-top:1px solid var(--border);background:var(--bg2);padding:0}
+  .lb-results.open{display:block;animation:fadeIn .2s ease}
+  .lb-results-header{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:8px 18px;font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+  .lb-result-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;padding:10px 18px;border-bottom:1px solid rgba(42,42,85,.3);align-items:center;font-size:12px;transition:.15s}
+  .lb-result-row:last-child{border-bottom:none}
+  .lb-result-row:hover{background:rgba(0,229,255,.03)}
+  .lb-result-test{color:var(--text);font-weight:500}
+  .lb-result-score{font-family:'Orbitron',monospace;font-weight:700;font-size:13px}
+  .lb-result-pts{color:var(--text2);font-size:11px}
+  .lb-result-date{color:var(--text3);font-size:10px;white-space:nowrap}
+  .lb-no-results{padding:16px 18px;font-size:12px;color:var(--text3);text-align:center}
 
   /* PROGRESS */
   .progress-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px}
@@ -273,6 +293,86 @@
   .q-opt{padding:3px 10px;border-radius:20px;font-size:11px;background:var(--border);color:var(--text2)}
   .q-opt.correct{background:rgba(0,230,118,0.2);color:var(--green);border:1px solid rgba(0,230,118,0.3)}
 
+  /* ===== CHAT / DISCUSSION ===== */
+  .chat-wrap{display:flex;flex-direction:column;height:420px;border:1px solid var(--border);border-radius:var(--r2);overflow:hidden}
+  .chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+  .chat-bubble{max-width:78%;padding:10px 14px;border-radius:var(--r2);font-size:13px;line-height:1.5;position:relative;word-break:break-word}
+  .chat-bubble.mine{align-self:flex-end;background:linear-gradient(135deg,rgba(124,77,255,.25),rgba(0,184,212,.2));border:1px solid rgba(124,77,255,.3);border-bottom-right-radius:4px}
+  .chat-bubble.theirs{align-self:flex-start;background:var(--card2);border:1px solid var(--border);border-bottom-left-radius:4px}
+  .chat-meta{font-size:10px;color:var(--text3);margin-bottom:3px;display:flex;gap:6px;align-items:center}
+  .chat-input-row{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--border);background:var(--bg2)}
+  .chat-input-row input{flex:1}
+
+  /* ===== NOTES ===== */
+  .note-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative}
+  .note-card-title{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+  .note-body{font-size:12px;color:var(--text2);line-height:1.5;white-space:pre-wrap}
+  .note-date{font-size:10px;color:var(--text3);margin-top:6px}
+
+  /* ===== PROGRESS / ANALYTICS ===== */
+  .analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+  .mini-chart{display:flex;align-items:flex-end;gap:4px;height:60px}
+  .mini-bar{flex:1;background:linear-gradient(to top,var(--cyan),var(--purple));border-radius:3px 3px 0 0;transition:.4s;min-width:8px}
+
+  /* ===== DARK/LIGHT TOGGLE ===== */
+  .theme-toggle{width:38px;height:38px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:.2s}
+  .theme-toggle:hover{border-color:var(--cyan)}
+
+  /* ===== ASSIGNMENTS ===== */
+  .assign-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:12px}
+  .assign-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .assign-title{font-size:14px;font-weight:600}
+  .assign-due{font-size:11px;color:var(--amber);display:flex;align-items:center;gap:4px}
+  .assign-due.overdue{color:var(--red)}
+
+  /* ===== ATTENDANCE ===== */
+  .attend-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(42,42,85,.4);font-size:13px}
+  .attend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .attend-dot.present{background:var(--green)}
+  .attend-dot.absent{background:var(--red)}
+  .attend-dot.late{background:var(--amber)}
+
+  /* ===== DARK MODE TOGGLE ===== */
+  body.light-mode{--bg:#f0f2f8;--bg2:#e4e7f0;--bg3:#dde1ee;--card:#fff;--card2:#f5f7ff;--border:#c8ccdf;--border2:#b0b5cf;--text:#1a1a3a;--text2:#5a5a88;--text3:#9090bb}
+  body.light-mode body::before{background-image:linear-gradient(rgba(124,77,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(124,77,255,0.04) 1px,transparent 1px)}
+
+  /* ===== SEARCH BAR ===== */
+  .search-bar{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:6px 14px;flex:1;max-width:280px;transition:.2s}
+  .search-bar:focus-within{border-color:var(--cyan)}
+  .search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'Exo 2',sans-serif;font-size:13px;width:100%}
+  .search-bar span{color:var(--text3);font-size:14px}
+
+  /* ===== CERTIFICATE ===== */
+  .cert-wrap{background:linear-gradient(135deg,var(--bg2),var(--card));border:2px solid var(--amber);border-radius:var(--r2);padding:32px;text-align:center;position:relative;overflow:hidden}
+  .cert-wrap::before{content:'';position:absolute;inset:6px;border:1px solid rgba(255,196,0,.2);border-radius:10px;pointer-events:none}
+  .cert-title{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--amber),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+  .cert-sub{font-size:12px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
+  .cert-name{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px}
+  .cert-course{font-size:13px;color:var(--text2);margin-bottom:20px}
+  .cert-seal{font-size:48px;margin-bottom:8px}
+  .cert-date{font-size:11px;color:var(--text3)}
+
+  /* ===== EMOJI REACTIONS ===== */
+  .reactions{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .reaction-btn{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:4px}
+  .reaction-btn:hover,.reaction-btn.active{border-color:var(--cyan);background:rgba(0,229,255,.08)}
+  .reaction-count{font-size:11px;color:var(--text2)}
+
+  /* ===== RESOURCE LIBRARY ===== */
+  .resource-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);margin-bottom:8px;background:var(--card2);transition:.15s}
+  .resource-item:hover{border-color:var(--border2)}
+  .resource-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .resource-icon.pdf{background:rgba(255,23,68,.15)}
+  .resource-icon.video{background:rgba(124,77,255,.15)}
+  .resource-icon.link{background:rgba(0,229,255,.15)}
+  .resource-icon.doc{background:rgba(0,230,118,.15)}
+
+  /* ===== POLLS ===== */
+  .poll-opt{display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer}
+  .poll-bar-wrap{flex:1;background:var(--border);border-radius:3px;height:6px;overflow:hidden}
+  .poll-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px;transition:.5s}
+  .poll-pct{font-size:11px;color:var(--text2);min-width:34px;text-align:right}
+
   /* ===== NOTIFICATION BELL ===== */
   .notif-bell-wrap{position:relative;cursor:pointer}
   .notif-bell{width:38px;height:38px;background:var(--card2);border:1px solid var(--border);border-radius:var(--r);display:flex;align-items:center;justify-content:center;transition:.2s;font-size:17px}
@@ -320,19 +420,6 @@
   .celebrate-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--amber),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
   .celebrate-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
 
-
-  /* ===== ASSIGNMENTS ===== */
-  .assign-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:12px;transition:.15s}
-  .assign-card:hover{border-color:var(--border2)}
-  .assign-card.overdue{border-color:rgba(255,23,68,0.3)}
-  .assign-card.submitted{border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.03)}
-  .assign-title{font-size:15px;font-weight:600;margin-bottom:6px}
-  .assign-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
-  .assign-due{font-size:11px;display:flex;align-items:center;gap:4px}
-  .assign-due.overdue{color:var(--red)}
-  .assign-due.ok{color:var(--amber)}
-  .assign-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px}
-  .sub-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.5;margin-top:8px}
 </style>
 </head>
 <body>
@@ -451,10 +538,18 @@
 
     <!-- LEADERBOARD -->
     <div class="panel" id="panel-leaderboard">
-      <div class="card">
-        <div class="card-title">🏆 Global Leaderboard</div>
-        <div id="lb-list"></div>
+      <div class="section-header" style="margin-bottom:4px">
+        <div class="section-title">🏆 Global Leaderboard</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select id="lb-filter" onchange="loadLeaderboard()" style="width:auto;padding:6px 10px;font-size:12px">
+            <option value="points">By Total Points</option>
+            <option value="avg">By Avg Score %</option>
+            <option value="tests">By Tests Taken</option>
+          </select>
+          <span style="font-size:11px;color:var(--text3)">Click a user to see results</span>
+        </div>
       </div>
+      <div id="lb-list"></div>
     </div>
 
     <!-- MY RESULTS -->
@@ -501,6 +596,34 @@
     </div>
 
 
+    <!-- DISCUSSION / CHAT -->
+    <div class="panel" id="panel-chat">
+      <div class="section-header">
+        <div class="section-title">💬 Class Discussion</div>
+        <select id="chat-room-select" style="width:auto;padding:6px 12px" onchange="loadChatRoom()">
+          <option value="general">🌐 General</option>
+          <option value="doubt">❓ Doubt Corner</option>
+          <option value="announcements">📢 Announcements</option>
+        </select>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-msgs" id="chat-msgs"><div class="empty"><div class="empty-icon">💬</div><div class="empty-title">No messages yet</div></div></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChatMsg()">
+          <button class="btn btn-primary btn-sm" onclick="sendChatMsg()">Send ➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="panel" id="panel-notes">
+      <div class="section-header">
+        <div class="section-title">📓 My Notes</div>
+        <button class="btn btn-primary btn-sm" onclick="openAddNote()">+ New Note</button>
+      </div>
+      <div id="notes-list"></div>
+    </div>
+
     <!-- ASSIGNMENTS -->
     <div class="panel" id="panel-assignments">
       <div class="section-header">
@@ -508,6 +631,33 @@
         <div id="assign-admin-btns"></div>
       </div>
       <div id="assignments-list"></div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="panel" id="panel-analytics">
+      <div class="section-title" style="margin-bottom:16px">📊 My Analytics</div>
+      <div id="analytics-content"></div>
+    </div>
+
+    <!-- RESOURCES -->
+    <div class="panel" id="panel-resources">
+      <div class="section-header">
+        <div class="section-title">📚 Resource Library</div>
+        <div id="res-admin-btns"></div>
+      </div>
+      <div id="resources-list"></div>
+    </div>
+
+    <!-- ATTENDANCE -->
+    <div class="panel" id="panel-attendance">
+      <div class="section-title" style="margin-bottom:16px">✅ Attendance</div>
+      <div id="attendance-content"></div>
+    </div>
+
+    <!-- CERTIFICATES -->
+    <div class="panel" id="panel-certificates">
+      <div class="section-title" style="margin-bottom:16px">🏅 My Certificates</div>
+      <div id="certs-list"></div>
     </div>
 
   </div><!-- /main -->
@@ -648,44 +798,46 @@
 </div>
 
 
-<!-- Create Assignment Modal (Admin) -->
+<!-- Add Note Modal -->
+<div class="modal-overlay" id="modal-add-note">
+  <div class="modal">
+    <div class="modal-title">📓 Add Note</div>
+    <button class="modal-close" onclick="closeModal('modal-add-note')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group"><label>Title</label><input type="text" id="note-title" placeholder="Note title"></div>
+      <div class="form-group"><label>Content</label><textarea id="note-body" style="min-height:140px" placeholder="Write your notes here..."></textarea></div>
+      <div class="form-group"><label>Tag</label>
+        <select id="note-tag">
+          <option value="general">📌 General</option>
+          <option value="test">📝 Test Prep</option>
+          <option value="class">🎥 Class Notes</option>
+          <option value="important">⭐ Important</option>
+        </select>
+      </div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-note')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveNote()">Save Note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Assignment Modal (Admin) -->
 <div class="modal-overlay" id="modal-add-assign">
   <div class="modal">
     <div class="modal-title">📋 Create Assignment</div>
     <button class="modal-close" onclick="closeModal('modal-add-assign')">✕</button>
     <div style="display:flex;flex-direction:column;gap:14px">
-      <div class="form-group">
-        <label>Assignment Title *</label>
-        <input type="text" id="as-title" placeholder="e.g. Build a Calculator App">
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="as-desc" placeholder="Describe what students need to do..."></textarea>
-      </div>
+      <div class="form-group"><label>Title</label><input type="text" id="as-title" placeholder="Assignment title"></div>
+      <div class="form-group"><label>Description</label><textarea id="as-desc" placeholder="Describe the assignment..."></textarea></div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Subject</label>
-          <input type="text" id="as-subject" placeholder="e.g. Python, Web Dev">
-        </div>
-        <div class="form-group">
-          <label>Max Marks</label>
-          <input type="number" id="as-marks" value="100" min="1" max="1000">
-        </div>
+        <div class="form-group"><label>Subject</label><input type="text" id="as-subject" placeholder="e.g. Python"></div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="as-due"></div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Due Date</label>
-          <input type="date" id="as-due">
-        </div>
-        <div class="form-group">
-          <label>Due Time</label>
-          <input type="time" id="as-due-time">
-        </div>
-      </div>
-      <div id="as-msg" class="msg"></div>
+      <div class="form-group"><label>Max Marks</label><input type="number" id="as-marks" value="100" min="1"></div>
       <div class="flex gap-8" style="justify-content:flex-end">
         <button class="btn btn-secondary" onclick="closeModal('modal-add-assign')">Cancel</button>
-        <button class="btn btn-primary" id="as-save-btn" onclick="saveAssignment()">Create Assignment</button>
+        <button class="btn btn-primary" onclick="saveAssignment()">Create</button>
       </div>
     </div>
   </div>
@@ -697,16 +849,9 @@
     <div class="modal-title">📤 Submit Assignment</div>
     <button class="modal-close" onclick="closeModal('modal-submit-assign')">✕</button>
     <div style="display:flex;flex-direction:column;gap:14px">
-      <div id="submit-assign-info" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px;font-size:13px;color:var(--text2)"></div>
-      <div class="form-group">
-        <label>Your Answer / Work *</label>
-        <textarea id="submit-answer" style="min-height:130px" placeholder="Write your answer, explanation, or paste your code here..."></textarea>
-      </div>
-      <div class="form-group">
-        <label>Submission Link (optional)</label>
-        <input type="text" id="submit-link" placeholder="https://github.com/yourrepo or Google Drive link">
-      </div>
-      <div id="submit-msg" class="msg"></div>
+      <div id="submit-assign-info" style="font-size:13px;color:var(--text2)"></div>
+      <div class="form-group"><label>Your Answer / Notes</label><textarea id="submit-answer" style="min-height:120px" placeholder="Write your answer or paste a link..."></textarea></div>
+      <div class="form-group"><label>Submission Link (optional)</label><input type="text" id="submit-link" placeholder="https://github.com/..."></div>
       <div class="flex gap-8" style="justify-content:flex-end">
         <button class="btn btn-secondary" onclick="closeModal('modal-submit-assign')">Cancel</button>
         <button class="btn btn-primary" onclick="submitAssignment()">Submit ✓</button>
@@ -715,12 +860,31 @@
   </div>
 </div>
 
-<!-- View Submissions Modal (Admin) -->
-<div class="modal-overlay" id="modal-view-subs">
-  <div class="modal" style="width:640px">
-    <div class="modal-title" id="subs-modal-title">👁 Submissions</div>
-    <button class="modal-close" onclick="closeModal('modal-view-subs')">✕</button>
-    <div id="subs-modal-content" style="max-height:480px;overflow-y:auto"></div>
+<!-- Add Resource Modal (Admin) -->
+<div class="modal-overlay" id="modal-add-resource">
+  <div class="modal">
+    <div class="modal-title">📚 Add Resource</div>
+    <button class="modal-close" onclick="closeModal('modal-add-resource')">✕</button>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="form-group"><label>Title</label><input type="text" id="res-title" placeholder="Resource title"></div>
+      <div class="form-group"><label>Description</label><textarea id="res-desc" placeholder="Brief description..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Type</label>
+          <select id="res-type">
+            <option value="link">🔗 Link</option>
+            <option value="video">🎬 Video</option>
+            <option value="pdf">📄 PDF</option>
+            <option value="doc">📝 Document</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Subject</label><input type="text" id="res-subject" placeholder="e.g. Python"></div>
+      </div>
+      <div class="form-group"><label>URL</label><input type="text" id="res-url" placeholder="https://..."></div>
+      <div class="flex gap-8" style="justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="closeModal('modal-add-resource')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveResource()">Add Resource</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -863,9 +1027,15 @@ const studentNav = [
   {id:'dashboard', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>`, label:'Dashboard'},
   {id:'tests', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`, label:'MCQ Tests'},
   {id:'classes', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`, label:'Live Classes'},
-  {id:'leaderboard', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`, label:'Leaderboard'},
-  {id:'results', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`, label:'My Results'},
   {id:'assignments', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`, label:'Assignments'},
+  {id:'resources', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`, label:'Resources'},
+  {id:'chat', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, label:'Discussion'},
+  {id:'leaderboard', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`, label:'Leaderboard'},
+  {id:'analytics', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`, label:'Analytics'},
+  {id:'notes', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`, label:'My Notes'},
+  {id:'certificates', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`, label:'Certificates'},
+  {id:'results', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`, label:'My Results'},
+  {id:'attendance', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`, label:'Attendance'},
   {id:'profile', icon:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`, label:'Profile'},
 ];
 const adminExtra = [
@@ -905,18 +1075,59 @@ function navigateTo(id) {
   if (panel) panel.classList.add('active');
   const titles = {
     dashboard:'Dashboard', tests:'MCQ Tests', classes:'Live Classes',
-    leaderboard:'Leaderboard', results:'My Results', profile:'Profile',
-    users:'Manage Users', questions:'Question Bank', 'take-test':'Take Test', assignments:'📋 Assignments'
+    leaderboard:'🏆 Leaderboard', results:'My Results', profile:'Profile',
+    users:'Manage Users', questions:'Question Bank', 'take-test':'Take Test',
+    chat:'💬 Discussion', notes:'📓 My Notes', assignments:'📋 Assignments',
+    analytics:'📊 Analytics', resources:'📚 Resources', attendance:'✅ Attendance',
+    certificates:'🏅 Certificates'
   };
   document.getElementById('topbar-title').textContent = titles[id]||id;
-  document.getElementById('topbar-actions').innerHTML='';
-  // load data for panel
+  // always re-render bell + theme toggle in actions
+  const actions = document.getElementById('topbar-actions');
+  const bellWrap = document.getElementById('notif-bell-wrap');
+  actions.innerHTML = '';
+  // search bar for tests/resources/classes
+  if (['tests','resources','classes'].includes(id)) {
+    actions.innerHTML += `<div class="search-bar"><span>🔍</span><input type="text" placeholder="Search..." oninput="handleSearch(this.value,'${id}')"></div>`;
+  }
+  if (bellWrap) actions.appendChild(bellWrap);
+  // theme toggle
+  const tt = document.createElement('div');
+  tt.className='theme-toggle'; tt.title='Toggle Theme';
+  tt.textContent = document.body.classList.contains('light-mode')?'☀️':'🌙';
+  tt.onclick = toggleTheme;
+  actions.appendChild(tt);
+
   const loaders = {
     dashboard: loadDashboard, tests: loadTests, classes: loadClasses,
     leaderboard: loadLeaderboard, results: loadResults, profile: loadProfile,
-    users: loadUsers, questions: loadQuestions, assignments: loadAssignments
+    users: loadUsers, questions: loadQuestions, chat: loadChat,
+    notes: loadNotes, assignments: loadAssignments, analytics: loadAnalytics,
+    resources: loadResources, attendance: loadAttendance, certificates: loadCertificates
   };
   if (loaders[id]) loaders[id]();
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('light-mode');
+  document.querySelectorAll('.theme-toggle').forEach(t=>t.textContent=document.body.classList.contains('light-mode')?'☀️':'🌙');
+}
+
+function handleSearch(val, panel) {
+  const v = val.toLowerCase();
+  if (panel==='tests') {
+    document.querySelectorAll('#tests-list .card').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  } else if (panel==='resources') {
+    document.querySelectorAll('#resources-list .resource-item').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  } else if (panel==='classes') {
+    document.querySelectorAll('#classes-list .class-card').forEach(c=>{
+      c.style.display = c.textContent.toLowerCase().includes(v)?'':'none';
+    });
+  }
 }
 
 // ============================================================
@@ -957,12 +1168,66 @@ async function loadDashboard() {
   const userCount = Object.keys(users).length;
   const myPoints = currentUserData?.points || 0;
 
-  document.getElementById('dash-stats').innerHTML = `
-    <div class="stat-card s-cyan"><div class="stat-num c-cyan">${testCount}</div><div class="stat-label">Total Tests</div></div>
-    <div class="stat-card s-purple"><div class="stat-num c-purple">${classCount}</div><div class="stat-label">Live Classes</div></div>
-    <div class="stat-card s-green"><div class="stat-num c-green">${isAdmin?userCount:Object.keys(myResults).length}</div><div class="stat-label">${isAdmin?'Students':'Tests Done'}</div></div>
-    <div class="stat-card s-amber"><div class="stat-num c-amber">${myPoints}</div><div class="stat-label">My Points</div></div>
-  `;
+
+  // ── build domain map ──
+  const students   = Object.values(users).filter(u => u.role !== 'admin');
+  const studentCount = students.length;
+  const weekAgo    = Date.now() - 7*24*60*60*1000;
+  const newStudents = students.filter(u => (u.joinedAt||0) > weekAgo).length;
+  const domainMap  = {};
+  students.forEach(u => {
+    const d = (u.email||'').includes('@') ? u.email.split('@')[1].toLowerCase() : 'unknown';
+    domainMap[d] = (domainMap[d]||0) + 1;
+  });
+  const domainArr  = Object.entries(domainMap).sort((a,b)=>b[1]-a[1]);
+  const domainColor = d => d.includes('gmail')?'var(--red)':d.includes('yahoo')?'var(--purple)':d.includes('hotmail')||d.includes('outlook')?'var(--cyan)':d.includes('edu')||d.includes('ac.')?'var(--green)':'var(--amber)';
+
+  if (isAdmin) {
+    document.getElementById('dash-stats').innerHTML = `
+      <div class="stat-card s-cyan"><div class="stat-num c-cyan">${studentCount}</div><div class="stat-label">Total Students</div></div>
+      <div class="stat-card s-green"><div class="stat-num c-green">${newStudents}</div><div class="stat-label">New This Week</div></div>
+      <div class="stat-card s-purple"><div class="stat-num c-purple">${testCount}</div><div class="stat-label">Tests Created</div></div>
+      <div class="stat-card s-amber"><div class="stat-num c-amber">${classCount}</div><div class="stat-label">Classes</div></div>`;
+  } else {
+    document.getElementById('dash-stats').innerHTML = `
+      <div class="stat-card s-cyan"><div class="stat-num c-cyan">${testCount}</div><div class="stat-label">Total Tests</div></div>
+      <div class="stat-card s-purple"><div class="stat-num c-purple">${classCount}</div><div class="stat-label">Live Classes</div></div>
+      <div class="stat-card s-green"><div class="stat-num c-green">${Object.keys(myResults).length}</div><div class="stat-label">Tests Done</div></div>
+      <div class="stat-card s-amber"><div class="stat-num c-amber">${myPoints}</div><div class="stat-label">My Points</div></div>`;
+  }
+
+  // ── email domain card (admin) ──
+  let domainCardEl = document.getElementById('dash-domain-card');
+  if (!domainCardEl) {
+    domainCardEl = document.createElement('div');
+    domainCardEl.id = 'dash-domain-card';
+    const grid2 = document.querySelector('#panel-dashboard .grid-2');
+    if (grid2) grid2.parentNode.insertBefore(domainCardEl, grid2);
+  }
+  if (isAdmin && domainArr.length) {
+    const maxD = domainArr[0][1];
+    domainCardEl.innerHTML = `<div class="card">
+      <div class="card-title">📧 Students by Email Domain
+        <span style="margin-left:auto;font-size:11px;color:var(--text3);font-family:'Exo 2',sans-serif;font-weight:400;letter-spacing:0">${studentCount} students · ${domainArr.length} domain${domainArr.length>1?'s':''}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${domainArr.map(([domain,count])=>{
+          const pct=Math.round(count/studentCount*100), color=domainColor(domain);
+          return `<div style="display:flex;align-items:center;gap:12px">
+            <div style="min-width:130px;font-size:12px;font-weight:600;color:var(--text)">@${domain}</div>
+            <div style="flex:1;background:var(--border);border-radius:3px;height:8px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;transition:.5s"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;min-width:70px;justify-content:flex-end">
+              <span style="font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:${color}">${count}</span>
+              <span style="font-size:10px;color:var(--text3)">${pct}%</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  } else { domainCardEl.innerHTML = ''; }
+
 
   // Recent tests
   const testArr = Object.entries(tests).slice(-3).reverse();
@@ -994,34 +1259,67 @@ async function loadTests() {
   if (isAdmin) {
     adminBtns.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openCreateTest()">+ Create Test</button>`;
   }
-  const snap = await db.ref('tests').get();
-  const tests = snap.val()||{};
-  const list = document.getElementById('tests-list');
-  const arr = Object.entries(tests);
+
+  // Fetch tests, questions, AND this user's past results in parallel
+  const [testsSnap, qSnap, resultsSnap] = await Promise.all([
+    db.ref('tests').get(),
+    db.ref('questions').get(),
+    db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get()
+  ]);
+
+  const tests = testsSnap.val() || {};
+  const qs    = qSnap.val()    || {};
+  const list  = document.getElementById('tests-list');
+  const arr   = Object.entries(tests);
+
   if (!arr.length) {
     list.innerHTML = `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">No tests available</div><div class="empty-sub">Admin can create tests</div></div>`;
     return;
   }
-  // get question counts
-  const qSnap = await db.ref('questions').get();
-  const qs = qSnap.val()||{};
-  list.innerHTML = arr.map(([id,t])=>{
-    const qCount = Object.values(qs).filter(q=>q.testId===id).length;
+
+  // Build a Set of testIds the current user has already submitted
+  const doneMap = {}; // testId → result object
+  if (resultsSnap.exists()) {
+    Object.values(resultsSnap.val()).forEach(r => {
+      doneMap[r.testId] = r; // keep latest if multiple (shouldn't happen after fix)
+    });
+  }
+
+  list.innerHTML = arr.map(([id, t]) => {
+    const qCount  = Object.values(qs).filter(q => q.testId === id).length;
+    const done    = !isAdmin && doneMap[id]; // admin can always retake for review
+    const pct     = done ? done.percentage || 0 : null;
+    const pctColor = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+    const dateStr  = done ? new Date(done.submittedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '';
+
     return `
-    <div class="card mb-16" style="margin-bottom:14px">
+    <div class="card" style="margin-bottom:14px;${done?'border-color:rgba(0,230,118,0.25)':''}">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
         <div style="flex:1">
-          <div style="font-size:15px;font-weight:600;margin-bottom:6px">${t.title}</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
-            ${t.subject?`<span class="badge badge-purple">${t.subject}</span>`:''}
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap">
+            <span style="font-size:15px;font-weight:600">${t.title}</span>
+            ${done ? `<span class="badge badge-green">✓ Completed</span>` : '<span class="badge badge-amber">Not Attempted</span>'}
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+            ${t.subject ? `<span class="badge badge-purple">${t.subject}</span>` : ''}
             <span class="badge badge-cyan">${qCount} questions</span>
             <span class="badge badge-amber">${t.duration||30} min</span>
           </div>
-          ${t.description?`<div style="font-size:12px;color:var(--text2)">${t.description}</div>`:''}
+          ${t.description ? `<div style="font-size:12px;color:var(--text2);margin-bottom:8px">${t.description}</div>` : ''}
+          ${done ? `
+            <div style="display:flex;align-items:center;gap:12px;background:rgba(0,230,118,0.06);border:1px solid rgba(0,230,118,0.2);border-radius:var(--r);padding:8px 12px;flex-wrap:wrap">
+              <span style="font-size:11px;color:var(--text3)">Your Score:</span>
+              <span style="font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:${pctColor}">${pct}%</span>
+              <span style="font-size:12px;color:var(--text2)">${done.score}/${done.maxScore} pts</span>
+              <span style="font-size:10px;color:var(--text3);margin-left:auto">📅 ${dateStr}</span>
+            </div>` : ''}
         </div>
-        <div class="flex gap-8" style="flex-shrink:0;flex-wrap:wrap">
-          <button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>
-          ${isAdmin?`<button class="btn btn-secondary btn-sm" onclick="openEditTest('${id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteTest('${id}')">🗑️</button>`:''}
+        <div class="flex gap-8" style="flex-shrink:0;flex-wrap:wrap;align-items:flex-start">
+          ${done && !isAdmin
+            ? `<button class="btn btn-secondary btn-sm" disabled title="Already submitted" style="opacity:.5;cursor:not-allowed">✓ Done</button>`
+            : `<button class="btn btn-primary btn-sm" onclick="startTest('${id}')">▶ Start</button>`
+          }
+          ${isAdmin ? `<button class="btn btn-secondary btn-sm" onclick="openEditTest('${id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteTest('${id}')">🗑️</button>` : ''}
         </div>
       </div>
     </div>`;
@@ -1093,6 +1391,32 @@ async function openEditTest(id) {
 // TAKE TEST
 // ============================================================
 async function startTest(testId) {
+  // ── Block if student already submitted this test ──
+  if (!isAdmin) {
+    const prevSnap = await db.ref('results')
+      .orderByChild('uid').equalTo(currentUser.uid).get();
+    if (prevSnap.exists()) {
+      const already = Object.values(prevSnap.val()).some(r => r.testId === testId);
+      if (already) {
+        toast('Aap yeh test pehle de chuke ho! ✋', 'error');
+        // Show a locked card briefly
+        const tc = document.getElementById('take-test-content');
+        if (tc) tc.innerHTML = `
+          <div style="text-align:center;padding:60px 24px">
+            <div style="font-size:56px;margin-bottom:16px">🔒</div>
+            <div style="font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--red);margin-bottom:8px">Test Already Submitted!</div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:24px">Yeh test aap pehle de chuke ho.<br>Har test sirf ek baar diya ja sakta hai.</div>
+            <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="navigateTo('results')">📊 Apne Results Dekho</button>
+              <button class="btn btn-secondary" onclick="navigateTo('tests')">← Tests Wapas Jao</button>
+            </div>
+          </div>`;
+        navigateTo('take-test');
+        return;
+      }
+    }
+  }
+
   const [testSnap, qSnap] = await Promise.all([
     db.ref('tests/'+testId).get(),
     db.ref('questions').orderByChild('testId').equalTo(testId).get()
@@ -1501,45 +1825,116 @@ async function deleteClass(id) {
 // LEADERBOARD
 // ============================================================
 async function loadLeaderboard() {
-  const snap = await db.ref('users').orderByChild('points').get();
-  const users = snap.val()||{};
-  const arr = Object.entries(users).filter(([,u])=>u.role!='admin'||(u.points>0))
-    .map(([id,u])=>({id,...u}))
-    .sort((a,b)=>(b.points||0)-(a.points||0));
-  const maxPts = arr[0]?.points||1;
+  const [usersSnap, resultsSnap] = await Promise.all([
+    db.ref('users').get(),
+    db.ref('results').get()
+  ]);
+  const users = usersSnap.val()||{};
+  const allResults = resultsSnap.val()||{};
+
+  // Build per-user results map
+  const userResults = {}; // uid -> [result, ...]
+  Object.values(allResults).forEach(r => {
+    if (!userResults[r.uid]) userResults[r.uid] = [];
+    userResults[r.uid].push(r);
+  });
+
+  // Sort each user's results newest first
+  Object.keys(userResults).forEach(uid => {
+    userResults[uid].sort((a,b) => b.submittedAt - a.submittedAt);
+  });
+
+  // Build user array with computed avg
+  let arr = Object.entries(users)
+    .filter(([,u]) => u.role !== 'admin' || (u.points > 0))
+    .map(([id,u]) => {
+      const res = userResults[id] || [];
+      const avg = res.length ? Math.round(res.reduce((s,r)=>s+(r.percentage||0),0)/res.length) : 0;
+      return { id, ...u, results: res, avg };
+    });
+
+  // Sort by selected filter
+  const filter = document.getElementById('lb-filter')?.value || 'points';
+  if (filter === 'avg') arr.sort((a,b) => b.avg - a.avg);
+  else if (filter === 'tests') arr.sort((a,b) => (b.testsCompleted||0) - (a.testsCompleted||0));
+  else arr.sort((a,b) => (b.points||0) - (a.points||0));
+
+  const maxPts = Math.max(...arr.map(u=>u.points||0), 1);
   const list = document.getElementById('lb-list');
-  if(!arr.length){
-    list.innerHTML=`<div class="empty"><div class="empty-title">No data yet</div></div>`;
+
+  if (!arr.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-icon">🏆</div><div class="empty-title">No students yet</div></div>`;
     return;
   }
-  // Check current user rank for celebration
+
+  // Celebration check
   const myRank = arr.findIndex(u => u.id === currentUser.uid);
   if (myRank !== -1 && myRank < 3) {
-    const prevRankKey = 'lb_rank_' + currentUser.uid;
-    const prevRank = parseInt(sessionStorage.getItem(prevRankKey) || '999');
-    if (myRank < prevRank) {
-      sessionStorage.setItem(prevRankKey, myRank);
-      setTimeout(() => checkLeaderboardPosition(myRank + 1), 600);
-    }
-    sessionStorage.setItem(prevRankKey, myRank);
+    const key = 'lb_rank_' + currentUser.uid;
+    const prev = parseInt(sessionStorage.getItem(key)||'999');
+    if (myRank < prev) { sessionStorage.setItem(key, myRank); setTimeout(()=>checkLeaderboardPosition(myRank+1),600); }
+    sessionStorage.setItem(key, myRank);
   }
-  list.innerHTML = arr.map((u,i)=>{
-    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
+
+  list.innerHTML = arr.map((u, i) => {
+    const isMe = u.id === currentUser.uid;
     const medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
-    const pct = Math.round((u.points||0)/maxPts*100);
-    const isMe = u.id===currentUser.uid;
+    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const barW = Math.round((u.points||0)/maxPts*100);
+    const avgColor = u.avg>=70?'var(--green)':u.avg>=50?'var(--amber)':'var(--red)';
+    const resultsHTML = u.results.length
+      ? `<div class="lb-results-header">
+           <span>Test Name</span><span>Score</span><span>Points</span><span>Date</span>
+         </div>` +
+        u.results.map(r => {
+          const pct = r.percentage||0;
+          const col = pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+          const d = new Date(r.submittedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+          return `<div class="lb-result-row">
+            <div class="lb-result-test">📝 ${r.testTitle||'Test'}</div>
+            <div class="lb-result-score" style="color:${col}">${pct}%</div>
+            <div class="lb-result-pts">+${r.score||0} pts</div>
+            <div class="lb-result-date">${d}</div>
+          </div>`;
+        }).join('')
+      : `<div class="lb-no-results">No tests taken yet</div>`;
+
     return `
-    <div class="lb-row" style="${isMe?'border-color:var(--cyan);background:rgba(0,229,255,0.05)':''}">
-      <div class="lb-rank ${rankClass}">${medal||('#'+(i+1))}</div>
-      <div class="lb-avatar" style="${isMe?'background:linear-gradient(135deg,var(--cyan),var(--green))':''}">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div class="lb-info">
-        <div class="lb-name">${u.name||'Unknown'} ${isMe?'<span class="badge badge-cyan" style="margin-left:6px">You</span>':''}</div>
-        <div class="lb-score-bar"><div class="lb-score-fill" style="width:${pct}%"></div></div>
-        <div style="font-size:10px;color:var(--text3);margin-top:2px">${u.testsCompleted||0} tests completed</div>
+    <div class="lb-card ${isMe?'me':''}">
+      <div class="lb-row" onclick="toggleLbResults('lbr-${u.id}',this)">
+        <div class="lb-rank ${rankClass}">${medal||('#'+(i+1))}</div>
+        <div class="lb-avatar ${isMe?'me':''}">${(u.name||'?').charAt(0).toUpperCase()}</div>
+        <div class="lb-main">
+          <div class="lb-name">
+            ${u.name||'Unknown'}
+            ${isMe?'<span class="badge badge-cyan">You</span>':''}
+            ${i===0?'<span class="badge badge-amber">👑 Top</span>':''}
+          </div>
+          <div class="lb-stats-row">
+            <span class="lb-stat">📝 ${u.testsCompleted||0} tests</span>
+            <span class="lb-stat" style="color:${avgColor}">📊 ${u.avg}% avg</span>
+            ${u.results.length?`<span class="lb-stat">🏆 Best: ${Math.max(...u.results.map(r=>r.percentage||0))}%</span>`:''}
+          </div>
+          <div class="lb-score-bar"><div class="lb-score-fill" style="width:${barW}%"></div></div>
+        </div>
+        <div class="lb-right">
+          <div class="lb-points">${u.points||0}</div>
+          <div class="lb-pts-label">Points</div>
+          <div class="lb-chevron" id="chev-${u.id}">▼ results</div>
+        </div>
       </div>
-      <div class="lb-points">${u.points||0}</div>
+      <div class="lb-results" id="lbr-${u.id}">${resultsHTML}</div>
     </div>`;
   }).join('');
+}
+
+function toggleLbResults(id, rowEl) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  const isOpen = panel.classList.toggle('open');
+  const uid = id.replace('lbr-','');
+  const chev = document.getElementById('chev-'+uid);
+  if (chev) chev.textContent = isOpen ? '▲ hide' : '▼ results';
 }
 
 // ============================================================
@@ -1976,307 +2371,610 @@ function celebrateScore(pct, userName) {
   }
 }
 
+// ============================================================
+// DISCUSSION / CHAT
+// ============================================================
+let chatListener = null;
+function loadChat() {
+  loadChatRoom();
+}
+function loadChatRoom() {
+  const room = document.getElementById('chat-room-select')?.value || 'general';
+  if (chatListener) db.ref('chat/'+room).off('value', chatListener);
+  const msgsEl = document.getElementById('chat-msgs');
+  msgsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3)"><span class="spinner"></span></div>';
+  chatListener = db.ref('chat/'+room).limitToLast(60).on('value', snap => {
+    const msgs = snap.val() || {};
+    const arr = Object.entries(msgs).sort((a,b)=>a[1].ts-b[1].ts);
+    if (!arr.length) { msgsEl.innerHTML='<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">No messages yet. Start the conversation!</div></div>'; return; }
+    msgsEl.innerHTML = arr.map(([,m]) => {
+      const mine = m.uid === currentUser?.uid;
+      return `<div>
+        <div class="chat-meta" style="${mine?'justify-content:flex-end':''}">
+          <span>${mine?'You':m.name}</span>
+          <span>${getTimeAgo(m.ts)}</span>
+        </div>
+        <div class="chat-bubble ${mine?'mine':'theirs'}">${escHtml(m.text)}</div>
+      </div>`;
+    }).join('');
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  });
+}
+
+async function sendChatMsg() {
+  const inp = document.getElementById('chat-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  const room = document.getElementById('chat-room-select')?.value || 'general';
+  inp.value = '';
+  await db.ref('chat/'+room).push({
+    text, uid: currentUser.uid, name: currentUserData?.name||'Unknown', ts: Date.now()
+  });
+}
+
+function escHtml(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ============================================================
+// NOTES
+// ============================================================
+function openAddNote() {
+  document.getElementById('note-title').value='';
+  document.getElementById('note-body').value='';
+  document.getElementById('note-tag').value='general';
+  openModal('modal-add-note');
+}
+
+async function saveNote() {
+  const title = document.getElementById('note-title').value.trim();
+  const body = document.getElementById('note-body').value.trim();
+  const tag = document.getElementById('note-tag').value;
+  if (!title||!body) return toast('Fill title and content','error');
+  await db.ref('notes/'+currentUser.uid).push({title,body,tag,createdAt:Date.now()});
+  closeModal('modal-add-note');
+  toast('Note saved! 📓','success');
+  loadNotes();
+}
+
+async function loadNotes() {
+  const snap = await db.ref('notes/'+currentUser.uid).get();
+  const notes = snap.val()||{};
+  const arr = Object.entries(notes).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+  const tagColors = {general:'badge-cyan',test:'badge-amber',class:'badge-purple',important:'badge-green'};
+  const tagEmoji = {general:'📌',test:'📝',class:'🎥',important:'⭐'};
+  const list = document.getElementById('notes-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📓</div><div class="empty-title">No notes yet</div><div class="empty-sub">Create your first note!</div></div>'; return; }
+  list.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px">` +
+    arr.map(([id,n])=>`
+      <div class="note-card">
+        <div class="note-card-title">
+          <span>${escHtml(n.title)}</span>
+          <button class="btn btn-danger btn-sm" style="padding:3px 8px;font-size:10px" onclick="deleteNote('${id}')">✕</button>
+        </div>
+        <span class="badge ${tagColors[n.tag]||'badge-cyan'}" style="margin-bottom:8px;display:inline-block">${tagEmoji[n.tag]||''} ${n.tag}</span>
+        <div class="note-body">${escHtml(n.body)}</div>
+        <div class="note-date">${new Date(n.createdAt).toLocaleDateString()}</div>
+      </div>`).join('') + '</div>';
+}
+
+async function deleteNote(id) {
+  await db.ref('notes/'+currentUser.uid+'/'+id).remove();
+  toast('Note deleted','success');
+  loadNotes();
+}
 
 // ============================================================
 // ASSIGNMENTS
+
 // ============================================================
-let _currentAssignId = null;
-let _editingAssignId = null;
-
+let currentAssignId = null;
 async function loadAssignments() {
-  // Admin button
-  const adminBtns = document.getElementById('assign-admin-btns');
-  if (isAdmin) {
-    adminBtns.innerHTML = `<button class="btn btn-primary btn-sm" onclick="openCreateAssignment()">+ Create Assignment</button>`;
-  } else {
-    adminBtns.innerHTML = '';
-  }
-
-  const list = document.getElementById('assignments-list');
-  list.innerHTML = '<div style="text-align:center;padding:24px"><span class="spinner"></span></div>';
-
-  // Fetch assignments + this user's submissions in parallel
+  if (isAdmin) document.getElementById('assign-admin-btns').innerHTML=`<button class="btn btn-primary btn-sm" onclick="openModal('modal-add-assign')">+ Create Assignment</button>`;
   const [aSnap, subSnap] = await Promise.all([
     db.ref('assignments').get(),
     db.ref('submissions').orderByChild('uid').equalTo(currentUser.uid).get()
   ]);
-
-  const assigns = aSnap.val() || {};
-  const mySubs  = subSnap.val() || {};
-
-  // Build map: assignId → my submission
-  const subMap = {};
-  Object.values(mySubs).forEach(s => { subMap[s.assignId] = s; });
-
-  const arr = Object.entries(assigns).sort((a,b) => {
-    // Sort: pending first, then by due date
-    const aDone = !!subMap[a[0]], bDone = !!subMap[b[0]];
-    if (aDone !== bDone) return aDone ? 1 : -1;
-    return (a[1].dueDate || '') > (b[1].dueDate || '') ? 1 : -1;
-  });
-
-  if (!arr.length) {
-    list.innerHTML = `<div class="empty">
-      <div class="empty-icon">📋</div>
-      <div class="empty-title">No assignments yet</div>
-      <div class="empty-sub">${isAdmin ? 'Create your first assignment using the button above.' : 'No assignments have been given yet.'}</div>
-    </div>`;
-    return;
-  }
-
-  const today = new Date().toISOString().split('T')[0];
-
-  list.innerHTML = arr.map(([id, a]) => {
-    const mySub    = subMap[id];
-    const overdue  = a.dueDate && a.dueDate < today && !mySub;
-    const cardClass = mySub ? 'submitted' : overdue ? 'overdue' : '';
-    const dueColor  = overdue ? 'overdue' : 'ok';
-    const dueDateFmt = a.dueDate
-      ? new Date(a.dueDate + 'T00:00:00').toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'})
-      : '';
-
-    // Count submissions (admin only via separate fetch — show placeholder)
+  const assigns = aSnap.val()||{};
+  const mySubs = subSnap.val()||{};
+  const subMap = {}; // assignId -> submission
+  Object.values(mySubs).forEach(s=>{ subMap[s.assignId]=s; });
+  const arr = Object.entries(assigns).sort((a,b)=>a[1].dueDate>b[1].dueDate?1:-1);
+  const list = document.getElementById('assignments-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No assignments yet</div></div>'; return; }
+  list.innerHTML = arr.map(([id,a])=>{
+    const overdue = a.dueDate && new Date(a.dueDate) < new Date();
+    const sub = subMap[id];
     return `
-    <div class="assign-card ${cardClass}" id="acard-${id}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap">
-        <div style="flex:1;min-width:0">
+    <div class="assign-card">
+      <div class="assign-header">
+        <div>
           <div class="assign-title">${escHtml(a.title)}</div>
-          <div class="assign-meta">
-            ${a.subject ? `<span class="badge badge-purple">${a.subject}</span>` : ''}
-            <span class="badge badge-cyan">${a.maxMarks || 100} marks</span>
-            ${a.dueDate ? `<span class="assign-due ${dueColor}">⏰ Due: ${dueDateFmt}${a.dueTime ? ' ' + a.dueTime : ''}${overdue ? ' (Overdue)' : ''}</span>` : ''}
-            ${mySub ? `<span class="badge badge-green">✓ Submitted</span>` : overdue ? `<span class="badge badge-red">Overdue</span>` : `<span class="badge badge-amber">Pending</span>`}
-          </div>
-          ${a.description ? `<div class="assign-desc">${escHtml(a.description)}</div>` : ''}
-          ${mySub ? `
-            <div class="sub-preview">
-              <div style="font-size:10px;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">✓ Your Submission · ${new Date(mySub.submittedAt).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</div>
-              <div>${escHtml((mySub.answer||'').substring(0,200))}${(mySub.answer||'').length>200?'…':''}</div>
-              ${mySub.link ? `<div style="margin-top:6px"><a href="${mySub.link}" target="_blank" style="color:var(--cyan);font-size:11px">🔗 ${mySub.link}</a></div>` : ''}
-            </div>` : ''}
+          <div style="font-size:12px;color:var(--text2);margin-top:4px">${a.subject||''} · ${a.maxMarks||100} marks</div>
         </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0;align-items:flex-start">
-          ${!isAdmin && !mySub && !overdue ? `<button class="btn btn-primary btn-sm" onclick="openSubmitAssign('${id}','${escHtml(a.title)}','${a.maxMarks||100}','${dueDateFmt}')">📤 Submit</button>` : ''}
-          ${!isAdmin && mySub ? `<button class="btn btn-secondary btn-sm" disabled style="opacity:.5">✓ Done</button>` : ''}
-          ${isAdmin ? `
-            <button class="btn btn-secondary btn-sm" onclick="viewSubmissions('${id}','${escHtml(a.title)}')">👁 Subs</button>
-            <button class="btn btn-secondary btn-sm" onclick="openEditAssignment('${id}')">✏️</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteAssignment('${id}')">🗑</button>` : ''}
+        <div style="text-align:right">
+          ${a.dueDate?`<div class="assign-due ${overdue&&!sub?'overdue':''}">⏰ Due: ${a.dueDate}</div>`:''}
+          ${sub?`<span class="badge badge-green">✓ Submitted</span>`:(overdue?`<span class="badge badge-red">Overdue</span>`:`<span class="badge badge-amber">Pending</span>`)}
         </div>
+      </div>
+      ${a.description?`<div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">${escHtml(a.description)}</div>`:''}
+      <div class="flex gap-8" style="flex-wrap:wrap">
+        ${!sub&&!isAdmin?`<button class="btn btn-primary btn-sm" onclick="openSubmitAssign('${id}','${escHtml(a.title)}')">Submit ↑</button>`:''}
+        ${sub?`<div style="font-size:11px;color:var(--green)">✓ Submitted on ${new Date(sub.submittedAt).toLocaleDateString()}</div>`:''}
+        ${isAdmin?`<button class="btn btn-danger btn-sm" onclick="deleteAssignment('${id}')">🗑 Delete</button><button class="btn btn-secondary btn-sm" onclick="viewSubmissions('${id}')">👁 Submissions</button>`:''}
       </div>
     </div>`;
   }).join('');
 }
 
-// ── OPEN CREATE MODAL ──
+function openSubmitAssign(id, title) {
+  _currentAssignId = id;
+  document.getElementById('submit-assign-info').textContent = 'Assignment: '+title;
+  document.getElementById('submit-answer').value='';
+  document.getElementById('submit-link').value='';
+  openModal('modal-submit-assign');
+}
+
+async function submitAssignment() {
+  const answer = document.getElementById('submit-answer').value.trim();
+  const link = document.getElementById('submit-link').value.trim();
+  if (!answer) return toast('Write your answer first','error');
+  await db.ref('submissions').push({
+    uid:currentUser.uid, userName:currentUserData?.name||'Unknown',
+    assignId:_currentAssignId, answer, link, submittedAt:Date.now()
+  });
+  // points
+  const pts = (currentUserData?.points||0)+5;
+  await db.ref('users/'+currentUser.uid+'/points').set(pts);
+  currentUserData.points=pts;
+  closeModal('modal-submit-assign');
+  toast('Assignment submitted! +5 pts 🎉','success');
+  loadAssignments();
+}
+
+let _currentAssignId = null;
+let _editingAssignId = null;
+
 function openCreateAssignment() {
   _editingAssignId = null;
-  document.getElementById('as-title').value = '';
-  document.getElementById('as-desc').value  = '';
-  document.getElementById('as-subject').value = '';
-  document.getElementById('as-marks').value   = '100';
-  document.getElementById('as-due').value      = '';
-  document.getElementById('as-due-time').value = '';
-  document.getElementById('as-msg').className  = 'msg';
-  document.getElementById('as-save-btn').textContent = 'Create Assignment';
+  ['as-title','as-desc','as-subject'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('as-marks').value = '100';
+  document.getElementById('as-due').value = '';
+  if (document.getElementById('as-due-time')) document.getElementById('as-due-time').value = '';
+  document.getElementById('as-msg').className = 'msg';
+  const btn = document.getElementById('as-save-btn');
+  if (btn) btn.textContent = 'Create Assignment';
   openModal('modal-add-assign');
   setTimeout(() => document.getElementById('as-title').focus(), 100);
 }
 
-// ── OPEN EDIT MODAL ──
 async function openEditAssignment(id) {
-  const snap = await db.ref('assignments/' + id).get();
+  const snap = await db.ref('assignments/'+id).get();
   if (!snap.exists()) return toast('Assignment not found','error');
   const a = snap.val();
   _editingAssignId = id;
-  document.getElementById('as-title').value    = a.title || '';
-  document.getElementById('as-desc').value     = a.description || '';
-  document.getElementById('as-subject').value  = a.subject || '';
-  document.getElementById('as-marks').value    = a.maxMarks || 100;
-  document.getElementById('as-due').value      = a.dueDate || '';
-  document.getElementById('as-due-time').value = a.dueTime || '';
-  document.getElementById('as-msg').className  = 'msg';
-  document.getElementById('as-save-btn').textContent = 'Update Assignment';
+  document.getElementById('as-title').value   = a.title||'';
+  document.getElementById('as-desc').value    = a.description||'';
+  document.getElementById('as-subject').value = a.subject||'';
+  document.getElementById('as-marks').value   = a.maxMarks||100;
+  document.getElementById('as-due').value     = a.dueDate||'';
+  if (document.getElementById('as-due-time')) document.getElementById('as-due-time').value = a.dueTime||'';
+  document.getElementById('as-msg').className = 'msg';
+  const btn = document.getElementById('as-save-btn');
+  if (btn) btn.textContent = 'Update Assignment';
   openModal('modal-add-assign');
   setTimeout(() => document.getElementById('as-title').focus(), 100);
 }
 
-// ── SAVE / UPDATE ──
 async function saveAssignment() {
   const title    = document.getElementById('as-title').value.trim();
   const desc     = document.getElementById('as-desc').value.trim();
   const subject  = document.getElementById('as-subject').value.trim();
-  const maxMarks = parseInt(document.getElementById('as-marks').value) || 100;
+  const maxMarks = parseInt(document.getElementById('as-marks').value)||100;
   const dueDate  = document.getElementById('as-due').value;
-  const dueTime  = document.getElementById('as-due-time').value;
+  const dueTime  = document.getElementById('as-due-time')?.value||'';
   const msgEl    = document.getElementById('as-msg');
-
   if (!title) {
-    msgEl.textContent = 'Assignment title is required!';
+    msgEl.textContent = '⚠️ Assignment title is required!';
     msgEl.className   = 'msg error';
     document.getElementById('as-title').focus();
     return;
   }
-
   const btn = document.getElementById('as-save-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Saving...';
-
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving...';
   try {
-    const data = {
-      title, description: desc, subject,
-      maxMarks, dueDate, dueTime,
-      updatedAt: Date.now()
-    };
-
+    const data = {title,description:desc,subject,maxMarks,dueDate,dueTime,updatedAt:Date.now()};
     if (_editingAssignId) {
-      await db.ref('assignments/' + _editingAssignId).update(data);
+      await db.ref('assignments/'+_editingAssignId).update(data);
       closeModal('modal-add-assign');
-      toast('Assignment updated! ✅', 'success');
+      toast('Assignment updated! ✅','success');
     } else {
-      data.createdAt = Date.now();
-      data.createdBy = currentUser.uid;
-      const ref = await db.ref('assignments').push(data);
-      // Push notification to all students
-      await db.ref('notifications').push({
-        type: 'test',
-        title: '📋 New Assignment: ' + title,
-        body: (subject ? subject + ' · ' : '') + (dueDate ? 'Due: ' + dueDate : 'No due date'),
-        link: 'assignments',
-        createdAt: Date.now(),
-        readBy: {}
-      });
+      data.createdAt = Date.now(); data.createdBy = currentUser.uid;
+      await db.ref('assignments').push(data);
+      await db.ref('notifications').push({type:'test',title:'📋 New Assignment: '+title,body:(subject?subject+' · ':'')+(dueDate?'Due: '+dueDate:'No due date'),link:'assignments',createdAt:Date.now(),readBy:{}});
       closeModal('modal-add-assign');
-      toast('Assignment created! 🎉', 'success');
+      toast('Assignment created! 🎉','success');
     }
     loadAssignments();
-  } catch (err) {
-    msgEl.textContent = 'Error: ' + err.message;
-    msgEl.className   = 'msg error';
+  } catch(err) {
+    msgEl.textContent = 'Error: '+err.message; msgEl.className = 'msg error';
   } finally {
-    btn.disabled = false;
-    btn.textContent = _editingAssignId ? 'Update Assignment' : 'Create Assignment';
+    btn.disabled = false; btn.textContent = _editingAssignId ? 'Update Assignment' : 'Create Assignment';
   }
 }
 
-// ── DELETE ──
 async function deleteAssignment(id) {
   if (!confirm('Delete this assignment? All submissions will also be deleted.')) return;
-  await db.ref('assignments/' + id).remove();
-  // delete related submissions
+  await db.ref('assignments/'+id).remove();
   const subSnap = await db.ref('submissions').orderByChild('assignId').equalTo(id).get();
   if (subSnap.exists()) {
     const upd = {};
-    Object.keys(subSnap.val()).forEach(k => { upd['submissions/' + k] = null; });
+    Object.keys(subSnap.val()).forEach(k => { upd['submissions/'+k] = null; });
     await db.ref().update(upd);
   }
-  toast('Assignment deleted', 'success');
-  loadAssignments();
+  toast('Assignment deleted','success'); loadAssignments();
 }
 
-// ── OPEN SUBMIT MODAL ──
-function openSubmitAssign(id, title, marks, due) {
-  _currentAssignId = id;
-  document.getElementById('submit-assign-info').innerHTML = `
-    <div style="font-weight:600;margin-bottom:4px">${title}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-      <span class="badge badge-cyan">${marks} marks</span>
-      ${due ? `<span class="badge badge-amber">⏰ Due: ${due}</span>` : ''}
-    </div>`;
-  document.getElementById('submit-answer').value = '';
-  document.getElementById('submit-link').value   = '';
-  document.getElementById('submit-msg').className = 'msg';
-  openModal('modal-submit-assign');
-  setTimeout(() => document.getElementById('submit-answer').focus(), 100);
-}
-
-// ── SUBMIT ──
-async function submitAssignment() {
-  const answer  = document.getElementById('submit-answer').value.trim();
-  const link    = document.getElementById('submit-link').value.trim();
-  const msgEl   = document.getElementById('submit-msg');
-
-  if (!answer) {
-    msgEl.textContent = 'Please write your answer before submitting!';
-    msgEl.className   = 'msg error';
-    document.getElementById('submit-answer').focus();
-    return;
-  }
-
-  const btn = document.querySelector('#modal-submit-assign .btn-primary');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Submitting...';
-
-  try {
-    await db.ref('submissions').push({
-      uid:         currentUser.uid,
-      userName:    currentUserData?.name || 'Unknown',
-      userEmail:   currentUser.email || '',
-      assignId:    _currentAssignId,
-      answer,
-      link,
-      submittedAt: Date.now()
-    });
-    // Bonus +5 points for submitting
-    const newPts = (currentUserData?.points || 0) + 5;
-    await db.ref('users/' + currentUser.uid + '/points').set(newPts);
-    currentUserData.points = newPts;
-
-    closeModal('modal-submit-assign');
-    toast('Assignment submitted! +5 bonus points 🎉', 'success');
-    loadAssignments();
-  } catch(err) {
-    msgEl.textContent = 'Submission failed: ' + err.message;
-    msgEl.className   = 'msg error';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Submit ✓';
-  }
-}
-
-// ── VIEW SUBMISSIONS (Admin) ──
 async function viewSubmissions(assignId, title) {
-  document.getElementById('subs-modal-title').textContent = '👁 Submissions — ' + title;
+  document.getElementById('subs-modal-title').textContent = '👁 Submissions — '+(title||'');
   const content = document.getElementById('subs-modal-content');
   content.innerHTML = '<div style="text-align:center;padding:24px"><span class="spinner"></span></div>';
   openModal('modal-view-subs');
-
   const snap = await db.ref('submissions').orderByChild('assignId').equalTo(assignId).get();
-  const subs = snap.val() || {};
-  const arr  = Object.entries(subs).sort((a,b) => b[1].submittedAt - a[1].submittedAt);
-
-  if (!arr.length) {
-    content.innerHTML = '<div class="empty" style="padding:32px"><div class="empty-icon">📭</div><div class="empty-title">No submissions yet</div></div>';
-    return;
-  }
-
-  content.innerHTML = `
-    <div style="padding:12px 0;font-size:12px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:8px">
-      ${arr.length} submission${arr.length>1?'s':''}
-    </div>` +
-    arr.map(([, s], i) => `
+  const subs = snap.val()||{};
+  const arr  = Object.entries(subs).sort((a,b)=>b[1].submittedAt-a[1].submittedAt);
+  if (!arr.length) { content.innerHTML='<div class="empty" style="padding:32px"><div class="empty-icon">📭</div><div class="empty-title">No submissions yet</div></div>'; return; }
+  content.innerHTML = `<div style="padding:12px 0;font-size:12px;color:var(--text3);border-bottom:1px solid var(--border);margin-bottom:8px">${arr.length} submission${arr.length>1?'s':''}</div>` +
+    arr.map(([,s])=>`
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px">
         <div style="display:flex;align-items:center;gap:8px">
           <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--cyan2),var(--purple2));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff">${(s.userName||'?').charAt(0).toUpperCase()}</div>
-          <div>
-            <div style="font-size:13px;font-weight:600">${s.userName || 'Unknown'}</div>
-            <div style="font-size:10px;color:var(--text3)">${s.userEmail || ''}</div>
-          </div>
+          <div><div style="font-size:13px;font-weight:600">${s.userName||'Unknown'}</div><div style="font-size:10px;color:var(--text3)">${s.userEmail||''}</div></div>
         </div>
         <span style="font-size:11px;color:var(--text3)">📅 ${new Date(s.submittedAt).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</span>
       </div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.6;white-space:pre-wrap;background:var(--card);border-radius:var(--r);padding:10px;margin-bottom:8px">${escHtml(s.answer||'')}</div>
-      ${s.link ? `<a href="${s.link}" target="_blank" style="font-size:11px;color:var(--cyan)">🔗 ${s.link}</a>` : ''}
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;white-space:pre-wrap;background:var(--card);border-radius:var(--r);padding:10px;margin-bottom:6px">${escHtml(s.answer||'')}</div>
+      ${s.link?`<a href="${s.link}" target="_blank" style="font-size:11px;color:var(--cyan)">🔗 ${s.link}</a>`:''}
     </div>`).join('');
 }
 
-function escHtml(s) {
-  if (!s) return '';
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
+// ============================================================
+// ANALYTICS
+// ============================================================
+async function loadAnalytics() {
+  const [resSnap, uSnap] = await Promise.all([
+    db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get(),
+    db.ref('users/'+currentUser.uid).get()
+  ]);
+  const results = Object.values(resSnap.val()||{}).sort((a,b)=>a.submittedAt-b.submittedAt);
+  const u = uSnap.val()||{};
+  const avgScore = results.length ? Math.round(results.reduce((s,r)=>s+(r.percentage||0),0)/results.length) : 0;
+  const best = results.length ? Math.max(...results.map(r=>r.percentage||0)) : 0;
+  const worst = results.length ? Math.min(...results.map(r=>r.percentage||0)) : 0;
+  // Bar chart data (last 7 results)
+  const recent = results.slice(-7);
+  const bars = recent.map(r=>`<div class="mini-bar" style="height:${Math.max(8,r.percentage||0)*0.6}px" title="${r.testTitle}: ${r.percentage}%"></div>`).join('');
+
+  document.getElementById('analytics-content').innerHTML = `
+    <div class="analytics-grid">
+      <div class="stat-card s-cyan"><div class="stat-num c-cyan">${results.length}</div><div class="stat-label">Tests Taken</div></div>
+      <div class="stat-card s-purple"><div class="stat-num c-purple">${avgScore}%</div><div class="stat-label">Avg Score</div></div>
+      <div class="stat-card s-green"><div class="stat-num c-green">${best}%</div><div class="stat-label">Best Score</div></div>
+      <div class="stat-card s-amber"><div class="stat-num c-amber">${u.points||0}</div><div class="stat-label">Total Points</div></div>
+    </div>
+    ${recent.length?`
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Score Trend (Last ${recent.length} Tests)</div>
+      <div style="display:flex;align-items:flex-end;gap:6px;height:80px;padding-bottom:4px">
+        ${recent.map(r=>`
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div style="font-size:9px;color:var(--text3)">${r.percentage}%</div>
+            <div style="width:100%;background:${r.percentage>=70?'linear-gradient(to top,var(--green),var(--cyan))':r.percentage>=50?'linear-gradient(to top,var(--amber),var(--cyan))':'linear-gradient(to top,var(--red),var(--amber))'};border-radius:3px 3px 0 0;height:${Math.max(6,r.percentage*0.6)}px;transition:.4s"></div>
+          </div>`).join('')}
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px;overflow-x:auto">
+        ${recent.map(r=>`<div style="flex:1;font-size:9px;color:var(--text3);text-align:center;min-width:30px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(r.testTitle||'').substring(0,8)}</div>`).join('')}
+      </div>
+    </div>` : ''}
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">Performance Breakdown</div>
+      ${results.length?results.slice(-10).reverse().map(r=>{
+        const pct=r.percentage||0;
+        const color=pct>=70?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <div style="font-size:12px;flex:1;color:var(--text)">${r.testTitle||'Test'}</div>
+          <div style="width:120px;background:var(--border);border-radius:3px;height:6px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${color};border-radius:3px"></div></div>
+          <div style="font-size:12px;font-weight:700;color:${color};min-width:34px;text-align:right">${pct}%</div>
+        </div>`;
+      }).join('') : '<div class="empty"><div class="empty-title">No data yet — take a test!</div></div>'}
+    </div>
+  `;
 }
+
+// ============================================================
+// RESOURCES
+// ============================================================
+async function loadResources() {
+  if (isAdmin) document.getElementById('res-admin-btns').innerHTML=`<button class="btn btn-primary btn-sm" onclick="openModal('modal-add-resource')">+ Add Resource</button>`;
+  const snap = await db.ref('resources').get();
+  const res = snap.val()||{};
+  const arr = Object.entries(res).sort((a,b)=>b[1].createdAt-a[1].createdAt);
+  const list = document.getElementById('resources-list');
+  if (!arr.length) { list.innerHTML='<div class="empty"><div class="empty-icon">📚</div><div class="empty-title">No resources yet</div></div>'; return; }
+  const iconMap = {link:'🔗',video:'🎬',pdf:'📄',doc:'📝'};
+  list.innerHTML = arr.map(([id,r])=>`
+    <div class="resource-item">
+      <div class="resource-icon ${r.type}">${iconMap[r.type]||'📎'}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">${escHtml(r.title)}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">${r.subject||''} ${r.description?'· '+r.description:''}</div>
+      </div>
+      <div class="flex gap-8">
+        ${r.url?`<a href="${r.url}" target="_blank" class="btn btn-primary btn-sm">Open ↗</a>`:''}
+        ${isAdmin?`<button class="btn btn-danger btn-sm" onclick="deleteResource('${id}')">🗑</button>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function saveResource() {
+  const title=document.getElementById('res-title').value.trim();
+  const desc=document.getElementById('res-desc').value.trim();
+  const type=document.getElementById('res-type').value;
+  const subject=document.getElementById('res-subject').value.trim();
+  const url=document.getElementById('res-url').value.trim();
+  if (!title) return toast('Enter title','error');
+  await db.ref('resources').push({title,description:desc,type,subject,url,createdAt:Date.now()});
+  await db.ref('notifications').push({type:'info',title:'📚 New Resource: '+title,body:subject+' · '+type,link:'resources',createdAt:Date.now(),readBy:{}});
+  closeModal('modal-add-resource');
+  toast('Resource added!','success');
+  loadResources();
+}
+
+async function deleteResource(id) {
+  await db.ref('resources/'+id).remove();
+  toast('Deleted','success');
+  loadResources();
+}
+
+// ============================================================
+// ATTENDANCE  (class date-based)
+// ============================================================
+async function loadAttendance() {
+  const classSnap = await db.ref('classes').get();
+  const classes   = classSnap.val() || {};
+  const uid       = currentUser.uid;
+  const el        = document.getElementById('attendance-content');
+  el.innerHTML    = '<div style="text-align:center;padding:24px"><span class="spinner"></span></div>';
+
+  const classArr = Object.entries(classes).sort((a,b) =>
+    (a[1].date||'') > (b[1].date||'') ? 1 : -1);
+
+  if (!classArr.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><div class="empty-title">No classes yet</div><div class="empty-sub">Admin needs to create classes first</div></div>`;
+    return;
+  }
+
+  if (isAdmin) {
+    const today     = new Date().toISOString().split('T')[0];
+    const past      = classArr.filter(([,c]) => c.date && c.date <  today);
+    const todayCls  = classArr.filter(([,c]) => c.date && c.date === today);
+    const future    = classArr.filter(([,c]) => !c.date || c.date > today);
+    const optGroup  = (label, arr) =>
+      arr.length ? `<optgroup label="${label}">${arr.map(([id,c])=>`<option value="${id}">${c.date||'No date'} — ${c.title}</option>`).join('')}</optgroup>` : '';
+    const defaultId = todayCls[0]?.[0] || past[past.length-1]?.[0] || classArr[0][0];
+
+    el.innerHTML = `
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">📅 Select Class</div>
+        <select id="att-class-sel" onchange="renderAttendanceTable()" style="margin-bottom:0">
+          ${optGroup('🔴 Today', todayCls)}
+          ${optGroup('📅 Upcoming', future)}
+          ${optGroup('✅ Past Classes', [...past].reverse())}
+        </select>
+      </div>
+      <div id="att-table-wrap"></div>`;
+    const sel = document.getElementById('att-class-sel');
+    if (sel) { sel.value = defaultId; renderAttendanceTable(); }
+  } else {
+    const attSnap = await db.ref('attendance').get();
+    const allAtt  = attSnap.val() || {};
+    const records = classArr.map(([classId, cls]) => ({
+      title: cls.title, date: cls.date||'', time: cls.time||'',
+      status: allAtt[classId]?.[uid] || 'not marked'
+    }));
+    const present = records.filter(r => r.status === 'present').length;
+    const late    = records.filter(r => r.status === 'late').length;
+    const absent  = records.filter(r => r.status === 'absent').length;
+    const marked  = present + late + absent;
+    const pct     = marked > 0 ? Math.round((present + late) / marked * 100) : 0;
+    const col     = pct >= 75 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+
+    el.innerHTML = `
+      <div class="stats-row" style="margin-bottom:16px">
+        <div class="stat-card s-green"><div class="stat-num c-green">${present}</div><div class="stat-label">Present</div></div>
+        <div class="stat-card s-amber"><div class="stat-num c-amber">${late}</div><div class="stat-label">Late</div></div>
+        <div class="stat-card" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:18px;text-align:center"><div class="stat-num" style="color:var(--red)">${absent}</div><div class="stat-label">Absent</div></div>
+        <div class="stat-card s-cyan"><div class="stat-num" style="color:${col}">${pct}%</div><div class="stat-label">Attendance</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📅 Class-wise Record</div>
+        ${records.length ? records.map(r => {
+          const dotCls = r.status==='present'?'present':r.status==='late'?'late':'absent';
+          const bdg    = r.status==='present'?'badge-green':r.status==='late'?'badge-amber':r.status==='absent'?'badge-red':'';
+          return `<div class="attend-row">
+            <div class="attend-dot ${dotCls}" style="${r.status==='not marked'?'background:var(--border)':''}"></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">${r.title}</div>
+            <div style="font-size:10px;color:var(--text3)">${r.date} ${r.time}</div></div>
+            <span class="badge ${bdg}" style="${r.status==='not marked'?'color:var(--text3)':''}">${r.status}</span>
+          </div>`;
+        }).join('') : '<div class="empty"><div class="empty-title">No attendance data</div></div>'}
+      </div>`;
+  }
+}
+
+async function renderAttendanceTable() {
+  const classId = document.getElementById('att-class-sel')?.value;
+  if (!classId) return;
+  const wrap = document.getElementById('att-table-wrap');
+  wrap.innerHTML = '<div style="text-align:center;padding:16px"><span class="spinner"></span></div>';
+  const [usersSnap, attSnap, classSnap] = await Promise.all([
+    db.ref('users').get(),
+    db.ref('attendance/'+classId).get(),
+    db.ref('classes/'+classId).get()
+  ]);
+  const users    = usersSnap.val() || {};
+  const att      = attSnap.val()   || {};
+  const cls      = classSnap.val() || {};
+  const students = Object.entries(users).filter(([,u]) => u.role !== 'admin');
+  const pCnt = students.filter(([uid])=>att[uid]==='present').length;
+  const lCnt = students.filter(([uid])=>att[uid]==='late').length;
+  const aCnt = students.filter(([uid])=>!att[uid]||att[uid]==='absent').length;
+  if (!students.length) { wrap.innerHTML=`<div class="empty"><div class="empty-icon">👥</div><div class="empty-title">No students registered</div></div>`; return; }
+  wrap.innerHTML = `
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <div class="stat-card s-green" style="flex:1;min-width:90px;padding:12px"><div class="stat-num c-green" style="font-size:20px">${pCnt}</div><div class="stat-label">Present</div></div>
+      <div class="stat-card s-amber" style="flex:1;min-width:90px;padding:12px"><div class="stat-num c-amber" style="font-size:20px">${lCnt}</div><div class="stat-label">Late</div></div>
+      <div class="stat-card" style="flex:1;min-width:90px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);text-align:center"><div class="stat-num" style="color:var(--red);font-size:20px">${aCnt}</div><div class="stat-label">Absent</div></div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div class="card-title" style="margin-bottom:0">👥 ${students.length} Students — ${cls.title||''} <span style="font-family:'Exo 2';font-size:11px;color:var(--text3);font-weight:400">${cls.date||''} ${cls.time||''}</span></div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-success btn-sm" onclick="markAllAttendance('${classId}','present')">✓ All Present</button>
+          <button class="btn btn-danger btn-sm" onclick="markAllAttendance('${classId}','absent')">✗ All Absent</button>
+        </div>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>#</th><th>Student</th><th>Email</th><th>Status</th><th>Mark</th></tr></thead>
+        <tbody>
+          ${students.map(([uid,u],i)=>{
+            const status = att[uid]||'absent';
+            return `<tr>
+              <td style="color:var(--text3);font-size:11px">${i+1}</td>
+              <td><div style="display:flex;align-items:center;gap:8px">
+                <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--cyan2),var(--purple2));display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff">${(u.name||'?').charAt(0).toUpperCase()}</div>
+                <span style="font-weight:600;font-size:13px">${u.name||'?'}</span>
+              </div></td>
+              <td style="font-size:11px;color:var(--text2)">${u.email||''}</td>
+              <td id="att-status-${uid}"><span class="badge ${status==='present'?'badge-green':status==='late'?'badge-amber':'badge-red'}">${status}</span></td>
+              <td><div style="display:flex;gap:4px">
+                <button class="btn btn-success btn-sm" style="padding:4px 8px;font-size:10px" onclick="markAtt('${classId}','${uid}','present')">✓</button>
+                <button class="btn btn-secondary btn-sm" style="padding:4px 8px;font-size:10px" onclick="markAtt('${classId}','${uid}','late')">⏰</button>
+                <button class="btn btn-danger btn-sm" style="padding:4px 8px;font-size:10px" onclick="markAtt('${classId}','${uid}','absent')">✗</button>
+              </div></td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+async function markAtt(classId, uid, status) {
+  await db.ref('attendance/'+classId+'/'+uid).set(status);
+  const el = document.getElementById('att-status-'+uid);
+  if (el) el.innerHTML = `<span class="badge ${status==='present'?'badge-green':status==='late'?'badge-amber':'badge-red'}">${status}</span>`;
+  toast(status==='present'?'✓ Present':status==='late'?'⏰ Late':'✗ Absent','success');
+  setTimeout(renderAttendanceTable, 300);
+}
+
+async function markAllAttendance(classId, status) {
+  const snap = await db.ref('users').get();
+  const users = snap.val()||{};
+  const upd = {};
+  Object.entries(users).filter(([,u])=>u.role!=='admin').forEach(([uid])=>{upd[uid]=status;});
+  await db.ref('attendance/'+classId).update(upd);
+  toast(`All students marked ${status}`,'success');
+  renderAttendanceTable();
+}
+
+
+async function loadAttendanceForClass() {
+  const classId = document.getElementById('att-class-sel')?.value;
+  if (!classId) return;
+  const [usersSnap, attSnap] = await Promise.all([
+    db.ref('users').get(),
+    db.ref('attendance/'+classId).get()
+  ]);
+  const users = usersSnap.val()||{};
+  const att = attSnap.val()||{};
+  const studentList = document.getElementById('att-student-list');
+  const students = Object.entries(users).filter(([,u])=>u.role!=='admin');
+  if (!students.length) { studentList.innerHTML='<div class="empty"><div class="empty-title">No students</div></div>'; return; }
+  studentList.innerHTML = `
+    <table class="tbl">
+      <thead><tr><th>Student</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody>${students.map(([uid,u])=>{
+        const status = att[uid]||'absent';
+        return `<tr>
+          <td>${u.name||u.email}</td>
+          <td><span class="badge ${status==='present'?'badge-green':status==='late'?'badge-amber':'badge-red'}">${status}</span></td>
+          <td><div class="flex gap-8">
+            <button class="btn btn-success btn-sm" onclick="markAtt('${classId}','${uid}','present')">✓ Present</button>
+            <button class="btn btn-secondary btn-sm" onclick="markAtt('${classId}','${uid}','late')">⏰ Late</button>
+            <button class="btn btn-danger btn-sm" onclick="markAtt('${classId}','${uid}','absent')">✗ Absent</button>
+          </div></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table>
+    <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="toast('Attendance saved!','success')">💾 Save All</button>
+  `;
+}
+
+async function markAtt(classId, uid, status) {
+  await db.ref('attendance/'+classId+'/'+uid).set(status);
+  toast('Marked '+status,'success');
+  loadAttendanceForClass();
+}
+
+// ============================================================
+// CERTIFICATES
+// ============================================================
+async function loadCertificates() {
+  const snap = await db.ref('results').orderByChild('uid').equalTo(currentUser.uid).get();
+  const results = snap.val()||{};
+  const passed = Object.values(results).filter(r=>r.percentage>=70);
+  const el = document.getElementById('certs-list');
+  if (!passed.length) {
+    el.innerHTML=`<div class="empty"><div class="empty-icon">🏅</div><div class="empty-title">No certificates yet</div><div class="empty-sub">Score 70%+ on any test to earn a certificate!</div></div>`;
+    return;
+  }
+  el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">` +
+    passed.map(r=>`
+    <div class="cert-wrap">
+      <div class="cert-seal">🏅</div>
+      <div class="cert-title">CERTIFICATE</div>
+      <div class="cert-sub">of achievement</div>
+      <div class="cert-name">${escHtml(currentUserData?.name||'Student')}</div>
+      <div class="cert-course">has successfully completed<br><strong>${escHtml(r.testTitle||'Test')}</strong><br>with a score of <strong>${r.percentage}%</strong></div>
+      <div class="cert-date">⚡ ROBOTGPT LMS · ${new Date(r.submittedAt).toLocaleDateString()}</div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:14px" onclick="printCert('${escHtml(r.testTitle||'Test')}','${r.percentage}')">🖨 Print</button>
+    </div>`).join('') + '</div>';
+}
+
+function printCert(testTitle, pct) {
+  const name = currentUserData?.name||'Student';
+  const w = window.open('','_blank','width=700,height=500');
+  w.document.write(`<html><head><title>Certificate</title><style>
+    body{font-family:Georgia,serif;text-align:center;padding:60px;background:#f9f7f0}
+    h1{font-size:36px;color:#7c4dff;margin-bottom:4px}
+    .sub{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#888;margin-bottom:40px}
+    .name{font-size:28px;font-weight:700;border-bottom:2px solid #ffc400;display:inline-block;padding-bottom:4px;margin-bottom:16px}
+    .course{font-size:15px;color:#555;line-height:2}
+    .seal{font-size:60px;margin:20px 0}
+    .footer{font-size:11px;color:#aaa;margin-top:40px}
+  </style></head><body>
+    <div class="seal">🏅</div>
+    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+    <div class="sub">⚡ ROBOTGPT Learning Management System</div>
+    <p style="font-size:15px;color:#555">This certifies that</p>
+    <div class="name">${name}</div>
+    <div class="course">has successfully completed<br><strong>${testTitle}</strong><br>with a score of <strong>${pct}%</strong></div>
+    <div class="footer">Issued on ${new Date().toLocaleDateString()} · ROBOTGPT LMS</div>
+    <scr'+'ipt>window.print();</scr'+'ipt>
+  </body></html>`);
+}
+
+
 
 </script>
 </body>
