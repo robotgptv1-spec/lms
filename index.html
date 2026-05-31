@@ -858,7 +858,19 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
+
+<!-- View Submissions Modal (Admin) -->
+<div class="modal-overlay" id="modal-view-subs">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-title" id="subs-modal-title">👁 Submissions</div>
+    <button class="modal-close" onclick="closeModal('modal-view-subs')">✕</button>
+    <div id="subs-modal-content" style="max-height:60vh;overflow-y:auto"></div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-view-subs')">Close</button>
+    </div>
+
 
 <!-- Add Resource Modal (Admin) -->
 <div class="modal-overlay" id="modal-add-resource">
@@ -1230,22 +1242,13 @@ async function loadDashboard() {
 
 
   // Recent tests
-  const doneTestIds = new Set();
-  if (!isAdmin) {
-    Object.values(myResults).forEach(r => doneTestIds.add(r.testId));
-  }
   const testArr = Object.entries(tests).slice(-3).reverse();
-  document.getElementById('dash-recent-tests').innerHTML = testArr.length ? testArr.map(([id,t])=>{
-    const done = !isAdmin && doneTestIds.has(id);
-    return `
+  document.getElementById('dash-recent-tests').innerHTML = testArr.length ? testArr.map(([id,t])=>`
     <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-      <div><div style="font-size:13px;font-weight:600">${t.title} ${done?'<span class="badge badge-green" style="margin-left:6px">✓ Done</span>':''}</div><div style="font-size:11px;color:var(--text3)">${t.subject||''} · ${t.duration||30} min</div></div>
-      ${done
-        ? `<button class="btn btn-secondary btn-sm" disabled title="Already submitted" style="opacity:.5;cursor:not-allowed">✓ Done</button>`
-        : `<button class="btn btn-primary btn-sm" onclick="startTest('${id}')">Take</button>`}
-    </div>`;
-  }).join('') : `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">No tests yet</div></div>`;
-
+      <div><div style="font-size:13px;font-weight:600">${t.title}</div><div style="font-size:11px;color:var(--text3)">${t.subject||''} · ${t.duration||30} min</div></div>
+      <button class="btn btn-primary btn-sm" onclick="startTest('${id}')">Take</button>
+    </div>
+  `).join('') : `<div class="empty"><div class="empty-icon">📝</div><div class="empty-title">No tests yet</div></div>`;
 
   // Upcoming classes
   const upcoming = Object.entries(classes).filter(([,c])=>c.status==='upcoming'||c.status==='live').slice(0,3);
