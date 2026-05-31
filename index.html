@@ -570,25 +570,7 @@
         </table>
       </div>
     </div>
-<!-- VIEW SUBMISSIONS MODAL -->
-<div id="modal-view-subs" class="modal-overlay">
-  <div class="modal" style="max-width:900px">
 
-    <div class="modal-header">
-      <h3 id="subs-modal-title">👁 Submissions</h3>
-
-      <button class="modal-close"
-              onclick="closeModal('modal-view-subs')">
-        ✕
-      </button>
-    </div>
-
-    <div id="subs-modal-content"
-         style="max-height:70vh;overflow-y:auto;padding:16px">
-    </div>
-
-  </div>
-</div>
     <!-- ADMIN: MANAGE QUESTIONS -->
     <div class="panel" id="panel-questions">
       <div class="section-header">
@@ -876,7 +858,19 @@
       </div>
     </div>
   </div>
+  </div>
 </div>
+
+<!-- View Submissions Modal (Admin) -->
+<div class="modal-overlay" id="modal-view-subs">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-title" id="subs-modal-title">👁 Submissions</div>
+    <button class="modal-close" onclick="closeModal('modal-view-subs')">✕</button>
+    <div id="subs-modal-content" style="max-height:60vh;overflow-y:auto"></div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-view-subs')">Close</button>
+    </div>
+
 
 <!-- Add Resource Modal (Admin) -->
 <div class="modal-overlay" id="modal-add-resource">
@@ -2631,7 +2625,7 @@ async function deleteAssignment(id) {
   toast('Assignment deleted','success'); loadAssignments();
 }
 
-async function viewSubmissions(assignId, title) {
+async  function viewSubmissions(assignId, title) {
 
   const titleEl = document.getElementById('subs-modal-title');
   const content = document.getElementById('subs-modal-content');
